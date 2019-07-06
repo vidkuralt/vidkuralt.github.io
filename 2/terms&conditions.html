@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>VK - The Hellfire's Adventure</title>
+<title>VK - Terms</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -51,39 +51,45 @@ h2 {
 <body class="w3-light-grey w3-content" style="max-width:1600px">
 
 <!-- Sidebar/menu -->
-<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
-  <div class="w3-container">
-    <a href="home.html#portfolio" onclick="w3_close()" class="w3-hide-large w3-right w3-jumbo w3-padding w3-hover-grey" title="close menu">
-      <i class="fa fa-remove"></i>
-    </a>
-    <a href="home.html#portfolio"><img src="images/fav.jpg"><br><br></a>
-    <h4><b>VID KURALT</b></h4>
-    <h6 class="w3-text-grey">"Never, never, never give up!" - W. Churchill</h6>
-  </div>
-  <div class="w3-bar-block">
-    <a href="home.html#portfolio" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-text-teal"><i class="fa fa-th-large fa-fw w3-margin-right"></i>VID KURALT</a>
-	<a href="http://bit.ly/2LDbOrx" target="_blank" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><i class="fa fa-picture-o fa-fw w3-margin-right"></i>Gallery</a>	
-    <a href="home.html#about" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><i class="fa fa-user fa-fw w3-margin-right"></i>ABOUT</a> 
-    <a href="home.html#contact" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><i class="fa fa-envelope fa-fw w3-margin-right"></i>CONTACT</a>
-	<a href="shared_folder.html" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><i class="fa fa-folder fa-fw w3-margin-right"></i>SHARED FOLDER</a>
-	<a href="https://www.paypal.me/vidkuralt" target="_blank" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cc-paypal fa-fw w3-margin-right"></i>DONATE</a>
+<div class="w3-sidebar w3-bar-block w3-collapse w3-card" style="width:200px;" id="mySidebar">
+  <button class="w3-bar-item w3-button w3-hide-large"
+  onclick="w3_close()">Close &times;</button>
+  <a href="home.html#portfolio"><center><img src="images/fav.jpg" style="margin-top:40px"></center><br></a>
+    <h4><b><center>VID KURALT</center></b></h4>
+    <center><q class="w3-text-grey">Never, never, never give up!" - W. Churchill</q></center><br>
+  <a href="home.html#portfolio" class="w3-bar-item w3-button"><i class="fa fa-th-large fa-fw w3-margin-right"></i>VID KURALT</a>
+	<a href="http://bit.ly/2LDbOrx" target="_blank" class="w3-bar-item w3-button w3-padding"><i class="fa fa-picture-o fa-fw w3-margin-right"></i>Gallery</a>
+    <a href="home.html#about"  class="w3-bar-item w3-button w3-padding"><i class="fa fa-user fa-fw w3-margin-right"></i>ABOUT</a> 
+    <a href="home.html#contact"  class="w3-bar-item w3-button w3-padding"><i class="fa fa-envelope fa-fw w3-margin-right"></i>CONTACT</a>
+	<a href="shared_folder.html"  class="w3-bar-item w3-button w3-padding"><i class="fa fa-folder fa-fw w3-margin-right"></i>SHARED FOLDER</a>
+	<a href="https://www.paypal.me/vidkuralt" target="_blank" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cc-paypal fa-fw w3-margin-right"></i>DONATE</a>
 </div>
-</nav>
-<!-- Overlay effect when opening sidebar on small screens -->
-<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
+<div class="w3-main" style="margin-left:200px">
+<header id="portfolio">
+<div class="w3-teal">
+  <button class="w3-button w3-teal w3-xlarge w3-hide-large" onclick="w3_open()">&#9776;</button>
+  <div class="w3-container">
+  
+    <h1>Terms and Conditions ("Terms")</h1>
+  </div>
+  </div>
+</div>
+</header>
+
+<script>
+	function w3_open() {
+		document.getElementById("mySidebar").style.display = "block";
+	}
+
+	function w3_close() {
+		document.getElementById("mySidebar").style.display = "none";
+	}
+</script>
 <!-- !PAGE CONTENT! -->
-<div class="w3-main" style="margin-left:300px">
+<div class="w3-main" style="margin-left:200px">
 
-<!-- Header -->
- <header id="portfolio">
-   <a href="home.html#portfolio"><img src="images/fav.jpg" style="width:65px;" class="w3-circle w3-right w3-margin w3-hide-large w3-hover-opacity"></a>
-   <span class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()" ><i class="fa fa-bars"></i></span>
-   <div class="w3-container">
-   <h1><center><b>Terms and Conditions ("Terms")</b></center></h1>
-   <br>
-   </div>
- </header>
+
  <body leftmargin="35">
 
 <p> Last updated: June 28, 2019</p>
