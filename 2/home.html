@@ -2,8 +2,6 @@
 <html>
 <title>VID KURALT</title>
 <meta charset="UTF-8">
-{% seo %}
-
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
@@ -41,7 +39,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
   onclick="w3_close()">Close &times;</button>
   <a href="home.html#portfolio"><center><img src="images/fav.jpg" style="margin-top:40px"></center><br></a>
     <h4><b><center>VID KURALT</center></b></h4>
-    <center><q class="w3-text-grey">Never, never, never give up!" - W. Churchill</q></center><br>
+    <center><p class="w3-text-grey"><div id="sequence">hi</div></p></center><br>
   <a href="#portfolio" class="w3-bar-item w3-button"><i class="fa fa-th-large fa-fw w3-margin-right"></i>VID KURALT</a>
 	<a href="http://bit.ly/2LDbOrx" target="_blank" class="w3-bar-item w3-button w3-padding"><i class="fa fa-picture-o fa-fw w3-margin-right"></i>Gallery</a>
     <a href="#about"  class="w3-bar-item w3-button w3-padding"><i class="fa fa-user fa-fw w3-margin-right"></i>ABOUT</a> 
@@ -62,7 +60,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
 </div>
 </header>
 
-<script>
+<script> <!-- for sidebar-->
 	function w3_open() {
 		document.getElementById("mySidebar").style.display = "block";
 	}
@@ -71,7 +69,37 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
 		document.getElementById("mySidebar").style.display = "none";
 	}
 </script>
+<script> <!-- for looping text-->
+        var example = ['Never, never, never give up! - W. Churchill', 'You know you are in love when you cannot fall asleep because reality is finally better than your dreams. - Dr. Seuss', 'Only Two Things Are Infinite, the Universe and Human Stupidity, and I Do Not Know About the Former. - Albert Einstein', 'Veni, vidi, vici.  - Julius Caesar', 'There is nothing permanent except change. - Heraclitus '];
 
+        textSequence(0);
+        function textSequence(i) {
+
+            if (example.length > i) {
+                setTimeout(function() {
+                    document.getElementById("sequence").innerHTML = example[i];
+                    textSequence(++i);
+                }, 10000); // 1 second (in milliseconds)
+
+            } else if (example.length == i) { // Loop
+                textSequence(0);
+            } 
+        }
+    </script>
+	<script> <!-- time greeting-->
+var d = new Date();
+var time = d.getHours();
+
+if (time < 12) {
+  document.write("<b>Good morning!</b>");
+}
+if (time > 12) {
+  document.write("<b>Good afternoon!</b>");
+}
+if (time == 12) {
+  document.write("<b>Good Day!</b>");
+}
+</script>
 
 	<!-- !PAGE CONTENT! -->
 	<div class="w3-main" style="margin-left:200px"> <br><br>
