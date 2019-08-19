@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<title>VID KURALT</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="shortcut icon" href="images/fav/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="https://vidkuralt.github.io/2/images/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://vidkuralt.github.io/2/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://vidkuralt.github.io/2/images/favicon-16x16.png">
+<link rel="manifest" href="https://vidkuralt.github.io/2/images/site.webmanifest">
+<link rel="mask-icon" href="https://vidkuralt.github.io/2/images/safari-pinned-tab.svg" color="#000000">
+<link rel="shortcut icon" href="https://vidkuralt.github.io/2/images/favicon.ico">
+<meta name="apple-mobile-web-app-title" content="Vid Kuralt">
+<meta name="application-name" content="Vid Kuralt">
+<meta name="msapplication-TileColor" content="#00aba9">
+<meta name="msapplication-TileImage" content="https://vidkuralt.github.io/2/images/mstile-144x144.png">
+<meta name="msapplication-config" content="https://vidkuralt.github.io/2/images/browserconfig.xml">
+<meta name="theme-color" content="#ffffff">
+<meta name="msapplication-TileColor" content="#00aba9">
+<meta name="msapplication-config" content="https://vidkuralt.github.io/2/images/browserconfig.xml">
+<meta name="theme-color" content="#ffffff">
+<style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
+
+</style>
+
+<body class="w3-light-grey w3-content" style="max-width:1600px">
+
+<!-- Sidebar/menu -->
+<div class="w3-sidebar w3-bar-block w3-collapse w3-card" style="width:200px;" id="mySidebar">
+  <button class="w3-bar-item w3-button w3-hide-large"
+  onclick="w3_close()">Close &times;</button>
+  <a href="home.html#portfolio"><center><img src="images/fav.jpg" style="margin-top:40px"></center><br></a>
+    <h4><b><center>VID KURALT</center></b></h4>
+    <center><p class="w3-text-grey"><div id="sequence">hi</div></p></center><br>
+  <a href="#portfolio" class="w3-bar-item w3-button"><i class="fa fa-th-large fa-fw w3-margin-right"></i>VID KURALT</a>
+	<a href="http://bit.ly/2LDbOrx" target="_blank" class="w3-bar-item w3-button w3-padding"><i class="fa fa-picture-o fa-fw w3-margin-right"></i>Gallery</a>
+    <a href="#about"  class="w3-bar-item w3-button w3-padding"><i class="fa fa-user fa-fw w3-margin-right"></i>ABOUT</a> 
+    <a href="#contact"  class="w3-bar-item w3-button w3-padding"><i class="fa fa-envelope fa-fw w3-margin-right"></i>CONTACT</a>
+	<a href="shared_folder.html"  class="w3-bar-item w3-button w3-padding"><i class="fa fa-folder fa-fw w3-margin-right"></i>SHARED FOLDER</a>
+	<a href="https://www.paypal.me/vidkuralt" target="_blank" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cc-paypal fa-fw w3-margin-right"></i>DONATE</a>
+</div>
+
+<div class="w3-main" style="margin-left:200px">
+<header id="portfolio">
+<div class="w3-teal">
+  <button class="w3-button w3-teal w3-xlarge w3-hide-large" onclick="w3_open()">&#9776;</button>
+  <div class="w3-container">
+  
+    <h1>My Personal Website</h1>
+  </div>
+  </div>
+</div>
+</header>
+
+<script> <!-- for sidebar-->
+	function w3_open() {
+		document.getElementById("mySidebar").style.display = "block";
+	}
+
+	function w3_close() {
+		document.getElementById("mySidebar").style.display = "none";
+	}
+</script>
+<script> <!-- for looping text-->
+        var example = ['Never, never, never give up! - W. Churchill', 'You know you are in love when you cannot fall asleep because reality is finally better than your dreams. - Dr. Seuss', 'Only Two Things Are Infinite, the Universe and Human Stupidity, and I Do Not Know About the Former. - Albert Einstein', 'Veni, vidi, vici.  - Julius Caesar', 'There is nothing permanent except change. - Heraclitus '];
+
+        textSequence(0);
+        function textSequence(i) {
+
+            if (example.length > i) {
+                setTimeout(function() {
+                    document.getElementById("sequence").innerHTML = example[i];
+                    textSequence(++i);
+                }, 10000); // 1 second (in milliseconds)
+
+            } else if (example.length == i) { // Loop
+                textSequence(0);
+            } 
+        }
+    </script>
+	<script> <!-- time greeting-->
+var d = new Date();
+var time = d.getHours();
+
+if (time < 12) {
+  document.write("<b>Good morning!</b>");
+}
+if (time > 12) {
+  document.write("<b>Good afternoon!</b>");
+}
+if (time == 12) {
+  document.write("<b>Good Day!</b>");
+}
+</script>
+
+	<!-- !PAGE CONTENT! -->
+	<div class="w3-main" style="margin-left:200px"> <br><br>
+
+
+  <!-- First Photo Grid-->
+  <div class="w3-row-padding">
+  
+  <div class="w3-third w3-container">
+      <a href="Posts/The_Game.html"><img src="images/TheGame.png" alt="The Game" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+        <p>The Game<b></b></p></a>
+        <p>My First 3D Game. Created with Unity.</p>
+      </div>
+    </div>
+	
+  <div class="w3-third w3-container w3-margin-bottom">
+      <a href=" Posts/Hellfires_Adventure.html"><img src="images/hfa.jpg" alt="Hellfire's Adventure" style="width:100%" class="w3-hover-opacity" title="Hellfire's Adventure">
+      <div class="w3-container w3-white">
+        <p>The Hellfire's Adventure<b></b></p></a>
+        <p>My First Arcade Game. Created in Greenfoot.</p>
+      </div>
+    </div>
+	
+    <div class="w3-third w3-container w3-margin-bottom">
+      <a href=" Posts/Ubuntu_useful_tips.html"><img src="images/ClamAV.png" alt="ClamAV" style="width:100%" class="w3-hover-opacity" title="ClamAV on Ubuntu">
+      <div class="w3-container w3-white">
+        <p>ClamAV on Ubuntu<b></b></p></a>
+        <p>Here you can find some useful information about ClamAV on Ubuntu </p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Second Photo Grid>
+  <div class="w3-row-padding">
+    <div class="w3-third w3-container w3-margin-bottom">
+      <img src="" alt="Norway" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+        <p><b></b></p>
+        <p></p>
+      </div>
+    </div>
+    <div class="w3-third w3-container w3-margin-bottom">
+      <img src="/w3images/p2.jpg" alt="Norway" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+        <p><b></b></p>
+        <p></p>
+      </div>
+    </div>
+    <div class="w3-third w3-container">
+      <img src="/w3images/p3.jpg" alt="Norway" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+        <p><b></b></p>
+        <p></p>
+      </div>
+    </div>
+  </div-->
+
+
+  
+  <div id="about" class="w3-container w3-padding-large" style="margin-bottom:32px">
+    <h4><b>About Me</b></h4>
+    <p>Hey, how are you doing!
+My name is Vid and I have created this webpage just for fun.
+With this webpage, I am exploring the universe of HTML code
+and other web-based programming languages. I hope you enjoy my work.
+I wouldn't mind if you bought me a coffee.</p>
+    <hr>
+     <!-- Contact Section -->
+  <div class="w3-container w3-padding-large w3-grey">
+    <h4 id="contact"><b>Contact Me</b></h4>
+    <a href="mailto:kuraltvid@outlook.com"><div class="w3-row-padding w3-center w3-padding-24" style="margin:0 -16px">
+      <div class="w3-third w3-dark-grey">
+        <p><i class="fa fa-envelope w3-xxlarge w3-text-light-grey w3-hover-opacity"></i></p>
+        <p>kuralt.vid@outlook.com <br><br></p>
+      </div></a>
+      <a href="https://www.google.com/maps/place/Slovenia/@46.1437674,13.8719323,8z/data=!3m1!4b1!4m5!3m4!1s0x476524e75e968361:0xe740451e25e2d465!8m2!3d46.151241!4d14.995463"><div class="w3-third w3-teal">
+        <p><i class="fa fa-map-marker w3-xxlarge w3-text-light-grey w3-hover-opacity"></i></p>
+        <p>Slovenia <br><br></p>
+      </div></a>
+      <a href="social.html"><div class="w3-third w3-dark-grey">
+        <p><i class="fa fa-users w3-xxlarge w3-text-light-grey w3-hover-opacity"></i></p>
+        <p>Social <br><br></p>
+      </div></a>
+    </div>
+    <hr class="w3-opacity">
+    <form action="https://formspree.io/kuraltvid@gmail.com" method="POST">
+      <div class="w3-section">
+        <label>Name</label>
+        <input class="w3-input w3-border" type="text" name="Name" required>
+      </div>
+      <div class="w3-section">
+        <label>Email</label>
+        <input class="w3-input w3-border" type="email" name="Email" required>
+      </div>
+      <div class="w3-section">
+        <label>Message</label>
+        <textarea class="w3-input w3-border" type="text" name="Message" required></textarea> 
+      </div>
+      <button type="submit" class="w3-button w3-black w3-margin-bottom"><i class="fa fa-paper-plane w3-margin-right"></i>Send Message</button>
+    </form>
+  </div>
+    
+
+  
+  <div class="w3-black w3-center w3-padding-24">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></div>
+
+<!-- End page content -->
+</div>
+
+
+</body>
+</html>
