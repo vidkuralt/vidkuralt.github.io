@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="apple-touch-icon" sizes="180x180" href="https://vidkuralt.github.io/2/images/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://vidkuralt.github.io/2/images/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="https://vidkuralt.github.io/2/images/favicon-16x16.png">
@@ -32,7 +33,7 @@ body {
 }
 
 .lightbox {
-	zoom: 2;
+	zoom: 1.5;
 	text-align: center;
 }
 
@@ -40,6 +41,18 @@ body {
 div.vertical {
 	display: flex;
 	flex-direction: column;
+}
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
 }
 
 
@@ -55,7 +68,7 @@ div.vertical {
 		<div class="horizontal">
 			<div class="vertical">
 				<div class="box">
-				<h1 style="color:white;">UPLOAD</h1>
+				<font size="20" style="color:white;">UPLOAD</font>
 					<h1>
 							UPLOAD FILES TO GOOGLE DRIVE
 					</h1>
@@ -107,6 +120,7 @@ div.vertical {
 											d.getElementsByTagName("head")[0].appendChild(s);s.onload = function() {w[n].init();};})();})(window,document);
 										</script>
 									<!-- planeupload.com button code end -->
+									<a href="shared_folder.html"><font size="+3">BACK</font></a><br><br>
 					</div>
 				</div>
 			</div>

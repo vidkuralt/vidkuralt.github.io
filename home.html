@@ -24,7 +24,18 @@
 <meta name="theme-color" content="#ffffff">
 <style>
 body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
-
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
 </style>
 
 <body class="w3-light-grey w3-content" style="max-width:1600px">
@@ -33,9 +44,9 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
 <div class="w3-sidebar w3-bar-block w3-collapse w3-card" style="width:200px;" id="mySidebar">
   <button class="w3-bar-item w3-button w3-hide-large"
   onclick="w3_close()">Close &times;</button>
-  <a href="home.html#portfolio"><center><img src="images/fav.jpg" style="margin-top:40px"></center><br></a>
+  <a href="home.html#portfolio"><center><img src="images/mstile-144x144.png" style="margin-top:40px"></center><br></a>
     <h4><b><center>VID KURALT</center></b></h4>
-    <center><p class="w3-text-grey"><div id="sequence">hi</div></p></center><br>
+    <center><p id="demo" class="w3-text-grey"><div id="sequence"></div></p></center>
   <a href="#portfolio" class="w3-bar-item w3-button"><i class="fa fa-th-large fa-fw w3-margin-right"></i>VID KURALT</a>
 	<a href="http://bit.ly/2LDbOrx" target="_blank" class="w3-bar-item w3-button w3-padding"><i class="fa fa-picture-o fa-fw w3-margin-right"></i>Gallery</a>
     <a href="#about"  class="w3-bar-item w3-button w3-padding"><i class="fa fa-user fa-fw w3-margin-right"></i>ABOUT</a> 
@@ -83,18 +94,21 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
         }
     </script>
 	<script> <!-- time greeting-->
-var d = new Date();
-var time = d.getHours();
+	
+	var greeting;
+
+var time = new Date().getHours();
 
 if (time < 12) {
-  document.write("<b>Good morning!</b>");
+  greeting = "<b>Good morning!</b>";
 }
 if (time > 12) {
-  document.write("<b>Good afternoon!</b>");
+  greeting = "<b>Good afternoon!</b>";
 }
 if (time == 12) {
-  document.write("<b>Good Day!</b>");
-}
+  greeting = "<b>Good Day!</b>";
+} 
+document.getElementById("demo").innerHTML = greeting;
 </script>
 
 	<!-- !PAGE CONTENT! -->
