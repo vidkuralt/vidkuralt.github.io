@@ -177,15 +177,18 @@ document.getElementById("demo").innerHTML = greeting;
 
 var time = new Date().getHours();
 
-if (time < 12) {
+if (time > 6 && time < 12) {
   greeting = "Good morning, welcome to my personal website. This website is divided in two sections: Project Amber and Linux A-Line.";
 }
-if (time > 12) {
+if (time > 12 && time < 18) {
   greeting = "Good afternoon, welcome to my personal website. This website is divided in two sections: Project Amber and Linux A-Line.";
 }
 if (time == 12) {
-  greeting = "Good Day, welcome to my personal website. This website is divided in two sections: Project Amber and Linux A-Line.";
+  greeting = "Good day, welcome to my personal website. This website is divided in two sections: Project Amber and Linux A-Line.";
 } 
+if (time > 18) {
+	greeting = "Good evening, welcome to my personal website. This website is divided in two sections: Project Amber and Linux A-Line.";
+}
 document.getElementById("hoj").innerHTML = greeting;
 </script>
 
