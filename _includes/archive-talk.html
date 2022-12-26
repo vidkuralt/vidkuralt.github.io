@@ -1,0 +1,24 @@
+{% include base_path %}
+
+
+<div class="{{ include.type | default: "list" }}__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+      <li>
+          {{ post.date | date: '%b %d, %Y' }}.
+          {% if post.slides %}
+            <a href="{{ post.slides }}">{{ post.title }}</a>.
+          {% else %}
+            {{ post.title }}.
+          {% endif %}
+          {% if post.venue_link %}
+            <a href="{{ post.venue_link }}">{{ post.venue }}</a>,
+          {% else %}
+            {{ post.venue }},
+          {% endif %}
+          {{post.location}}.
+      {% if post.video %}
+        <a href="{{ post.video }}"><i class="fas fa-fw fa-film zoom" aria-hidden="true"></i></a>
+      {% endif %}
+      </li>
+  </article>
+</div>
