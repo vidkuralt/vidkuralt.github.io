@@ -10,7 +10,7 @@ locale                   : "en-US"
 title                    : "JP's homepage"
 title_separator          : "-"
 name                     : &name "Jean-Philippe Vert"
-description              : &description "Professor, Research Scientist at Google Brain"
+description              : &description "Professor, Chief Research Officer at Owkin"
 url                      : https://jpvert.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "jpvert.github.io"
@@ -81,8 +81,8 @@ analytics:
 # Site Author
 author:
   name             : "Jean-Philippe Vert"
-  avatar           : "jp-costard.jpg"
-  bio              : "Machine learning and computational biology"
+  avatar           : "jp.jpg"
+  bio              : "Professor, Chief Research and Development Officer at Owkin"
   location         : "Paris, France"
   employer         :
   pubmed           : "https://pubmed.ncbi.nlm.nih.gov/?term=Vert+JP"
