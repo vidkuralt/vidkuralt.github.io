@@ -4,5 +4,5 @@ year: "2009"
 program: "The analysis of patterns summer school"
 institution: "Pula Science Park"
 location: "Cagliari, Italy"
-url: "https://members.cbio.mines-paristech.fr/~jvert/teaching/2009cagliari/index.html"
+courselink: "https://members.cbio.mines-paristech.fr/~jvert/teaching/2009cagliari/index.html"
 ---

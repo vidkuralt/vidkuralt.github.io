@@ -4,5 +4,5 @@ year: "2021"
 program: "MVA Master:  Mathematics, vision, machine learning master"
 institution: "ENS Paris Saclay"
 location: "Saclay, France"
-url: "https://members.cbio.mines-paristech.fr/~jvert/svn/kernelcourse/course/2021mva/index.html"
+courselink: "https://members.cbio.mines-paristech.fr/~jvert/svn/kernelcourse/course/2021mva/index.html"
 ---

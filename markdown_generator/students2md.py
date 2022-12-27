@@ -19,7 +19,7 @@ for row, item in df.iterrows():
     md += 'end: "' + str(item.end) + '"\n'
     md += 'level: "' + item.level + '"\n'
     if len(str(item.url)) > 3:
-        md += 'url: "' + item.url + '"\n'
+        md += 'persolink: "' + item.url + '"\n'
     if len(str(item.note)) > 3:
         md += 'note: "' + item.note + '"\n'
     md += "---\n"

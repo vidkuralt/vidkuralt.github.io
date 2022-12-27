@@ -603,5 +603,35 @@ var addressPoints = [
     "Palaiseau, France.",
     48.7144587,
     2.2453842
+  ],
+  [
+    "Malakoff, France",
+    48.8211559,
+    2.3019814
+  ],
+  [
+    "M'bour, Senegal",
+    14.411794,
+    -16.9657124
+  ],
+  [
+    "Kajang, Selangor, Malaysia",
+    2.9948437,
+    101.7896595
+  ],
+  [
+    "Kigali, Rwanda",
+    -1.950851,
+    30.061507
+  ],
+  [
+    "City, Country",
+    49.600686,
+    6.1306078
+  ],
+  [
+    "Saint-Louis, Senegal",
+    16.1876131,
+    -15.2954502
   ]
 ];

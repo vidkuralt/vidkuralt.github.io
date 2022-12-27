@@ -20,7 +20,7 @@ for row, item in df.iterrows():
     md += 'institution: "' + item.institution + '"\n'
     md += 'location: "' + item.location + '"\n'
     if len(str(item.url)) > 3:
-        md += 'url: "' + item.url + '"\n'
+        md += 'courselink: "' + item.url + '"\n'
     md += "---\n"
 
     md_filename = os.path.basename(md_filename)

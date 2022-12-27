@@ -4,5 +4,5 @@ year: "2017"
 program: "Machine learning master class"
 institution: "Mines ParisTech"
 location: "Paris, France"
-url: "https://members.cbio.mines-paristech.fr/~jvert/svn/lsml/lsml17/"
+courselink: "https://members.cbio.mines-paristech.fr/~jvert/svn/lsml/lsml17/"
 ---

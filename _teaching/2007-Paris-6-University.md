@@ -4,5 +4,5 @@ year: "2007"
 program: "Master on Probability and Applications"
 institution: "Paris 6 University"
 location: "Paris, France"
-url: "https://members.cbio.mines-paristech.fr/~jvert/teaching/2007master/index.html"
+courselink: "https://members.cbio.mines-paristech.fr/~jvert/teaching/2007master/index.html"
 ---
