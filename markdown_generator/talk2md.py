@@ -3,7 +3,7 @@ import re
 import os
 
 # Read talk lists from Google sheet
-df = pd.read_csv("https://docs.google.com/spreadsheets/d/1AI6fJIOr6IK48aTnMJ8KC6JUr3LmaIkf9XaEPO-Jh2A/export?format=csv")
+df = pd.read_csv("https://docs.google.com/spreadsheets/d/1AI6fJIOr6IK48aTnMJ8KC6JUr3LmaIkf9XaEPO-Jh2A/export?format=csv&gid=1887490935")
 
 for row, item in df.iterrows():
     clean_title = item.Title.replace(" ", "-")

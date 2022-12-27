@@ -5,3 +5,5 @@ python bib2md
 
 - Talks: update the list of talks on Google sheet and run
 python talk2md
+cd ../_talks
+python ../talkmap.py
