@@ -285,6 +285,11 @@ var addressPoints = [
     7.0518158
   ],
   [
+    "Vancouver, Canada",
+    49.2608724,
+    -123.113952
+  ],
+  [
     "Pau, France",
     43.2957547,
     -0.3685668
@@ -305,6 +310,11 @@ var addressPoints = [
     -21.9422367
   ],
   [
+    "Minneapolis, USA",
+    44.9772995,
+    -93.2654692
+  ],
+  [
     "Luminy, France",
     43.2326651,
     5.4408365
@@ -313,11 +323,6 @@ var addressPoints = [
     "Irvine, USA",
     33.6856969,
     -117.8259819
-  ],
-  [
-    "Los Angeles, CA",
-    34.0536909,
-    -118.242766
   ],
   [
     "Cap Hornu, France",
@@ -355,11 +360,6 @@ var addressPoints = [
     9.9351811
   ],
   [
-    "London, UK",
-    51.5073219,
-    -0.1276474
-  ],
-  [
     "Ghent, Belgium.",
     51.0538286,
     3.7250121
@@ -370,9 +370,9 @@ var addressPoints = [
     -113.491241
   ],
   [
-    "Minneapolis, USA",
-    44.9772995,
-    -93.2654692
+    "Oxford, UK",
+    51.7520131,
+    -1.2578499
   ],
   [
     "Palo Alto, CA, USA.",
@@ -415,14 +415,19 @@ var addressPoints = [
     121.5636796
   ],
   [
+    "Los Angeles, CA, USA",
+    34.0536909,
+    -118.242766
+  ],
+  [
     "Snowbird, USA",
     40.5807546,
     -111.6572955
   ],
   [
-    "Vancouver, Canada",
-    49.2608724,
-    -123.113952
+    "Istanbul, Turkey",
+    41.0091982,
+    28.9662187
   ],
   [
     "Baltimore, USA",
@@ -445,6 +450,11 @@ var addressPoints = [
     5.478633
   ],
   [
+    "London, UK",
+    51.5073219,
+    -0.1276474
+  ],
+  [
     "Aarhus, Denmark",
     56.1496278,
     10.2134046
@@ -465,6 +475,11 @@ var addressPoints = [
     5.5736112
   ],
   [
+    "Berkeley, CA, USA.",
+    37.8753497,
+    -122.23963364918777
+  ],
+  [
     "Hiroshima, Japan",
     34.3916058,
     132.4518156
@@ -478,16 +493,6 @@ var addressPoints = [
     "Ghent, Belgium",
     51.0538286,
     3.7250121
-  ],
-  [
-    "Berkeley, CA, USA.",
-    37.8753497,
-    -122.23963364918777
-  ],
-  [
-    "Berkeley CA, USA",
-    37.8753497,
-    -122.23963364918777
   ],
   [
     "Kyoto, japan",
@@ -555,16 +560,6 @@ var addressPoints = [
     7.4817123
   ],
   [
-    "San Francisco, California",
-    37.7790262,
-    -122.419906
-  ],
-  [
-    "Kyushu, Japan",
-    32.4820755,
-    131.10090516153372
-  ],
-  [
     "Nancy, France",
     48.6937223,
     6.1834097
@@ -573,11 +568,6 @@ var addressPoints = [
     "Kyoto, Japan.",
     35.021041,
     135.7556075
-  ],
-  [
-    "Oxford, UK",
-    51.7520131,
-    -1.2578499
   ],
   [
     "Nagoya, Japan",
@@ -625,13 +615,13 @@ var addressPoints = [
     30.061507
   ],
   [
-    "City, Country",
-    49.600686,
-    6.1306078
-  ],
-  [
     "Saint-Louis, Senegal",
     16.1876131,
     -15.2954502
+  ],
+  [
+    "Berkeley CA, USA",
+    37.8753497,
+    -122.23963364918777
   ]
 ];

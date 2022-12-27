@@ -1,6 +1,6 @@
 ---
 title: "SVM prediction of signal peptide cleavage site using a new class of kernels for strings"
-venue: "Pacific Symposium on Biocomputing (PSB 2002)"
+venue: "Pacific Symposium on Biocomputing (PSB'02)"
 location: "Lihue, Hawaii, USA"
 date: "2002-1-7"
 venue_link: "http://psb.stanford.edu/previous/psb02"

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+echo "Update publications..."
+rm -f ../_publications/*.md
+python3 bib2md.py
+
+echo "Update talks..."
+rm -f ../_talks/*
+python3 talk2md.py
+
+echo "Update students..."
+rm -f ../_students/*
+python3 students2md.py
+
+echo "Update teaching..."
+rm -f ../_teaching/*
+python3 teaching2md.py
+
+echo "Update map..."
+python3 talkmap.py
