@@ -7,3 +7,9 @@ python bib2md
 python talk2md
 cd ../_talks
 python ../talkmap.py
+
+- Students: update the list of students on Google sheet and run
+python students2md
+
+- Teaching: update the list of students on Google sheet and run
+python teaching2md
