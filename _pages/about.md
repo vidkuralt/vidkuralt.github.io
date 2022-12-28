@@ -1,6 +1,6 @@
 ---
 permalink: /
-title: "academicpages is a ready-to-fork GitHub Pages template for academic personal websites"
+title: "About me"
 excerpt: "About me"
 author_profile: true
 redirect_from: 
@@ -8,43 +8,35 @@ redirect_from:
   - /about.html
 ---
 
-This is the front page of a website that is powered by the [academicpages template](https://github.com/academicpages/academicpages.github.io) and hosted on GitHub pages. [GitHub pages](https://pages.github.com) is a free service in which websites are built and hosted from code and data stored in a GitHub repository, automatically updating when a new commit is made to the respository. This template was forked from the [Minimal Mistakes Jekyll Theme](https://mmistakes.github.io/minimal-mistakes/) created by Michael Rose, and then extended to support the kinds of content that academics have: publications, talks, teaching, a portfolio, blog posts, and a dynamically-generated CV. You can fork [this repository](https://github.com/academicpages/academicpages.github.io) right now, modify the configuration and markdown files, add your own PDFs and other content, and have your own site for free, with no ads! An older version of this template powers my own personal website at [stuartgeiger.com](http://stuartgeiger.com), which uses [this Github repository](https://github.com/staeiou/staeiou.github.io).
+I am a research scientist and professor, working on machine learning (a.k.a. artificial intelligence) and computational biology. My long-term goal is to understand how machines can learn from data, and to use them to power scientific breakthroughs in biology and medicine.
 
-A data-driven personal website
-======
-Like many other Jekyll-based GitHub Pages templates, academicpages makes you separate the website's content from its form. The content & metadata of your website are in structured markdown files, while various other files constitute the theme, specifying how to transform that content & metadata into HTML pages. You keep these various markdown (.md), YAML (.yml), HTML, and CSS files in a public GitHub repository. Each time you commit and push an update to the repository, the [GitHub pages](https://pages.github.com/) service creates static HTML pages based on these files, which are hosted on GitHub's servers free of charge.
+**Currently**
 
-Many of the features of dynamic content management systems (like Wordpress) can be achieved in this fashion, using a fraction of the computational resources and with far less vulnerability to hacking and DDoSing. You can also modify the theme to your heart's content without touching the content of your site. If you get to a point where you've broken something in Jekyll/HTML/CSS beyond repair, your markdown files describing your talks, publications, etc. are safe. You can rollback the changes or even delete the repository and start over -- just be sure to save the markdown files! Finally, you can also write scripts that process the structured data on the site, such as [this one](https://github.com/academicpages/academicpages.github.io/blob/master/talkmap.ipynb) that analyzes metadata in pages about talks to display [a map of every location you've given a talk](https://academicpages.github.io/talkmap.html).
+My main occupation is to serve as the chief R&D officer at [Owkin](https://owkin.com), a French-American AI biotech company that uses artificial intelligence to find the right treatment for every patient. Our focus is to use AI to discover and develop better treatments for unmet medical needs, starting with the fight against cancer. And by the way, [we're hiring](https://owkin.com/hiring#current-opportunities)!
 
-Getting started
-======
-1. Register a GitHub account if you don't have one and confirm your e-mail (required!)
-1. Fork [this repository](https://github.com/academicpages/academicpages.github.io) by clicking the "fork" button in the top right. 
-1. Go to the repository's settings (rightmost item in the tabs that start with "Code", should be below "Unwatch"). Rename the repository "[your GitHub username].github.io", which will also be your website's URL.
-1. Set site-wide configuration and create content & metadata (see below -- also see [this set of diffs](http://archive.is/3TPas) showing what files were changed to set up [an example site](https://getorg-testacct.github.io) for a user with the username "getorg-testacct")
-1. Upload any files (like PDFs, .zip files, etc.) to the files/ directory. They will appear at https://[your GitHub username].github.io/files/example.pdf.  
-1. Check status by going to the repository settings, in the "GitHub pages" section
+In my free time, I also benevolently serve as
+- affiliate research professor at PSL University's [Centre for computational biology at Mines Paris](https://cbio.mines-paristech.fr)
+- lecturer in various universities, including ENS Paris-Saclay's [MVA master course](https://www.master-mva.com), and AIMS' [African Master's in Machine Intelligence](https://aimsammi.org)
+- fellow at [ELLIS Health](https://ellis.eu/programs/ellis-health)
+- action editor at [JMLR](https://www.jmlr.org/editorial-board.html), section editor at [BMC Bioinformatics](https://bmcbioinformatics.biomedcentral.com/about/editorial-board)
+- scientific advisory board member at [Helmholtz AI](https://www.helmholtz.ai/themenmenue/our-model/helmholtz-ai-boards/index.html) and [MIAI](https://miai.univ-grenoble-alpes.fr/institut-miai/gouvernance/comite-scientifique-international)
+- member of the strategic orientation council at [Université Côte d'Azur](https://univ-cotedazur.eu) and of the Assembly at [Institut Pasteur](https://www.pasteur.fr/en/institut-pasteur/our-governance/assembly)
+- reviewer and (senior) program committee member of conferences in machine learning and in computational biology (NeurIPS, ICML, ICLR, ISMB etc...)
 
-Site-wide configuration
-------
-The main configuration file for the site is in the base directory in [_config.yml](https://github.com/academicpages/academicpages.github.io/blob/master/_config.yml), which defines the content in the sidebars and other site-wide features. You will need to replace the default variables with ones about yourself and your site's github repository. The configuration file for the top menu is in [_data/navigation.yml](https://github.com/academicpages/academicpages.github.io/blob/master/_data/navigation.yml). For example, if you don't have a portfolio or blog posts, you can remove those items from that navigation.yml file to remove them from the header. 
+**Previously**
 
-Create content & metadata
-------
-For site content, there is one markdown file for each type of content, which are stored in directories like _publications, _talks, _posts, _teaching, or _pages. For example, each talk is a markdown file in the [_talks directory](https://github.com/academicpages/academicpages.github.io/tree/master/_talks). At the top of each markdown file is structured data in YAML about the talk, which the theme will parse to do lots of cool stuff. The same structured data about a talk is used to generate the list of talks on the [Talks page](https://academicpages.github.io/talks), each [individual page](https://academicpages.github.io/talks/2012-03-01-talk-1) for specific talks, the talks section for the [CV page](https://academicpages.github.io/cv), and the [map of places you've given a talk](https://academicpages.github.io/talkmap.html) (if you run this [python file](https://github.com/academicpages/academicpages.github.io/blob/master/talkmap.py) or [Jupyter notebook](https://github.com/academicpages/academicpages.github.io/blob/master/talkmap.ipynb), which creates the HTML for the map based on the contents of the _talks directory).
+Before joining Owkin in 2022, I was a research scientist at Google Brain (2018-2022), where I led a research team working on core machine learning and computational biology, and helped start the Paris lab. Before Google, I have been a research professor at ENS Paris' mathematics Department (2016-2018); a Fullbright and Miller visiting professor at UC Berkeley's Department of Statistics (2015-2016); a research team leader at the Curie Institute's research center (2008-2018); a research professor and founding director of Mines ParisTech's Centre for Computational Biology (2002-2018); and a research associate at Kyoto University's Bioinformatics Center (2001-2002). I graduated in applied mathematics from Ecole Polytechnique (1995) and received my PhD in mathematics from Paris University (2001).
 
-**Markdown generator**
+**Inclusion statement**
 
-I have also created [a set of Jupyter notebooks](https://github.com/academicpages/academicpages.github.io/tree/master/markdown_generator
-) that converts a CSV containing structured data about talks or presentations into individual markdown files that will be properly formatted for the academicpages template. The sample CSVs in that directory are the ones I used to create my own personal website at stuartgeiger.com. My usual workflow is that I keep a spreadsheet of my publications and talks, then run the code in these notebooks to generate the markdown files, then commit and push them to the GitHub repository.
+Quoting [one of many reports](https://committees.parliament.uk/work/1639/diversity-and-inclusion-in-stem/) about diversity in science, "There is evidence to suggest that women, certain ethnic minorities, people with disabilities and those from disadvantaged socioeconomic backgrounds are underrepresented in education, training and employment related to STEM." I recognize that historical injustice, social inequalities and cultural representations have made computational science and mathematics a hostile field for many marginalized group. I am committed to support and uplift members of these groups, both because I believe that including many diverse voices is critical to the advancement of science and because I believe that it is the right thing to do. In practice, I adhere to my friend [Bill Noble's lab inclusion statement](https://noble.gs.washington.edu/inclusion.html).
 
-How to edit your site's GitHub repository
-------
-Many people use a git client to create files on their local computer and then push them to GitHub's servers. If you are not familiar with git, you can directly edit these configuration and markdown files directly in the github.com interface. Navigate to a file (like [this one](https://github.com/academicpages/academicpages.github.io/blob/master/_talks/2012-03-01-talk-1.md) and click the pencil icon in the top right of the content preview (to the right of the "Raw | Blame | History" buttons). You can delete a file by clicking the trashcan icon to the right of the pencil icon. You can also create new files or upload files by navigating to a directory and clicking the "Create new file" or "Upload files" buttons. 
+**Acknowledgements**
 
-Example: editing a markdown file for a talk
-![Editing a markdown file for a talk](/images/editing-talk.png)
+Science is a collective human endeavor, and I am grateful to be part of a vivid and open scientific community. Thank you in particular to my [students](students/) and my [collaborators](publications), who deserve much of the credit of what you will find on this site.
 
-For more info
-------
-More info about configuring academicpages can be found in [the guide](https://academicpages.github.io/markdown/). The [guides for the Minimal Mistakes theme](https://mmistakes.github.io/minimal-mistakes/docs/configuration/) (which this theme was forked from) might also be helpful.
+**Contact**
+
+[Owkin, 12 rue Martel, 75010 Paris](https://goo.gl/maps/9TK7DrFXYVAaYV148)
+
+jean-philippe.vert@m4x.org
