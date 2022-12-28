@@ -16,6 +16,7 @@ from pybtex.style.template import (
     field, first_of, href, join, optional, optional_field, sentence, tag,
     together, words, node, FieldIsMissing
 )
+from collections import Counter
 
 date = words [optional_field('month'), field('year')]
 
@@ -134,7 +135,7 @@ def main(argv):
                 del entry.fields.__dict__['_dict'][ef]
     formattedentries = APA.format_bibliography(apabibdata)
     i=0
-
+    coaut = []
     # Loop through the individual entries
     for bib_id in bibdata.entries:
 
@@ -202,14 +203,27 @@ def main(argv):
 
             md_filename = os.path.basename(md_filename)
 
-            with open("../_publications/" + md_filename, 'w') as f:
+            with open(outputdir + md_filename, 'w') as f:
                 f.write(md)
             print(f'SUCESSFULLY PARSED {bib_id}: \"', b["title"][:60], "..." * (len(b['title']) > 60), "\"")
 
+            # Record co-authors
+            for aut in bibdata.entries[bib_id].persons["author"]:
+                coaut = coaut + [' '.join(aut.first_names + aut.middle_names + aut.last_names)]
 
         except KeyError as e:
                 print(f'WARNING Missing Expected Field {e} from entry {bib_id}: \"', b["title"][:30],"..."*(len(b['title'])>30),"\"")
                 continue
+
+    countaut = Counter(coaut)
+    with open("../_pages/coauthors.html", 'w') as f:
+        f.write('---\nlayout: archive\ntitle: "Coauthors"\npermalink: /coauthors.html\nauthor_profile: true\n---\n')
+        f.write("<p>Thank you to all my coauthors!</p>\n<ol>\n")
+        for a in countaut.most_common():
+            if a[0] not in ['Jean-Philippe Vert']:
+                f.write("<li>"+a[0]+" ("+str(a[1])+")</li>\n")
+        f.write("</ol>")
+
 
 
 if __name__ == "__main__":

@@ -29,7 +29,7 @@ Before joining Owkin in 2022, I was a research scientist at Google Brain (2018-2
 
 **Acknowledgements**
 
-Science is a collective human endeavor, and I am grateful to be part of a vivid and open scientific community. Thank you in particular to my [students](students/) and my [collaborators](publications), who deserve much of the credit of what you will find on this site.
+Science is a collective human endeavor, and I am grateful to be part of a vivid and open scientific community. Thank you in particular to my [students](students/) and my [collaborators](coauthors.html), who deserve much of the credit of what you will find on this site.
 
 **Contact**
 
