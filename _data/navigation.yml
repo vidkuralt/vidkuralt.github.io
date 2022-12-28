@@ -9,8 +9,11 @@ main:
   - title: "Teaching"
     url: /teaching/    
     
-  - title: "Students and post-docs"
+  - title: "Students"
     url: /students/
+
+  - title: "Inclusion"
+    url: /inclusionstatement.html
 
   - title: "Map"
     url: /talkmap.html

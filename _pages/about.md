@@ -27,10 +27,6 @@ In my free time, I also benevolently serve as
 
 Before joining Owkin in 2022, I was a research scientist at Google Brain (2018-2022), where I led a research team working on core machine learning and computational biology, and helped start the Paris lab. Before Google, I have been a research professor at ENS Paris' mathematics Department (2016-2018); a Fullbright and Miller visiting professor at UC Berkeley's Department of Statistics (2015-2016); a research team leader at the Curie Institute's research center (2008-2018); a research professor and founding director of Mines ParisTech's Centre for Computational Biology (2002-2018); and a research associate at Kyoto University's Bioinformatics Center (2001-2002). I graduated in applied mathematics from Ecole Polytechnique (1995) and received my PhD in mathematics from Paris University (2001).
 
-**Inclusion statement**
-
-Quoting [one of many reports](https://committees.parliament.uk/work/1639/diversity-and-inclusion-in-stem/) about diversity in science, "There is evidence to suggest that women, certain ethnic minorities, people with disabilities and those from disadvantaged socioeconomic backgrounds are underrepresented in education, training and employment related to STEM." I recognize that historical injustice, social inequalities and cultural representations have made computational science and mathematics a hostile field for many marginalized group. I am committed to support and uplift members of these groups, both because I believe that including many diverse voices is critical to the advancement of science and because I believe that it is the right thing to do. In practice, I adhere to my friend [Bill Noble's lab inclusion statement](https://noble.gs.washington.edu/inclusion.html).
-
 **Acknowledgements**
 
 Science is a collective human endeavor, and I am grateful to be part of a vivid and open scientific community. Thank you in particular to my [students](students/) and my [collaborators](publications), who deserve much of the credit of what you will find on this site.
