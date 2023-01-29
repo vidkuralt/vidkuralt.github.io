@@ -126,8 +126,8 @@ var addressPoints = [
   ],
   [
     "Tokyo, Japan",
-    35.6828387,
-    139.7594549
+    35.6812665,
+    139.757653
   ],
   [
     "Berkeley, USA",
@@ -260,6 +260,11 @@ var addressPoints = [
     -4.2488787
   ],
   [
+    "Bures-sur-Yvette, France",
+    48.6972179,
+    2.1632719
+  ],
+  [
     "Okazaki, Japan",
     34.950974,
     137.260842
@@ -378,11 +383,6 @@ var addressPoints = [
     "Palo Alto, CA, USA.",
     37.4443293,
     -122.1598465
-  ],
-  [
-    "Bures-sur-Yvette, France",
-    48.6972179,
-    2.1632719
   ],
   [
     "Bangi Selangor, Malaysia",
