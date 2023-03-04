@@ -26,8 +26,8 @@ var addressPoints = [
   ],
   [
     "Daejeon, South Korea",
-    36.3496,
-    127.3848
+    36.3497007,
+    127.3849016
   ],
   [
     "Tuebingen, Germany",
@@ -131,8 +131,8 @@ var addressPoints = [
   ],
   [
     "Berkeley, USA",
-    37.875499649999995,
-    -122.23906851395179
+    37.8708393,
+    -122.272863
   ],
   [
     "Fontainebleau, France.",
@@ -256,8 +256,8 @@ var addressPoints = [
   ],
   [
     "Glasgow, UK",
-    55.8609825,
-    -4.2488787
+    55.8606182,
+    -4.2497933
   ],
   [
     "Bures-sur-Yvette, France",
@@ -328,6 +328,11 @@ var addressPoints = [
     "Irvine, USA",
     33.6856969,
     -117.8259819
+  ],
+  [
+    "Toronto, Canada",
+    43.6534817,
+    -79.3839347
   ],
   [
     "Cap Hornu, France",
@@ -451,8 +456,8 @@ var addressPoints = [
   ],
   [
     "London, UK",
-    51.5073219,
-    -0.1276474
+    51.5073359,
+    -0.12765
   ],
   [
     "Aarhus, Denmark",
@@ -476,8 +481,8 @@ var addressPoints = [
   ],
   [
     "Berkeley, CA, USA.",
-    37.875499649999995,
-    -122.23906851395179
+    37.8708393,
+    -122.272863
   ],
   [
     "Hiroshima, Japan",
@@ -551,8 +556,8 @@ var addressPoints = [
   ],
   [
     "Nara, Japan",
-    34.6845445,
-    135.8048359
+    34.2963089,
+    135.8816819
   ],
   [
     "Obernai, France",
@@ -621,7 +626,7 @@ var addressPoints = [
   ],
   [
     "Berkeley CA, USA",
-    37.875499649999995,
-    -122.23906851395179
+    37.8708393,
+    -122.272863
   ]
 ];
