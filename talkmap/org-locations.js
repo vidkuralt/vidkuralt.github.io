@@ -1,8 +1,8 @@
 var addressPoints = [
   [
     "Paris, France",
-    48.8588897,
-    2.3200410217200766
+    48.8534951,
+    2.3483915
   ],
   [
     "Ascona, Switzerland",
@@ -236,8 +236,8 @@ var addressPoints = [
   ],
   [
     "Shanghai, P.R. China",
-    31.2322758,
-    121.4692071
+    31.2323437,
+    121.4691024
   ],
   [
     "Roquencourt, France.",
@@ -256,8 +256,8 @@ var addressPoints = [
   ],
   [
     "Glasgow, UK",
-    55.8606182,
-    -4.2497933
+    55.861155,
+    -4.2501687
   ],
   [
     "Bures-sur-Yvette, France",
@@ -331,8 +331,8 @@ var addressPoints = [
   ],
   [
     "Toronto, Canada",
-    43.6534817,
-    -79.3839347
+    43.6534733,
+    -79.383961
   ],
   [
     "Cap Hornu, France",
@@ -351,8 +351,8 @@ var addressPoints = [
   ],
   [
     "Paris, France.",
-    48.8588897,
-    2.3200410217200766
+    48.8534951,
+    2.3483915
   ],
   [
     "Alicante, Spain",
@@ -391,8 +391,8 @@ var addressPoints = [
   ],
   [
     "Bangi Selangor, Malaysia",
-    2.90398245,
-    101.78602883608005
+    2.9039819,
+    101.7860146854043
   ],
   [
     "Toulouse, France",
@@ -556,8 +556,8 @@ var addressPoints = [
   ],
   [
     "Nara, Japan",
-    34.2963089,
-    135.8816819
+    34.6845445,
+    135.8048359
   ],
   [
     "Obernai, France",
