@@ -33,6 +33,6 @@ Science is a collective human endeavor, and I am grateful to be part of a vivid 
 
 **Contact**
 
-[Owkin, 12 rue Martel, 75010 Paris](https://goo.gl/maps/9TK7DrFXYVAaYV148)
+[Owkin, 14/16 boulevard Poissonnière, 75009 Paris](https://goo.gl/maps/9TK7DrFXYVAaYV148)
 
 jean-philippe.vert@m4x.org
