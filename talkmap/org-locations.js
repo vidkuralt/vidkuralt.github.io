@@ -126,8 +126,8 @@ var addressPoints = [
   ],
   [
     "Tokyo, Japan",
-    35.6812665,
-    139.757653
+    35.6840574,
+    139.7744912
   ],
   [
     "Berkeley, USA",
@@ -226,8 +226,8 @@ var addressPoints = [
   ],
   [
     "Banff, Canada",
-    51.1777781,
-    -115.5682504
+    51.175076,
+    -115.5720773
   ],
   [
     "Berlin, Germany",
@@ -331,8 +331,8 @@ var addressPoints = [
   ],
   [
     "Toronto, Canada",
-    43.6534733,
-    -79.383961
+    43.6534817,
+    -79.3839347
   ],
   [
     "Cap Hornu, France",
@@ -486,8 +486,8 @@ var addressPoints = [
   ],
   [
     "Hiroshima, Japan",
-    34.3916058,
-    132.4518156
+    34.3917241,
+    132.4517589
   ],
   [
     "Quebec, Canada",
@@ -556,8 +556,8 @@ var addressPoints = [
   ],
   [
     "Nara, Japan",
-    34.6845445,
-    135.8048359
+    34.2963089,
+    135.8816819
   ],
   [
     "Obernai, France",
