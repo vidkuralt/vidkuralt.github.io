@@ -4,5 +4,5 @@ begin: "2007"
 end: "2007"
 level: "BS"
 persolink: "https://www.linkedin.com/in/krishnamurthy-dvijotham-09820146/"
-note: "now research scientist at Google Brain"
+note: "now research lead at ServiceNow Research"
 ---

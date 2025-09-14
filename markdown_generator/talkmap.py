@@ -24,6 +24,15 @@ location = ""
 permalink = ""
 title = ""
 
+def safe_geocode(location, retries=3, delay=2):
+	for attempt in range(retries):
+		try:
+			return geocoder.geocode(location, timeout=10)
+		except (GeocoderTimedOut, GeocoderUnavailable) as e:
+			print(f"Attempt {attempt+1} failed for '{location}': {e}")
+			time.sleep(delay)
+	print(f"Failed to geocode '{location}' after {retries} retries.")
+	return None
 
 for file in g:
     with open(file, 'r') as f:
@@ -34,9 +43,9 @@ for file in g:
             loc_end = lines_trim.find('"')
             location = lines_trim[:loc_end]
                             
-           
-        location_dict[location] = geocoder.geocode(location)
-        print(location, "\n", location_dict[location])
+        if location not in location_dict:
+        	location_dict[location] = safe_geocode(location)
+        	print(location, "\n", location_dict[location])
 
 # print the output to ../talkmap
 m = getorg.orgmap.create_map_obj()

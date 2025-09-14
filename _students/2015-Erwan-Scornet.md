@@ -4,5 +4,5 @@ begin: "2012"
 end: "2015"
 level: "PhD"
 persolink: "https://erwanscornet.github.io"
-note: "now assistant professor at Ecole Polytechnique"
+note: "now professor at Sorbonne University"
 ---

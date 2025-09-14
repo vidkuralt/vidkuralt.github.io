@@ -4,5 +4,5 @@ begin: "2017"
 end: "2017"
 level: "MSc"
 persolink: "https://www.linkedin.com/in/soufianemourragui"
-note: "now postdoc at Hubrecht Institute"
+note: "now senior scientist at Ensocell"
 ---

@@ -8,31 +8,26 @@ redirect_from:
   - /about.html
 ---
 
-I am a research scientist and professor, working on machine learning (a.k.a. artificial intelligence) and computational biology. My long-term goal is to understand how machines can learn from data, and to use them to power scientific breakthroughs in biology and medicine.
+I am a scientist and entrepreneur, building artificial intelligence technologies to power breakthroughs in biology and medicine.
 
-**Currently**
+**Short Bio**
 
-My main occupation is to serve as the chief R&D officer at [Owkin](https://owkin.com), a French-American AI biotech company that uses artificial intelligence to find the right treatment for every patient. Our focus is to use AI to discover and develop better treatments for unmet medical needs, starting with the fight against cancer. And by the way, [we're hiring](https://owkin.com/hiring#current-opportunities)!
+Jean-Philippe Vert is the co-founder and CEO of Bioptimus, an AI-first tech company developing foundation models to drive breakthroughs in biology and medicine. A leading expert in AI for life sciences, he previously served as Chief R&D Officer at Owkin and Research Lead at Google Brain, and held academic positions at institutions such as ENS Paris, the Curie Institute, Mines ParisTech, and UC Berkeley. He holds degrees from École Polytechnique, the Corps des Mines, and a PhD in mathematics from Paris University. He has authored over 190 publications, and is a member of the National Academy of Technologies of France.
 
-In my free time, I also benevolently serve as
-- affiliate research professor at PSL University's [Centre for computational biology at Mines Paris](https://cbio.mines-paristech.fr)
-- lecturer in various universities, including ENS Paris-Saclay's [MVA master course](https://www.master-mva.com), and AIMS' [African Master's in Machine Intelligence](https://aimsammi.org)
-- fellow at [ELLIS Health](https://ellis.eu/programs/ellis-health)
-- action editor at [JMLR](https://www.jmlr.org/editorial-board.html), section editor at [BMC Bioinformatics](https://bmcbioinformatics.biomedcentral.com/about/editorial-board)
-- scientific advisory board member at [Helmholtz AI](https://www.helmholtz.ai/themenmenue/our-model/helmholtz-ai-boards/index.html) and [MIAI](https://miai.univ-grenoble-alpes.fr/institut-miai/gouvernance/comite-scientifique-international)
-- member of the strategic orientation council at [Université Côte d'Azur](https://univ-cotedazur.eu) and of the Assembly at [Institut Pasteur](https://www.pasteur.fr/en/institut-pasteur/our-governance/assembly)
-- reviewer and (senior) program committee member of conferences in machine learning and in computational biology (NeurIPS, ICML, ICLR, ISMB etc...)
+**Long Bio**
 
-**Previously**
+Jean-Philippe Vert is the co-founder and CEO of Bioptimus, an AI-first tech company pioneering the use of foundation models to transform our understanding of biology and accelerate biomedical innovation. He is also a professor (currently on leave) at PSL University.
 
-Before joining Owkin in 2022, I was a research scientist at Google Brain (2018-2022), where I led a research team working on core machine learning and computational biology, and helped start the Paris lab. Before Google, I have been a research professor at ENS Paris' mathematics Department (2016-2018); a Fullbright and Miller visiting professor at UC Berkeley's Department of Statistics (2015-2016); a research team leader at the Curie Institute's research center (2008-2018); a research professor and founding director of Mines ParisTech's Centre for Computational Biology (2002-2018); and a research associate at Kyoto University's Bioinformatics Center (2001-2002). I graduated in applied mathematics from Ecole Polytechnique (1995) and received my PhD in mathematics from Paris University (2001).
+A recognized leader in AI for biology, Jean-Philippe brings over 25 years of experience at the cutting edge of machine learning and life sciences. Before founding Bioptimus, he served as Chief R&D Officer at Owkin and was a Research Lead at Google Brain. Prior to transitioning to industry, he held academic positions at ENS Paris, the Curie Institute, and Mines ParisTech, and was a Fullbright and Miller visiting professor at the University of California, Berkeley. He began his research career at Kyoto University.
+
+Jean-Philippe graduated from École Polytechnique and the Corps des Mines, and earned a PhD in mathematics from Paris University. He has authored over 190 scientific publications and is internationally recognized for his contributions to statistical learning, artificial intelligence, biomedical data modeling, and translational research. He is an ELLIS Fellow, a member of the National Academy of Technologies of France, and has received several prestigious honors, including the CNRS Bronze Medal, a Grand Prize from the National Academy of Sciences of France, and a European Research Council (ERC) grant.
+
+**[Headshot](images/jp-photo.jpg), [Full resume](https://docs.google.com/document/d/1KgUNWX93MgWifZKLLpLOSV_NIewbZGpVg3L8rimE9nY/edit?usp=sharing)**
 
 **Acknowledgements**
 
 Science is a collective human endeavor, and I am grateful to be part of a vivid and open scientific community. Thank you in particular to my [students](students/) and my [collaborators](coauthors.html), who deserve much of the credit of what you will find on this site.
 
-**Contact**
+**See you**
 
-[Owkin, 14/16 boulevard Poissonnière, 75009 Paris](https://goo.gl/maps/9TK7DrFXYVAaYV148)
-
-jean-philippe.vert@m4x.org
+[Bioptimus, 86 rue Notre Dame de Nazareth, 75003 Paris](https://maps.app.goo.gl/srHoUswyt7ZPF9q76)
