@@ -1,5 +1,28 @@
-/* _sass/custom.scss */
+/* ========================================================================== 
+   CUSTOM STYLES
+   ========================================================================== */
 
+/* Sidebar TOC ("On This Page") */
+.sidebar__right .toc {
+    background-color: #2b2b2b; /* dark background for sidebar */
+    color: #fff; /* white text */
+    padding: 15px;
+    border-radius: 5px;
+    max-height: 80vh; /* keep inside viewport */
+    overflow-y: auto; /* vertical scroll if too long */
+}
+
+.sidebar__right .toc a {
+    color: #fff; /* white links */
+    text-decoration: none;
+}
+
+.sidebar__right .toc a:hover {
+    color: #1e90ff; /* highlight on hover */
+    text-decoration: underline;
+}
+
+/* Optional: inline TOC in content */
 .toc-container {
     border: 1px solid #ddd;
     padding: 10px;
@@ -31,29 +54,12 @@
 .toc-container a:hover {
     text-decoration: underline;
 }
-/* Sidebar TOC fix */
-.sidebar__right .toc {
-    background-color: #2b2b2b; /* dark background for contrast */
-    color: #fff; /* white text */
-    padding: 15px;
-    border-radius: 5px;
-    max-height: 80vh; /* keeps it inside viewport */
-    overflow-y: auto; /* vertical scroll if too long */
-}
 
-.sidebar__right .toc a {
-    color: #fff; /* white links */
-    text-decoration: none;
-}
-
-.sidebar__right .toc a:hover {
-    color: #1e90ff; /* highlight on hover */
-    text-decoration: underline;
-}
+/* Optional: sidebar width adjustment */
 .sidebar__right {
-    width: 250px; /* or 300px depending on your theme */
+    width: 250px;
 }
 
 .page-content {
-    margin-right: 270px; /* make space for right sidebar */
+    margin-right: 270px; /* make room for sidebar */
 }
