@@ -4,7 +4,7 @@
 
 /*
    Default
-   ========================================================================== */
+   ========================================================================== 
 
 .sidebar {
   -webkit-transform: translate3d(0, 0 , 0);
@@ -67,7 +67,7 @@
 
 /*
    Author profile and links
-   ========================================================================== */
+   ========================================================================== 
 
 .author__avatar {
   display: table-cell;
@@ -234,4 +234,67 @@
       text-decoration: underline;
     }
   }
+}
+    */
+/* ========================================================================== 
+   CUSTOM INLINE TOC (hide sidebar, show top of content)
+   ========================================================================== */
+
+/* Hide the right-hand sidebar TOC completely */
+.sidebar__right,
+.sidebar__right .toc,
+.sidebar__right .toc-wrapper {
+    display: none !important;
+}
+
+/* Inline TOC at top of page */
+.toc-container {
+    border: 1px solid #ddd;
+    padding: 15px 20px;
+    background: #f9f9f9;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    font-size: 0.95em;
+    width: 100%;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.toc-container nav.toc {
+    margin: 0;
+}
+
+.toc-container strong {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.toc-container ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.toc-container li {
+    margin-bottom: 6px;
+}
+
+.toc-container ul ul {
+    padding-left: 15px;
+}
+
+.toc-container a {
+    color: #0366d6;
+    text-decoration: none;
+}
+
+.toc-container a:hover {
+    text-decoration: underline;
+}
+
+/* Make sure page content uses full width now */
+.page-content {
+    margin-right: 0 !important;
 }
