@@ -1,50 +1,40 @@
-/* Inline TOC at top of page */
-.toc-container {
-    border: 1px solid #ddd;
-    padding: 15px 20px;
-    background: #f9f9f9;
-    border-radius: 5px;
-    margin-bottom: 25px;
-    font-size: 0.95em;
-    width: 100%;
-    max-width: 900px; /* keep readable */
-    margin-left: auto;
-    margin-right: auto;
-    box-sizing: border-box;
-}
+/* ========================================================================== 
+   SIDEBAR (restored)
+   ========================================================================== */
 
-.toc-container ul {
-    list-style: none;
-    padding-left: 0;
-    margin-left: 0;
-}
+/* Default sidebar styling */
+.sidebar {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
 
-.toc-container li {
-    margin-bottom: 6px;
-}
+    @include clearfix();
+    margin-bottom: 1em;
 
-.toc-container ul ul {
-    padding-left: 15px;
-}
+    @include breakpoint($large) {
+        @include span(2 of 12);
+        opacity: 1;
+        -webkit-transition: opacity 0.2s ease-in-out;
+        transition: opacity 0.2s ease-in-out;
 
-.toc-container a {
-    text-decoration: none;
-    color: #0366d6;
-}
+        &:hover {
+            opacity: 1;
+        }
+    }
 
-.toc-container a:hover {
-    text-decoration: underline;
-}
+    @include breakpoint($x-large) {
+        padding-right: 0;
+    }
 
-/* Kill sidebar TOC completely */
-.sidebar__right,
-.sidebar__right .toc-wrapper {
-    display: none !important;
-}
+    h2, h3, h4, h5, h6 {
+        margin-bottom: 0;
+        font-family: $sans-serif-narrow;
+    }
 
-/* Expand content */
-.page-content {
-    width: 100% !important;
-    max-width: 900px;
-    margin: 0 auto !important;
-}
+    h3, h4 {
+        font-size: $type-size-5;
+    }
+
+    p, li {
+        font-family: $sans-serif;
+        font-size: $type-size-6;
+        line-height: 1.5;
