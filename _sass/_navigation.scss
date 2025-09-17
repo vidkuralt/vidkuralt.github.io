@@ -371,9 +371,11 @@
 
 .toc-container {
     padding: 1rem; // ensure the container has space
+    width: 100%;
 }
 
 .toc {
+    display: block;
     width: 100%; // take full container width
     border-radius: 0.5rem; // optional: match your theme
     overflow: visible; // prevent clipping
@@ -387,8 +389,8 @@
     line-height: 1.2; // reduce extra vertical height
     color: #fff;
     background-color: $primary-color; // or a visible color
-    border-top-left-radius: $border-radius;
-    border-top-right-radius: $border-radius;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
     box-sizing: border-box; // ensures padding doesn't break width
     white-space: nowrap; // prevent wrapping to next line
     overflow: hidden; // optional: clip any extra text
