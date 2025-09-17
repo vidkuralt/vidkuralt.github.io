@@ -5,7 +5,12 @@ modified: 2025-09-17
 ---
 
 {% include base_path %}
-{% include toc %}
+
+
+<div class="toc-container">
+  {% include toc %}
+</div>
+
 
 ## Privacy Policy
 
