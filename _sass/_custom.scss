@@ -63,3 +63,39 @@
 .page-content {
     margin-right: 270px; /* make room for sidebar */
 }
+
+/* _sass/custom.scss */
+.toc-container {
+    border: 1px solid #ddd;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 0.95em;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.toc-container ul {
+    list-style: none;
+    padding-left: 0;
+    margin-left: 0;
+}
+
+.toc-container li {
+    margin-bottom: 5px;
+}
+
+.toc-container ul ul {
+    padding-left: 15px;
+}
+
+.toc-container a {
+    text-decoration: none;
+    color: #0366d6;
+}
+
+.toc-container a:hover {
+    text-decoration: underline;
+}
