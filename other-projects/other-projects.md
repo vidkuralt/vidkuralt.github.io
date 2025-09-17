@@ -6,7 +6,9 @@ title: "Other Projects"
 {% include base_path %}
 
 
-{% include toc max_level=3 %}
+<div class="toc-container">
+  {% include toc %}
+</div>
 
 
 ## Books
