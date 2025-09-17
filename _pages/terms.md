@@ -2,7 +2,7 @@
 permalink: /terms/
 title: "Terms and Privacy Policy"
 modified: 2025-09-17
-layout: default
+layout: single
 toc: true
 sidebar:
   nav: "terms"
