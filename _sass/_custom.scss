@@ -1,8 +1,4 @@
-/* ========================================================================== 
-   CUSTOM STYLES
-   ========================================================================== */
-
-/* Inline TOC as full-width banner */
+/* Inline TOC at top of page */
 .toc-container {
     border: 1px solid #ddd;
     padding: 15px 20px;
@@ -10,11 +6,13 @@
     border-radius: 5px;
     margin-bottom: 25px;
     font-size: 0.95em;
-    width: 100%; /* span full content width */
-    box-sizing: border-box; /* prevent overflow */
+    width: 100%;
+    max-width: 900px; /* keep readable */
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
 }
 
-/* TOC list styling */
 .toc-container ul {
     list-style: none;
     padding-left: 0;
@@ -38,15 +36,15 @@
     text-decoration: underline;
 }
 
-/* Completely hide sidebar TOC */
+/* Kill sidebar TOC completely */
 .sidebar__right,
 .sidebar__right .toc-wrapper {
     display: none !important;
 }
 
-/* Expand content into full width after hiding sidebar */
+/* Expand content */
 .page-content {
     width: 100% !important;
-    max-width: 900px; /* keeps text readable on large screens */
-    margin: 0 auto !important; /* center the content */
+    max-width: 900px;
+    margin: 0 auto !important;
 }
