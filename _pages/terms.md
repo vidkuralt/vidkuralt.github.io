@@ -7,9 +7,7 @@ toc: true
 
 {% include base_path %}
 
-<div class="toc-container">
-  {% include toc %}
-</div>
+
 
 ## Privacy Policy
 
