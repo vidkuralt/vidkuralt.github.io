@@ -3,11 +3,7 @@ permalink: /terms/
 title: "Terms and Privacy Policy"
 modified: 2025-09-17
 layout: single
-toc: true
-toc_levels:
-  min: 2
-  max: 3
-
+toc: false
 ---
 
 {% include base_path %}
