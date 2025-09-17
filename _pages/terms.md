@@ -7,8 +7,7 @@ toc: true
 toc_levels:
   min: 2
   max: 3
-sidebar:
-  nav: "terms"
+
 ---
 
 {% include base_path %}
