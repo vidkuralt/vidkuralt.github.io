@@ -369,30 +369,27 @@
    Table of contents navigation
    ========================================================================== */
 
-.toc {
-    font-family: $sans-serif-narrow;
-    color: $gray;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    background-color: #fff;
-    border: 1px solid $border-color;
-    border-radius: $border-radius;
-    box-shadow: $box-shadow;
-    overflow: visible; // ensure child elements are not clipped
+.toc-container {
+    padding: 1rem; // ensure the container has space
+}
 
-    .nav__title {
-        display: block; // make sure it's a block
-        width: 100%; // span full width of container
-        color: #fff;
-        font-size: $type-size-6;
-        background: $primary-color;
-        border-top-left-radius: $border-radius;
-        border-top-right-radius: $border-radius;
-        padding: 1rem; // enough vertical + horizontal space
-        line-height: 1.4; // avoid text clipping
-        box-sizing: border-box; // include padding in width
-        white-space: normal; // allow wrapping if needed
-    }
+.toc {
+    width: 100%; // take full container width
+    border-radius: 0.5rem; // optional: match your theme
+    overflow: visible; // prevent clipping
+}
+
+.toc .nav__title {
+    display: block;
+    width: 100%;
+    padding: 1rem 1rem; // enough space for text
+    font-size: 1.25rem; // readable
+    line-height: 1.5;
+    color: #fff; // text color
+    background-color: #007bff; // strong contrast to white container
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    box-sizing: border-box;
 }
 
 .toc__menu {
