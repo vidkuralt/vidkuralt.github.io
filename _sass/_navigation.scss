@@ -378,6 +378,7 @@
     border: 1px solid $border-color;
     border-radius: $border-radius;
     box-shadow: $box-shadow;
+    overflow: visible; // ensure child text isn’t clipped
 
     .nav__title {
         color: #fff;
@@ -385,43 +386,45 @@
         background: $primary-color;
         border-top-left-radius: $border-radius;
         border-top-right-radius: $border-radius;
-        padding: 0.75rem 1rem; // add vertical + horizontal padding
-        line-height: 1.2; // optional, helps text fit nicely
+        padding: 1rem 1rem; // increase padding to ensure text fits
+        line-height: 1.4; // increase line height to avoid clipping
+        white-space: nowrap; // prevent text from wrapping/cutting
+        overflow: hidden; // optional: keep it clean
+        text-overflow: ellipsis; // optional: add "..." if too long
     }
 }
 
 .toc__menu {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  list-style: none;
-  font-size: 0.8rem;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style: none;
+    font-size: 0.8rem;
 
-  a {
-    display: block;
-    padding: 0.5rem 1rem;
-    color: $gray;
-    font-size: $type-size-7;
-    font-weight: bold;
-    line-height: 1.5;
-    border-bottom: 1px solid $border-color;
-
-    &:hover {
-      color: #000;
-      background: $lighter-gray;
-    }
-  }
-
-  > li:last-child {
     a {
-      border-bottom: none;
-    }
-  }
+        display: block;
+        padding: 0.5rem 1rem;
+        color: $gray;
+        font-size: $type-size-7;
+        font-weight: bold;
+        line-height: 1.5;
+        border-bottom: 1px solid $border-color;
 
-  li ul > li a {
-    padding-left: 2rem;
-    font-weight: normal;
-  }
+        &:hover {
+            color: #000;
+            background: $lighter-gray;
+        }
+    }
+
+    > li:last-child a {
+        border-bottom: none;
+    }
+
+    li ul > li a {
+        padding-left: 2rem;
+        font-weight: normal;
+    }
+}
 
   /* hide sub sub links on small screens*/
   li > ul li {
@@ -431,4 +434,3 @@
       display: block;
     }
   }
-}
