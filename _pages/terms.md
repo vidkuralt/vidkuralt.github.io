@@ -13,6 +13,10 @@ sidebar:
 
 {% include base_path %}
 
+<div class="toc-container">
+  {% include toc max_level=3 %}
+</div>
+
 ## Privacy Policy
 
 The privacy of my visitors is extremely important. This Privacy Policy outlines the types of personal information that is received and collected and how it is used.
