@@ -378,19 +378,20 @@
     border: 1px solid $border-color;
     border-radius: $border-radius;
     box-shadow: $box-shadow;
-    overflow: visible; // ensure child text isn't clipped
+    overflow: visible; // ensure child elements are not clipped
 
     .nav__title {
+        display: block; // make sure it's a block
+        width: 100%; // span full width of container
         color: #fff;
         font-size: $type-size-6;
         background: $primary-color;
         border-top-left-radius: $border-radius;
         border-top-right-radius: $border-radius;
-        padding: 1rem 1rem; // increase padding to ensure text fits
-        line-height: 1.4; // increase line height to avoid clipping
-        white-space: nowrap; // prevent text from wrapping/cutting
-        overflow: hidden; // optional: keep it clean
-        text-overflow: ellipsis; // optional: add "..." if too long
+        padding: 1rem; // enough vertical + horizontal space
+        line-height: 1.4; // avoid text clipping
+        box-sizing: border-box; // include padding in width
+        white-space: normal; // allow wrapping if needed
     }
 }
 
@@ -425,6 +426,7 @@
         font-weight: normal;
     }
 }
+
 
   /* hide sub sub links on small screens*/
   li > ul li {
