@@ -380,16 +380,19 @@
 }
 
 .toc .nav__title {
-    display: block;
-    width: 100%;
-    padding: 1rem 1rem; // enough space for text
-    font-size: 1.25rem; // readable
-    line-height: 1.5;
-    color: #fff; // text color
-    background-color: #007bff; // strong contrast to white container
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
-    box-sizing: border-box;
+    display: block; // ensures it behaves like a block element
+    width: 100%; // span full width of container (x-axis)
+    padding: 0.5rem 1rem; // keep vertical padding minimal
+    font-size: 1rem; // adjust as needed
+    line-height: 1.2; // reduce extra vertical height
+    color: #fff;
+    background-color: $primary-color; // or a visible color
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+    box-sizing: border-box; // ensures padding doesn't break width
+    white-space: nowrap; // prevent wrapping to next line
+    overflow: hidden; // optional: clip any extra text
+    text-overflow: ellipsis; // optional: show "..." if text too long
 }
 
 .toc__menu {
