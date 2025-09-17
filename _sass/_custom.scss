@@ -2,69 +2,7 @@
    CUSTOM STYLES
    ========================================================================== */
 
-/* Sidebar TOC ("On This Page") */
-.sidebar__right .toc {
-    background-color: #2b2b2b; /* dark background for sidebar */
-    color: #fff; /* white text */
-    padding: 15px;
-    border-radius: 5px;
-    max-height: 80vh; /* keep inside viewport */
-    overflow-y: auto; /* vertical scroll if too long */
-}
-
-.sidebar__right .toc a {
-    color: #fff; /* white links */
-    text-decoration: none;
-}
-
-.sidebar__right .toc a:hover {
-    color: #1e90ff; /* highlight on hover */
-    text-decoration: underline;
-}
-
-/* Optional: inline TOC in content */
-.toc-container {
-    border: 1px solid #ddd;
-    padding: 10px;
-    background: #f9f9f9;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    font-size: 0.95em;
-}
-
-.toc-container ul {
-    list-style: none;
-    padding-left: 0;
-    margin-left: 0;
-}
-
-.toc-container li {
-    margin-bottom: 5px;
-}
-
-.toc-container ul ul {
-    padding-left: 15px;
-}
-
-.toc-container a {
-    text-decoration: none;
-    color: #0366d6;
-}
-
-.toc-container a:hover {
-    text-decoration: underline;
-}
-
-/* Optional: sidebar width adjustment */
-.sidebar__right {
-    width: 250px;
-}
-
-.page-content {
-    margin-right: 270px; /* make room for sidebar */
-}
-
-/* _sass/custom.scss */
+/* Inline TOC at top of page */
 .toc-container {
     border: 1px solid #ddd;
     padding: 15px;
@@ -72,7 +10,7 @@
     border-radius: 5px;
     margin-bottom: 20px;
     font-size: 0.95em;
-    max-width: 800px;
+    max-width: 800px; /* keeps TOC from being too wide */
     margin-left: auto;
     margin-right: auto;
 }
@@ -98,4 +36,13 @@
 
 .toc-container a:hover {
     text-decoration: underline;
+}
+
+/* Optional: remove sidebar space if you don’t want right sidebar TOC */
+.sidebar__right .toc-wrapper {
+    display: none; /* hide sidebar TOC */
+}
+
+.page-content {
+    margin-right: 0; /* allow content to use full width */
 }

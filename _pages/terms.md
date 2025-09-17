@@ -3,10 +3,10 @@ permalink: /terms/
 title: "Terms and Privacy Policy"
 modified: 2025-09-17
 layout: single
-#toc: true
-#toc_levels:
-#  min: 2
-#  max: 3
+toc: true
+toc_levels:
+  min: 2
+  max: 3
 sidebar:
   nav: "terms"
 ---
@@ -14,12 +14,7 @@ sidebar:
 {% include base_path %}
 
 <div class="toc-container">
-  {% capture headings %}
-    {% for heading in page.toc %}
-      - [{{ heading.text }}](#{{ heading.id }})
-    {% endfor %}
-  {% endcapture %}
-  {{ headings | markdownify }}
+  {% include toc %}
 </div>
 
 ## Privacy Policy
