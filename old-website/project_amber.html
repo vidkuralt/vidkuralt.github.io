@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<title>VID KURALT</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="personal website" content="contact information, games, projects, blog">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+<link rel="manifest" href="images/site.webmanifest">
+<link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#000000">
+<link rel="shortcut icon" href="images/favicon.ico">
+<meta name="apple-mobile-web-app-title" content="Vid Kuralt">
+<meta name="application-name" content="Vid Kuralt">
+<meta name="msapplication-TileColor" content="#00aba9">
+<meta name="msapplication-TileImage" content="images/mstile-144x144.png">
+<meta name="msapplication-config" content="images/browserconfig.xml">
+<meta name="theme-color" content="#ffffff">
+
+
+<style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+div.sticky {
+  position: sticky;
+  width: 100%;
+  bottom: 0px;
+} 
+</style>
+
+<body class="w3-light-grey w3-content" style="max-width:2000px">
+
+<!-- Sidebar/menu -->
+<div class="w3-sidebar w3-bar-block w3-collapse w3-card" style="width:200px;" id="mySidebar">
+  <button class="w3-bar-item w3-button w3-hide-large"
+  onclick="w3_close()">Close &times;</button>
+  <a href="index.html"><center><img src="images/vik.png" width="144px" height="144px" style="margin-top:40px" class="w3-hover-opacity"></center><br></a>
+    <h4><b><center>VID KURALT</center></b></h4>
+    <center><p id="demo" class="w3-text-grey"><div id="sequence"></div></p></center>
+  <a href="project_amber.html" class="w3-bar-item w3-button"><i class="fa fa-th-large fa-fw w3-margin-right"></i>Project Amber</a>
+	<a href="https://kutt.it/0m7Y1p" target="_blank" class="w3-bar-item w3-button w3-padding"><i class="fa fa-picture-o fa-fw w3-margin-right"></i>Gallery</a>
+    <a href="index.html#about"  class="w3-bar-item w3-button w3-padding"><i class="fa fa-user fa-fw w3-margin-right"></i>ABOUT</a> 
+    <a href="index.html#contact"  class="w3-bar-item w3-button w3-padding"><i class="fa fa-envelope fa-fw w3-margin-right"></i>CONTACT</a>
+	<a href="shared_folder.html"  class="w3-bar-item w3-button w3-padding"><i class="fa fa-folder fa-fw w3-margin-right"></i>SHARED FOLDER</a>
+	<a href="https://www.paypal.me/vidkuralt" target="_blank" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cc-paypal fa-fw w3-margin-right"></i>DONATE</a>
+</div>
+
+<div class="w3-main" style="margin-left:200px">
+<header id="portfolio">
+<div class="w3-teal">
+  <button class="w3-button w3-teal w3-xlarge w3-hide-large" onclick="w3_open()">&#9776;</button>
+  <div class="w3-container">
+  
+    <h1>Project Amber</h1>
+  </div>
+  </div>
+</div>
+</header>
+
+<script> <!-- for sidebar-->
+	function w3_open() {
+		document.getElementById("mySidebar").style.display = "block";
+	}
+
+	function w3_close() {
+		document.getElementById("mySidebar").style.display = "none";
+	}
+</script>
+<script> <!-- for looping text-->
+        var example = ['Never, never, never give up! - W. Churchill', 'You know you are in love when you cannot fall asleep because reality is finally better than your dreams. - Dr. Seuss', 'Only Two Things Are Infinite, the Universe and Human Stupidity, and I Do Not Know About the Former. - Albert Einstein', 'Veni, vidi, vici.  - Julius Caesar', 'There is nothing permanent except change. - Heraclitus '];
+
+        textSequence(0);
+        function textSequence(i) {
+
+            if (example.length > i) {
+                setTimeout(function() {
+                    document.getElementById("sequence").innerHTML = example[i];
+                    textSequence(++i);
+                }, 10000); // 1 second (in milliseconds)
+
+            } else if (example.length == i) { // Loop
+                textSequence(0);
+            } 
+        }
+    </script>
+	<script> <!-- time greeting-->
+	
+	var greeting;
+
+var time = new Date().getHours();
+
+if (time < 12) {
+  greeting = "<b>Good morning!</b>";
+}
+if (time > 12) {
+  greeting = "<b>Good afternoon!</b>";
+}
+if (time == 12) {
+  greeting = "<b>Good Day!</b>";
+} 
+document.getElementById("demo").innerHTML = greeting;
+</script>
+
+	<!-- !PAGE CONTENT! -->
+	<div class="w3-main" style="margin-left:200px"> <br><br>
+
+
+  <!-- First Photo Grid-->
+  <div class="w3-row-padding">
+  
+  <div class="w3-third w3-container w3-margin-bottom">
+      <a href=" Posts/Logo.html"><img src="images/vik.png" alt="The VIK Logo" style="width:100%" class="w3-hover-opacity" title="The ViK Logo">
+      <div class="w3-container w3-white">
+        <p>The ViK Logo<b></b></p></a>
+        <p>Read more about this new logo.</p>
+      </div>
+    </div>
+  
+  <div class="w3-third w3-container w3-margin-bottom">
+      <a href=" Posts/Yesterday_cover.html"><img src="images/GUITAR_COVER4.jpg" alt="Yesterday_cover" style="width:100%" class="w3-hover-opacity" title="Yesterday cover">
+      <div class="w3-container w3-white">
+        <p>Yesterday Instrumental Cover<b></b></p></a>
+        <p>Here you will find my guitar cover of The Beatles' Yesterday</p>
+      </div>
+    </div>
+  
+  <div class="w3-third w3-container w3-margin-bottom">
+      <a href="Posts/The_Game.html"><img src="images/TheGame.png" alt="The Game" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+        <p>The Game<b></b></p></a>
+        <p>My First 3D Game. Created with Unity.</p>
+      </div>
+    </div>
+	<!-- Second Photo Grid-->
+  <div class="w3-row-padding">
+		
+	<div class="w3-third w3-container w3-margin-bottom">
+      <a href=" Posts/Hellfires_Adventure.html"><img src="images/hfa.jpg" alt="Hellfire's Adventure" style="width:100%" class="w3-hover-opacity" title="Hellfire's Adventure">
+      <div class="w3-container w3-white">
+        <p>The Hellfire's Adventure<b></b></p></a>
+        <p>My First Arcade Game. Created in Greenfoot.</p>
+      </div>
+    </div>
+	
+	<!--div class="w3-third w3-container w3-margin-bottom">
+      <a href=" Posts/.html"><img src="images/.jpg" alt="" style="width:100%" class="w3-hover-opacity" title="">
+      <div class="w3-container w3-white">
+        <p><b></b></p></a>
+        <p></p>
+      </div>
+    </div>
+	
+	<div class="w3-third w3-container w3-margin-bottom">
+      <a href=" Posts/.html"><img src="images/.jpg" alt="" style="width:100%" class="w3-hover-opacity" title="">
+      <div class="w3-container w3-white">
+        <p><b></b></p></a>
+        <p></p>
+      </div>
+    </div>
+  
+	<!-- Third Photo Grid>
+  <div class="w3-row-padding">
+		
+	<div class="w3-third w3-container w3-margin-bottom">
+      <a href=" Posts/.html"><img src="images/hfa.jpg" alt="" style="width:100%" class="w3-hover-opacity" title="">
+      <div class="w3-container w3-white">
+        <p><b></b></p></a>
+        <p></p>
+      </div>
+    </div>
+	
+	<div class="w3-third w3-container w3-margin-bottom">
+      <a href=" Posts/.html"><img src="images/.jpg" alt="Hellfire's Adventure" style="width:100%" class="w3-hover-opacity" title="Hellfire's Adventure">
+      <div class="w3-container w3-white">
+        <p>The Hellfire's Adventure<b></b></p></a>
+        <p>My First Arcade Game. Created in Greenfoot.</p>
+      </div>
+    </div>
+	
+	<div class="w3-third w3-container w3-margin-bottom">
+      <a href=" Posts/Hellfires_Adventure.html"><img src="images/hfa.jpg" alt="Hellfire's Adventure" style="width:100%" class="w3-hover-opacity" title="Hellfire's Adventure">
+      <div class="w3-container w3-white">
+        <p>The Hellfire's Adventure<b></b></p></a>
+        <p>My First Arcade Game. Created in Greenfoot.</p>
+      </div>
+    </div>
+	<!-- Forth Photo Grid>
+	<div class="w3-row-padding"-->
+	
+	<div class="w3-row-padding">
+	
+  
+  
+  <div class="w3-black w3-center w3-padding-24 sticky">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a>
+
+<!-- End page content -->
+</div>
+
+
+
+	<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-145991665-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+</body>
+</html>
