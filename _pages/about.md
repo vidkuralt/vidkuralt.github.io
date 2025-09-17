@@ -8,7 +8,7 @@ redirect_from:
   - /about.html
 ---
 
-I am a scientist and entrepreneur, building artificial intelligence technologies to power breakthroughs in biology and medicine. I am a pharmacy researcher and PhD student, exploring drug discovery through medicinal chemistry, computational modeling and machine learning.
+I am a pharmacy researcher and PhD student, exploring drug discovery through medicinal chemistry, computational modeling and machine learning.
 
 **Short Bio**
 
