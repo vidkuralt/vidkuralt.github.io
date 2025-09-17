@@ -31,3 +31,29 @@
 .toc-container a:hover {
     text-decoration: underline;
 }
+/* Sidebar TOC fix */
+.sidebar__right .toc {
+    background-color: #2b2b2b; /* dark background for contrast */
+    color: #fff; /* white text */
+    padding: 15px;
+    border-radius: 5px;
+    max-height: 80vh; /* keeps it inside viewport */
+    overflow-y: auto; /* vertical scroll if too long */
+}
+
+.sidebar__right .toc a {
+    color: #fff; /* white links */
+    text-decoration: none;
+}
+
+.sidebar__right .toc a:hover {
+    color: #1e90ff; /* highlight on hover */
+    text-decoration: underline;
+}
+.sidebar__right {
+    width: 250px; /* or 300px depending on your theme */
+}
+
+.page-content {
+    margin-right: 270px; /* make space for right sidebar */
+}

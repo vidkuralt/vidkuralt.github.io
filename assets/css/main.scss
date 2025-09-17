@@ -39,20 +39,4 @@
 @import "vendor/font-awesome/brands";
 @import "vendor/magnific-popup/magnific-popup";
 @import "print";
-
-.toc-container {
-    border: 1px solid #ddd;
-    padding: 10px;
-    background: #f9f9f9;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
-
-.toc-container ul {
-    list-style: none;
-    padding-left: 0;
-}
-
-.toc-container li {
-    margin-bottom: 5px;
-}
+@import "custom";
