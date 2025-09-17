@@ -378,7 +378,7 @@
     border: 1px solid $border-color;
     border-radius: $border-radius;
     box-shadow: $box-shadow;
-    overflow: visible; // ensure child text isn’t clipped
+    overflow: visible; // ensure child text isn't clipped
 
     .nav__title {
         color: #fff;
