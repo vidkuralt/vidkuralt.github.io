@@ -43,4 +43,4 @@ title: "Other Projects"
 | --------| ------ | ---------| --------------------------------------------------- |
 | [Verben mit Präpositionen](https://vidkuralt.github.io/school/Verben_Dat_Akk.html)  | 2025      | DEU       |     Übung für Niveau B1.1         |
 | [Unregelmäßige Verben](https://vidkuralt.github.io/school/)  | /      | DEU          |     /         |
-| [Irregular Verbs](https://vidkuralt.github.io/school/irregular-verbs-trainer.html)  | /      | ENG        |      /         |
+| [Irregular Verbs](https://vidkuralt.github.io/school/irregular-verbs-trainer.html)  | 2025      | ENG        |      B2 Exercise         |
