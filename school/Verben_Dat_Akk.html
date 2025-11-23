@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Verben mit Präpositionen Trainer</title>
+<style>
+    body { font-family: Arial; max-width: 700px; margin: 40px auto; }
+    input { padding: 8px; width: 100%; margin-top: 5px; }
+    button { padding: 10px; margin-top: 10px; width: 100%; }
+    #result { margin-top: 20px; font-size: 1.2em; }
+    #score { margin-top: 10px; font-weight: bold; }
+    #history { margin-top: 30px; border-top: 1px solid #ccc; padding-top: 20px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; }
+    .toggle-container { margin-bottom: 20px; }
+</style>
+</head>
+<body>
+
+<h2>Verben mit Präpositionen – Trainer</h2>
+
+<div class="toggle-container">
+    <label>
+        <input type="checkbox" id="modeToggle" onchange="toggleMode()">
+        <strong>Include Case (Dativ/Akkusativ)</strong>
+    </label>
+</div>
+
+<p id="verbDisplay"></p>
+
+<input id="prepInput" placeholder="Präposition (z. B. auf)">
+<input id="caseInput" placeholder="Kasus (akk / dat)" style="display:none;">
+
+<button onclick="checkAnswer()">Überprüfen</button>
+<button onclick="showHistory()">Show Results</button>
+
+<div id="result"></div>
+<div id="score"></div>
+<div id="history"></div>
+
+<script>
+// ------------------- Database WITH case -----------------------
+const verbs = {
+  "abhängen": [ { prep: "von", case: "dat" } ],
+  "achten": [ { prep: "auf", case: "akk" } ],
+  "anfangen": [ { prep: "mit", case: "dat" } ],
+  "anrufen": [ { prep: "bei", case: "dat" } ],
+  "antworten": [ { prep: "auf", case: "akk" } ],
+
+  // multiple meanings → multiple entries
+  "arbeiten": [
+    { prep: "als", case: "nom" },
+    { prep: "bei", case: "dat" },
+    { prep: "an", case: "dat" }
+  ],
+
+  "sich ärgern": [ { prep: "über", case: "akk" } ],
+  "aufhören": [ { prep: "mit", case: "dat" } ],
+  "bedeuten": [ { prep: "für", case: "akk" } ],
+  "sich beeilen": [ { prep: "mit", case: "dat" } ],
+  "beginnen": [ { prep: "mit", case: "dat" } ],
+  "berichten": [ 
+	{ prep: "über", case: "akk" },
+	{ prep: "von", case: "dat" }
+  ],
+  "beschweren": [ 
+	{ prep: "bei", case: "dat" },
+	{ prep: "über", case: "akk" }
+  ],
+  "bestehen": [ { prep: "aus", case: "dat" } ],
+  "bitten": [
+    { prep: "um", case: "akk" }   // only one, but still an array
+  ],
+  "danken": [ { prep: "für", case: "akk" } ],
+  "demonstrieren": [ { prep: "für", case: "akk" } ],
+  "denken": [ { prep: "an", case: "akk" } ],
+  "diskutieren": [
+	{ prep: "über", case: "akk" },
+	{ prep: "mit", case: "dat" }
+  ],
+  "sich einigen": [
+	{ prep: "auf", case: "akk" },
+	{ prep: "mit", case: "dat" }
+  ],
+  "einladen": [ { prep: "zu", case: "dat" } ],
+  "sich engagieren": [ { prep: "für", case: "akk" } ],
+  "sich entscheiden": [ 
+	{ prep: "für", case: "akk" },
+	{ prep: "gegen", case: "akk" }
+  ],
+  "sich entschuldigen": [ 
+	{ prep: "für", case: "akk" },
+	{ prep: "bei", case: "dat" }
+  ],
+  "enstehen": [ { prep: "aus", case: "dat" } ],
+  "sich erholen": [ { prep: "von", case: "dat" } ],
+  "sich erinnern": [ { prep: "an", case: "akk" } ],
+  "erwarten": [ { prep: "von", case: "dat" } ],
+  "erzählen": [ { prep: "von", case: "dat" } ],
+  "fragen": [ { prep: "nach", case: "dat" } ],
+  "sich freuen": [ 
+	{ prep: "auf", case: "akk" },
+	{ prep: "über", case: "akk" }
+  ],
+  "es geht": [ { prep: "um", case: "akk" } ],
+  "gehören": [ { prep: "zu", case: "dat" } ],
+  "gelten": [ { prep: "als", case: "akk" } ],
+  "sich gewöhnen": [ { prep: "an", case: "akk" } ],
+  "glauben": [ { prep: "an", case: "akk" } ],
+  "gratulieren": [ { prep: "zu", case: "dat" } ],
+  "handeln": [ 
+	{ prep: "von", case: "dat" },
+	{ prep: "mit", case: "dat" }
+  ],
+  "helfen": [ 
+	{ prep: "bei", case: "dat" },
+	{ prep: "mit", case: "dat" }
+  ],
+  "sich informieren": [ { prep: "über", case: "akk" } ],
+  "sich interessieren": [ { prep: "für", case: "akk" } ]
+  "kämpfen": [
+    { prep: "für", case: "akk" },
+    { prep: "gegen", case: "akk" },
+    { prep: "mit", case: "dat" },
+	{ prep: "um", case: "akk" }
+  ],
+  "sich konzentrieren": [ { prep: "auf", case: "akk" } ],
+  "sich kümmern": [ { prep: "um", case: "akk" } ],
+  "lachen": [ { prep: "über", case: "akk" } ],
+  "leiden": [ 
+	{ prep: "an", case: "dat" },
+	{ prep: "unter", case: "dat" }
+  ],
+  "lesen": [ 
+	{ prep: "von", case: "dat" },
+	{ prep: "über", case: "akk" }
+  ],
+  "passen": [ { prep: "zu", case: "dat" } ], 
+  "protestieren": [ { prep: "gegen", case: "akk" } ],  
+  "reagieren": [ { prep: "auf", case: "akk" } ],
+  "riechen": [ { prep: "nach", case: "dat" } ],   
+  "schicken": [ { prep: "an", case: "akk" } ],
+  "schimpfen": [ 
+	{ prep: "über", case: "akk" },
+	{ prep: "mit", case: "dat" }
+  ],
+  "sich spezialisieren": [ { prep: "auf", case: "akk" } ],  
+  "sprechen": [
+    { prep: "über", case: "akk" },
+    { prep: "mit", case: "dat" },
+    { prep: "von", case: "dat" }
+  ],
+  "sterben": [ { prep: "an", case: "dat" } ],
+  "steigen": [ { prep: "auf", case: "akk" } ],
+  "sich streiten": [
+	{ prep: "mit", case: "dat" },
+	{ prep: "über", case: "akk" }
+	],
+  "suchen": [ { prep: "nach", case: "dat" } ],
+  "tauschen": [ { prep: "gegen", case: "akk" } ],
+  "teilnehmen": [ { prep: "an", case: "dat" } ],
+  "telefonieren": [ { prep: "mit", case: "dat" } ],
+  "träumen": [ { prep: "von", case: "dat" } ],
+  "sich treffen": [ { prep: "mit", case: "dat" } ],
+  "übersetzen": [
+	{ prep: "in", case: "akk" },
+	{ prep: "aus", case: "dat" }
+	],
+  "überzeugen": [ { prep: "von", case: "dat" } ],	
+  "sich unterhalten": [
+    { prep: "über", case: "akk" },
+	{ prep: "mit", case: "dat" }
+	],
+  "sich verabreden": [ { prep: "mit", case: "dat" } ],
+  "sich verlieben": [ { prep: "in", case: "akk" } ],
+  "verzichten": [ { prep: "auf", case: "akk" } ],
+  "sich vorbereiten": [ { prep: "auf", case: "akk" } ],
+  "warnen": [ { prep: "vor", case: "dat" } ],
+  "warten": [ { prep: "auf", case: "akk" } ],
+  "sich wundern": [ { prep: "über", case: "akk" } ],
+  "zweifeln": [ { prep: "an", case: "dat" } ],
+  
+};
+
+
+
+// ------------------- Helper: remove umlauts -----------------------
+function normalize(text) {
+  return text
+    .toLowerCase()
+    .replace(/ä/g, "a")
+    .replace(/ö/g, "o")
+    .replace(/ü/g, "u")
+    .replace(/ß/g, "ss")
+    .trim();
+}
+
+// ------------------- Mode toggle -----------------------
+let includeCase = false;
+
+function toggleMode() {
+  includeCase = document.getElementById("modeToggle").checked;
+
+  // Show or hide case input field
+  document.getElementById("caseInput").style.display =
+    includeCase ? "block" : "none";
+
+  // Clear result when switching mode
+  document.getElementById("result").textContent = "";
+}
+
+// ------------------- Training State -----------------------
+let currentVerb = "";
+let correct = 0;
+let wrong = 0;
+let history = [];
+
+// ------------------- Get a random verb -----------------------
+function getRandomVerb() {
+  const keys = Object.keys(verbs);
+  return keys[Math.floor(Math.random() * keys.length)];
+}
+
+// ------------------- Start new round -----------------------
+function newRound() {
+  currentVerb = getRandomVerb();
+  document.getElementById("verbDisplay").textContent =
+    `Verb: ${currentVerb}`;
+
+  document.getElementById("result").textContent = "";
+  document.getElementById("prepInput").value = "";
+  document.getElementById("caseInput").value = "";
+  updateScore();
+}
+
+// ------------------- Update score -----------------------
+function updateScore() {
+  document.getElementById("score").textContent =
+    `Score: ✅ ${correct} | ❌ ${wrong}`;
+}
+
+// ------------------- Check Answer -----------------------
+function checkAnswer() {
+  const userPrep = normalize(document.getElementById("prepInput").value);
+  const userCase = normalize(document.getElementById("caseInput").value);
+
+  const correctPrep = normalize(verbs[currentVerb].prep);
+  const correctCase = normalize(verbs[currentVerb].case);
+
+  let isCorrect = false;
+
+  if (includeCase) {
+    // PREPOSITION + CASE MODE
+    isCorrect = userPrep === correctPrep && userCase === correctCase;
+  } else {
+    // PREPOSITION ONLY MODE
+    isCorrect = userPrep === correctPrep;
+  }
+
+  // Store in history
+  history.push({
+    verb: currentVerb,
+    yourPrep: userPrep || "(empty)",
+    yourCase: includeCase ? (userCase || "(empty)") : "—",
+    correctPrep: verbs[currentVerb].prep,
+    correctCase: includeCase ? verbs[currentVerb].case : "—",
+    result: isCorrect ? "Correct" : "Wrong",
+    mode: includeCase ? "Prep + Case" : "Prep only"
+  });
+
+  // Feedback
+  if (isCorrect) {
+    correct++;
+    document.getElementById("result").textContent = "✅ Richtig!";
+  } else {
+    wrong++;
+    const solution = includeCase
+      ? `"${verbs[currentVerb].prep} + ${verbs[currentVerb].case}"`
+      : `"${verbs[currentVerb].prep}"`;
+    document.getElementById("result").textContent =
+      `❌ Falsch! Richtig: ${solution}`;
+  }
+
+  updateScore();
+  setTimeout(newRound, 1500);
+}
+
+// ------------------- Show History -----------------------
+function showHistory() {
+  let html = "<h3>Ergebnisse</h3>";
+  html += "<table>";
+  html += "<tr><th>Verb</th><th>Your Prep</th><th>Your Case</th><th>Correct Prep</th><th>Correct Case</th><th>Mode</th><th>Result</th></tr>";
+
+  history.forEach(item => {
+    html += `<tr>
+      <td>${item.verb}</td>
+      <td>${item.yourPrep}</td>
+      <td>${item.yourCase}</td>
+      <td>${item.correctPrep}</td>
+      <td>${item.correctCase}</td>
+      <td>${item.mode}</td>
+      <td>${item.result === "Correct" ? "✅" : "❌"}</td>
+    </tr>`;
+  });
+
+  html += "</table>";
+  document.getElementById("history").innerHTML = html;
+}
+
+newRound();
+</script>
+
+</body>
+</html>
