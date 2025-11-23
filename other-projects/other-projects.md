@@ -44,10 +44,10 @@ title: "Other Projects"
 | [Verben mit Präpositionen](https://vidkuralt.github.io/school/Verben_Dat_Akk.html)  | 2025      | DEU       |     Übung für Niveau B1.1         |
 | [Unregelmäßige Verben](https://vidkuralt.github.io/school/unregelmassige_verben.html)  | 2025     | DEU          |     Übung für Niveau B1.1         |
 | [Irregular Verbs](https://vidkuralt.github.io/school/irregular-verbs-trainer.html)  | 2025      | ENG        |      B2 Exercise         |
-| [ENGLISH GRAMMAR FOR GRAMMAR SCHOOLS](/files/ENGLISH_GRAMMAR_FOR_GRAMMAR_SCHOOLS.pdf)  | 2019      | ENG        |    Gimnazija Kranj          |
-| [DEUTSCHE GRAMMATIK FÜR GYMNASIEN](/files/DEUTSCHE_GRAMMATIK_FÜR_GYMNASIEN.pdf)  | 2020     | DEU        |       Gimnazija Kranj       |
-| [Czech-Slovenian Learning document](/files/Studying_Czech.pdf)  | 2024      | CZE/SLO        |     Pro začátečníky. Za začetnike.         |
 | [Polish-Slovenian Learning document](/files/Studying_Polish.pdf)  | 2025      | POL/SLO        |     Dla początkujących. Za začetnike.         |
+| [Czech-Slovenian Learning document](/files/Studying_Czech.pdf)  | 2024      | CZE/SLO        |     Pro začátečníky. Za začetnike.         |
+| [DEUTSCHE GRAMMATIK FÜR GYMNASIEN](/files/DEUTSCHE_GRAMMATIK_FÜR_GYMNASIEN.pdf)  | 2020     | DEU        |       Gimnazija Kranj       |
+| [ENGLISH GRAMMAR FOR GRAMMAR SCHOOLS](/files/ENGLISH_GRAMMAR_FOR_GRAMMAR_SCHOOLS.pdf)  | 2019      | ENG        |    Gimnazija Kranj          |
 
 ## Tools
 
