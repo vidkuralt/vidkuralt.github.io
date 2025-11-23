@@ -84,11 +84,11 @@ author:
   avatar           : "vk_sq.jpg"
   bio              : "MPharm and Young Researcher and PhD Student at University of Ljubljana, Faculty of Pharmacy"
   location         : "Ljubljana, Slovenia"
-  employer         :
+  employer         : "University of Ljubljana, Faculty of Pharmacy"
   pubmed           : "https://pubmed.ncbi.nlm.nih.gov/?term=Kuralt+V"
   googlescholar    : "https://scholar.google.com/citations?user=CNwDqv8AAAAJ"
   email            : "vid.kuralt@ffa.uni-lj.si"
-  researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
+  researchgate     : "https://www.researchgate.net/profile/Vid-Kuralt?ev=hdr_xprf"
   uri              :
   bitbucket        :
   codepen          :
@@ -99,13 +99,13 @@ author:
   github           : "vidkuralt"
   keybase          :
   instagram        :
-  impactstory      : #"https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
+  impactstory      : 
   lastfm           :
   linkedin         : "vid-kuralt"
   orcid            : "https://orcid.org/0009-0002-9394-6358"
   pinterest        :
   soundcloud       :
-  stackoverflow    : # http://stackoverflow.com/users/123456/username
+  stackoverflow    : 
   steam            :
   tumblr           :
   twitter          : 
