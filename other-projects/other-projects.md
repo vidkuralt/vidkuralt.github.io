@@ -34,13 +34,25 @@ title: "Other Projects"
 | --------         | ------ | --------- | --------------------------------------------------- |
 | [The Game](https://vidkuralt.github.io/old-website/Posts/The_Game.html)    | 2019   | ENG |You are playing in 1st person and your goal is to shoot all the targets.                            |
 | [Hillfire's advanture](https://vidkuralt.github.io/old-website/Posts/Hellfires_Adventure.html)    | 2017   | ENG |You play as a frog. Your goal is to eat all flies to progress to the next level. But watch out for your natural enemies - storks                          |
-| [The Combination: a card game](/files/combinations-v-1-1.docx)     | 2016   | ENG |It is a two-player card game where players use standard playing cards to summon attackers, armaments, and spells by combining specific card requirements, then battle each other's creatures and try to reduce their opponent's life points from 200 to 0.                          |
+| [The Combination: a card game](/files/combinations-v-1-1.pdf)     | 2016   | ENG |It is a two-player card game where players use standard playing cards to summon attackers, armaments, and spells by combining specific card requirements, then battle each other's creatures and try to reduce their opponent's life points from 200 to 0.                          |
 | [Ribe: a board game](/files/RIBE-V1.5.pdf)|2016| SLO |Igra za dva ali več igralcev! Vaš soigralec sestavi kombinacijo zlobnih rib, vi pa poizkušate nabrati čim več točk.    |                     
 
-## Tools
+## Languages
 
 | Entry   | Year   | Language |     Description                                     |
 | --------| ------ | ---------| --------------------------------------------------- |
 | [Verben mit Präpositionen](https://vidkuralt.github.io/school/Verben_Dat_Akk.html)  | 2025      | DEU       |     Übung für Niveau B1.1         |
 | [Unregelmäßige Verben](https://vidkuralt.github.io/school/unregelmassige_verben.html)  | 2025     | DEU          |     Übung für Niveau B1.1         |
 | [Irregular Verbs](https://vidkuralt.github.io/school/irregular-verbs-trainer.html)  | 2025      | ENG        |      B2 Exercise         |
+| [ENGLISH GRAMMAR FOR GRAMMAR SCHOOLS](/files/ENGLISH_GRAMMAR_FOR_GRAMMAR_SCHOOLS.pdf)  | 2019      | ENG        |    Gimnazija Kranj          |
+| [DEUTSCHE GRAMMATIK FÜR GYMNASIEN](/files/DEUTSCHE_GRAMMATIK_FÜR_GYMNASIEN.pdf)  | 2020     | DEU        |       Gimnazija Kranj       |
+| [Czech-Slovenian Learning document](/files/Studying_Czech.pdf)  | 2024      | CZE/SLO        |     Pro začátečníky. Za začetnike.         |
+| [Polish-Slovenian Learning document](/files/Studying_Polish.pdf)  | 2025      | POL/SLO        |     Dla początkujących. Za začetnike.         |
+
+## Tools
+
+| Entry   | Year   | Language |     Description                                     |
+| --------| ------ | ---------| --------------------------------------------------- |
+| [/](#)  | /     | /       |     /         |
+| [/](#)  | /     | /          |     /         |
+| [/](#)  | /      | /        |      /         |

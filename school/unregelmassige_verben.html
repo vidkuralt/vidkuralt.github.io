@@ -5,117 +5,138 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Unregelmäßige Verben Trainer</title>
 <style>
-:root{--bg:#0f172a;--card:#0b1220;--muted:#94a3b8;--accent:#60a5fa;--success:#10b981;--error:#ef4444;}
-body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#031026 0%, #07142a 100%);color:#e6eef8;margin:0;padding:24px}
-.wrap{max-width:980px;margin:0 auto}
-header{display:flex;align-items:center;gap:16px}
-h1{margin:0;font-size:20px}
-.card{background:rgba(255,255,255,0.03);padding:16px;border-radius:12px;margin-top:16px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
-label{display:block;font-size:13px;color:var(--muted);margin-top:8px}
-select,input,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
-.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-button{background:var(--accent);color:#01203a;border:none;padding:10px 12px;border-radius:8px;cursor:pointer}
-button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:inherit;} 
-.prompt{font-size:24px;margin:12px 0}
-.stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
-.stat{background:rgba(255,255,255,0.02);padding:8px;border-radius:8px;font-size:13px}
-.small{font-size:13px;color:var(--muted)}
-.flex{display:flex;gap:8px;align-items:center}
-.progress-list{max-height:220px;overflow:auto;margin-top:8px}
-.correct-entry{color:var(--success);}
-.wrong-entry{color:var(--error);}
+:root{
+  --bg:#0f172a;--card:#0b1220;--muted:#94a3b8;--accent:#60a5fa;
+  --success:#10b981;--error:#ef4444;
+}
+body {
+  font-family: Inter, system-ui, Segoe UI, Roboto, Arial;
+  background: linear-gradient(180deg,#031026 0%,#07142a 100%);
+  color: #e6eef8;
+  margin: 0; padding: 24px;
+}
+.wrap { max-width: 980px; margin: 0 auto; }
+header { display: flex; align-items: center; gap: 16px; }
+h1 { margin: 0; font-size: 20px; }
+.card {
+  background: rgba(255,255,255,0.03);
+  padding: 16px;
+  border-radius: 12px;
+  margin-top: 16px;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+}
+label { display: block; font-size: 13px; color: var(--muted); margin-top: 8px; }
+select,input,textarea {
+  width: 100%; padding: 10px;
+  border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);
+  background: transparent; color: inherit;
+}
+.controls { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+button {
+  background: var(--accent); color: #01203a;
+  border:none; padding:10px 12px; border-radius:8px; cursor:pointer;
+}
+button.ghost { background:transparent; border:1px solid rgba(255,255,255,0.06); color: inherit; }
+.prompt { font-size:24px; margin:12px 0; }
+.stats { display:flex; gap:12px; flex-wrap:wrap; margin-top:12px; }
+.stat { background:rgba(255,255,255,0.02); padding:8px; border-radius:8px; font-size:13px; }
+.small { font-size:13px; color:var(--muted); }
+.flex { display:flex; gap:8px; align-items:center; }
+.progress-list { max-height:220px; overflow:auto; margin-top:8px; }
+.correct-entry{ color:var(--success); }
+.wrong-entry{ color:var(--error); }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect rx='8' width='40' height='40' fill='%2360a5fa'/%3E%3Ctext x='50%25' y='54%25' font-size='20' text-anchor='middle' fill='white' font-family='Arial' dy='0.4em'%3EDe%3C/text%3E%3C/svg%3E" alt="logo" style="border-radius:8px"/>
-    <div>
-      <h1>Unregelmäßige Verben Trainer (Nemščina)</h1>
-      <div class="small">Hardcoded database • Multiple gamemodes • Export PDF</div>
-    </div>
-  </header>
+<header>
+  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect rx='8' width='40' height='40' fill='%2360a5fa'/%3E%3Ctext x='50%25' y='54%25' font-size='20' text-anchor='middle' fill='white' font-family='Arial' dy='0.4em'%3EDe%3C/text%3E%3C/svg%3E" alt="logo" style="border-radius:8px"/>
+  <div>
+    <h1>Unregelmäßige Verben Trainer (Nemščina)</h1>
+    <div class="small">Hardcoded database • Multiple gamemodes • Export PDF</div>
+  </div>
+</header>
 
-  <div class="card">
-    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
-      <div style="flex:1">
-        <label>Izberi način učenja</label>
-        <select id="modeSelect">
-          <option value="infinitive_all">Prikaži Infinitiv — vpiši Präteritum, Partizip II in prevod</option>
-          <option value="slovenian_all">Prikaži Slovenščino — vpiši Infinitiv, Präsens, Präteritum in Partizip II</option>
-          <option value="only_past">Vpiši samo Präteritum (prompt: Infinitiv)</option>
-          <option value="only_participle">Vpiši samo Partizip II (prompt: Infinitiv)</option>
-          <option value="mixed">Mešani naključni pozivi</option>
-        </select>
-      </div>
-    </div>
+<div class="card">
+  <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+    <div style="flex:1">
+      <label>Izberi način učenja</label>
+      <select id="modeSelect">
+        <option value="infinitive_all">Prikaži Infinitiv — vpiši Präteritum, Partizip II in prevod</option>
+        <option value="slovenian_all">Prikaži Slovenščino — vpiši Infinitiv, Präsens, Präteritum in Partizip II</option>
+        <option value="only_past">Vpiši samo Präteritum (prompt: Infinitiv)</option>
+        <option value="only_participle">Vpiši samo Partizip II (prompt: Infinitiv)</option>
+        <option value="mixed">Mešani naključni pozivi</option>
+      </select>
+    </div>
+  </div>
 
-    <div class="controls">
-      <button id="startBtn">Začni sejo</button>
-      <button id="nextBtn" class="ghost">Naprej</button>
-      <button id="checkBtn" class="ghost">Preveri</button>
-      <button id="showHistory">Zgodovina seje</button> 
-      <button id="showProgress">Prikaži napake</button> 
-      <button id="exportWrong">Izvozi napake (PDF)</button> 
-      <button id="exportDB">Izvozi DB (PDF)</button> 
-      <button id="clearProgress">Počisti napredek</button> 
-    </div>
+  <div class="controls">
+    <button id="startBtn">Začni sejo</button>
+    <button id="nextBtn" class="ghost">Naprej</button>
+    <button id="checkBtn" class="ghost">Preveri</button>
+    <button id="showHistory">Zgodovina seje</button>
+    <button id="showProgress">Prikaži napake</button>
+    <button id="exportWrong">Izvozi napake (PDF)</button>
+    <button id="exportDB">Izvozi DB (PDF)</button>
+    <button id="clearProgress">Počisti napredek</button>
+    <button id="markAllKnown" class="ghost">Označi vse kot pregledano</button>
+  </div>
 
-    <div id="trainer" style="margin-top:12px;display:none">
-      <div class="prompt" id="promptText">Poziv se bo prikazal tukaj</div>
+  <div id="trainer" style="margin-top:12px;display:none">
+    <div class="prompt" id="promptText">Poziv se bo prikazal tukaj</div>
+    <div id="answerInputs">
+      <label id="labInf">Infinitiv (Npr. geben)</label>
+      <input id="inpInf" data-form="infinitive" />
+      <label id="labPres">Präsens (er ...)</label>
+      <input id="inpPres" data-form="praesens" />
+      <label id="labPast">Präteritum (Npr. gab)</label>
+      <input id="inpPast" data-form="past" />
+      <label id="labPart">Partizip II (Npr. gegeben) - Upoštevajte sein/haben!</label>
+      <input id="inpPart" data-form="participle" />
+      <label id="labSlo">Slovenski prevod</label>
+      <input id="inpSlo" data-form="slovenian" />
+    </div>
 
-      <div id="answerInputs">
-        <label id="labInf">Infinitiv (Npr. geben)</label>
-        <input id="inpInf" data-form="infinitive" />
-        <label id="labPres">Präsens (er ...)</label>
-        <input id="inpPres" data-form="praesens" />
-        <label id="labPast">Präteritum (Npr. gab)</label>
-        <input id="inpPast" data-form="past" />
-        <label id="labPart">Partizip II (Npr. gegeben) - Upoštevajte sein/haben!</label>
-        <input id="inpPart" data-form="participle" />
-        <label id="labSlo">Slovenski prevod</label>
-        <input id="inpSlo" data-form="slovenian" />
-      </div>
+    <div class="stats">
+      <div class="stat">Točke: <span id="score">0</span></div>
+      <div class="stat">Poskusi: <span id="attempts">0</span></div>
+      <div class="stat">Pravilno: <span id="correct">0</span></div>
+      <div class="stat">Narobe: <span id="wrong">0</span></div>
+    </div>
 
-      <div class="stats">
-        <div class="stat">Točke: <span id="score">0</span></div>
-        <div class="stat">Poskusi: <span id="attempts">0</span></div>
-        <div class="stat">Pravilno: <span id="correct">0</span></div>
-        <div class="stat">Narobe: <span id="wrong">0</span></div>
-      </div>
+    <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+      <label class="small">Samodejno preveri ob pritisku ENTER</label>
+      <input id="autocheck" type="checkbox" checked />
+    </div>
+  </div>
 
-      <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
-        <label class="small">Samodejno preveri ob pritisku ENTER</label>
-        <input id="autocheck" type="checkbox" checked />
-      </div>
-    </div>
-    
-    <div id="historyPanel" style="display:none;margin-top:12px">
-      <h3 style="margin:6px 0">Zgodovina seje (vsi poskusi)</h3>
-      <div class="progress-list" id="historyList"></div>
-    </div>
+  <div id="historyPanel" style="display:none;margin-top:12px">
+    <h3 style="margin:6px 0">Zgodovina seje (vsi poskusi)</h3>
+    <div class="progress-list" id="historyList"></div>
+  </div>
 
-    <div id="progressPanel" style="display:none;margin-top:12px">
-      <h3 style="margin:6px 0">Napredek in trajne napake</h3>
-      <div class="flex small"><strong>Napake v seji</strong><div style="flex:1"></div><button id="markAllKnown" class="ghost">Označi vse kot pregledano</button></div>
-      <div class="progress-list" id="mistakeList"></div>
-    </div>
-  </div>
+  <div id="progressPanel" style="display:none;margin-top:12px">
+    <h3 style="margin:6px 0">Napredek in trajne napake</h3>
+    <div class="progress-list" id="mistakeList"></div>
+  </div>
+</div>
 
-  <div class="card small">
-    <h3>Opombe in navodila</h3>
-    <ul>
-      <li>Napredek se shranjuje v vašem brskalniku (LocalStorage).</li>
-      <li>**Za vnos Präsensa (er ...) ni treba vpisovati 'er' (npr. 'zieht an' je dovolj).**</li>
-    </ul>
-  </div>
-
-  <footer class="small">Standalone HTML version</footer>
+<div class="card small">
+  <h3>Opombe in navodila</h3>
+  <ul>
+    <li>Napredek se shranjuje v vašem brskalniku (LocalStorage).</li>
+    <li>**Za vnos Präsensa (er ...) ni treba vpisovati 'er' (npr. 'zieht an' je dovolj).**</li>
+  </ul>
+</div>
+<footer class="small">Standalone HTML version</footer>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 <script>
-// ------------------ Hardcoded database (Deutsche unregelmäßige Verben) ------------------
+// ---------------- Hardcoded database ----------------
 let verbs = [
   // Struktura: {infinitive:"Infinitiv", praesens:"er Präsens", past:"Präteritum", participle:"Partizip II (sein/haben)", slovenian:"Prevod"}
   {infinitive:"anbieten", praesens:"er bietet an", past:"bot an", participle:"angeboten", slovenian:"ponuditi"},
@@ -241,381 +262,155 @@ let verbs = [
   {infinitive:"zwingen", praesens:"er zwingt", past:"zwang", participle:"gezwungen", slovenian:"siliti"}
 ];
 
-
-let session = {order:[],index:0,mode:'infinitive_all',score:0,attempts:0,correct:0,wrong:0,mistakes:[], history:[]}; 
+// ---------------- Session ----------------
+let session = {order:[],index:0,mode:'infinitive_all',score:0,attempts:0,correct:0,wrong:0,mistakes:[], history:[]};
 const $ = id => document.getElementById(id);
-const normalize = s => {
-  // Odstrani 'er ' samo na začetku, da omogoči vnos brez "er"
-  let cleanS = (s||'').toString().trim().toLowerCase();
-  if (cleanS.startsWith('er ')) {
-    cleanS = cleanS.substring(3).trim();
-  }
-  // Normalizacija za šumnike in preglase
-  cleanS = cleanS.replace(/[äöüß]/g, (match) => { 
-    switch (match) {
-      case 'ä': return 'ae';
-      case 'ö': return 'oe';
-      case 'ü': return 'ue';
-      case 'ß': return 'ss';
-      default: return match;
-    }
-  });
-  // Odstrani slovenske šumnike po normalizaciji, če so še ostali (za nekatere prevode)
-  cleanS = cleanS.replace(/[čšž]/g, (match) => {
-    switch (match) {
-      case 'č': return 'c';
-      case 'š': return 's';
-      case 'ž': return 'z';
-      default: return match;
-    }
-  });
-  return cleanS;
-};
-
-/**
- * Preveri ujemanje odgovora. Ločuje med prevodi (vejica) in nemškimi oblikami (poševnica).
- */
-const match=(userInput, expectedAnswer)=>{
-    // Uporabi normalize() za pripravo uporabnikovega vnosa in pričakovanega odgovora
-    const normalizedInput = normalize(userInput);
-    
-    let possibleAnswers = [];
-
-    // 1. Ravnanje z več možnimi prevodi (ločeni z vejico)
-    if (expectedAnswer.includes(',')) {
-        possibleAnswers.push(...expectedAnswer.split(',').map(s => normalize(s.trim())));
-    } 
-    // 2. Ravnanje z alternativnimi nemškimi oblikami (ločene z '/')
-    else if (expectedAnswer.includes('/')) {
-        possibleAnswers.push(...expectedAnswer.split('/').map(s => normalize(s.trim())));
-    }
-    else {
-        possibleAnswers.push(normalize(expectedAnswer));
-    }
-
-    // 3. Posebno ravnanje za Partizip II (sein / gewesen) - omogoči vnos samo "gewesen"
-    if (expectedAnswer.includes(' / ') && expectedAnswer.includes('sein')) {
-        const coreParticiple = expectedAnswer.split(' / ')[1];
-        possibleAnswers.push(normalize(coreParticiple));
-    }
-    
-    // 4. Posebno ravnanje za Präsens (er ...) - omogoči vnos samo "sieht an" iz "er sieht an"
-    if (expectedAnswer.startsWith('er ')) {
-        const verbOnly = expectedAnswer.substring(3).trim();
-        possibleAnswers.push(normalize(verbOnly));
-    }
-
-
-    // Preveri, ali je normaliziran vnos enak kateremu koli izmed možnih odgovorov
-    // Filtriraj prazne ali undefined vnose, da preprečiš napačno ujemanje
-    return possibleAnswers.filter(a => a.length > 0).includes(normalizedInput);
-};
-
+const normalize = s => (s||'').toString().trim().toLowerCase();
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } }
 
+function showElements(ids){ ids.forEach(id=>$(id).style.display='block'); }
+function hideElements(ids){ ids.forEach(id=>$(id).style.display='none'); }
+
 function startSession(){
-  if(!verbs.length){ alert('No verbs in database'); return; }
-  session.mode=$('modeSelect').value;
-  session.order=verbs.map((_,i)=>i); 
-  shuffle(session.order); 
-  
-  session.index=0; session.score=0; session.attempts=0; session.correct=0; session.wrong=0; 
-  session.mistakes=session.mistakes||[];
-  session.history = []; 
-  
-  $('trainer').style.display='block'; 
-  $('progressPanel').style.display='none';
-  $('historyPanel').style.display='none'; 
-  
-  renderCard(); saveToStorage();
+  session.mode=$('modeSelect').value;
+  session.order=verbs.map((_,i)=>i);
+  shuffle(session.order);
+  session.index=0; session.score=0; session.attempts=0; session.correct=0; session.wrong=0;
+  session.mistakes=[]; session.history=[];
+  $('trainer').style.display='block'; $('progressPanel').style.display='none'; $('historyPanel').style.display='none';
+  renderCard(); updateStats();
 }
 
 function renderCard(){
-  const idx=session.order[session.index]; const item=verbs[idx];
-  $('inpInf').value=''; $('inpPres').value=''; $('inpPast').value=''; $('inpPart').value=''; $('inpSlo').value='';
-  let prompt=''; 
-  // Skrij vse labele in inpute
-  document.querySelectorAll('#answerInputs label').forEach(l=>l.style.display='none'); 
-  document.querySelectorAll('#answerInputs input').forEach(i=>i.style.display='none');
-  
-  if(session.mode==='infinitive_all'){ 
-    prompt=item.infinitive; 
-    // Prikaži polja za odgovor (Präteritum, Partizip II, Prevod)
-    $('labPast').style.display='block'; $('inpPast').style.display='block';
-    $('labPart').style.display='block'; $('inpPart').style.display='block';
-    $('labSlo').style.display='block'; $('inpSlo').style.display='block';
-  }
-  else if(session.mode==='slovenian_all'){ 
-    prompt=item.slovenian||'(ni prevoda)'; 
-    // Prikaži polja za odgovor (Infinitiv, Präsens, Präteritum, Partizip II)
-    $('labInf').style.display='block'; $('inpInf').style.display='block'; 
-    $('labPres').style.display='block'; $('inpPres').style.display='block'; 
-    $('labPast').style.display='block'; $('inpPast').style.display='block';
-    $('labPart').style.display='block'; $('inpPart').style.display='block';
-  }
-  else if(session.mode==='only_past'){ 
-    prompt=item.infinitive; 
-    $('labPast').style.display='block'; $('inpPast').style.display='block';
-  }
-  else if(session.mode==='only_participle'){ 
-    prompt=item.infinitive; 
-    $('labPart').style.display='block'; $('inpPart').style.display='block';
-  }
-  else if(session.mode==='mixed'){ 
-    const rnd=Math.random(); 
-    if(rnd<0.33){session.mode='infinitive_all';} 
-    else if(rnd<0.66){session.mode='slovenian_all';} 
-    else {
-      // V mešanem načinu se za preostalo 1/3 izbere ali samo Präteritum ali Partizip II
-      session.mode=Math.random()<0.5 ? 'only_past' : 'only_participle';
-    }
-    return renderCard();  
-  }
-  $('promptText').textContent=prompt;
+  const idx=session.order[session.index]; const item=verbs[idx];
+  $('inpInf').value=''; $('inpPres').value=''; $('inpPast').value=''; $('inpPart').value=''; $('inpSlo').value='';
 
-  const visibleInputs = Array.from(document.querySelectorAll('#answerInputs input')).filter(input => input.style.display !== 'none');
-  if(visibleInputs.length > 0) {
-    visibleInputs[0].focus();
-  }
+  hideElements(['labInf','inpInf','labPres','inpPres','labPast','inpPast','labPart','inpPart','labSlo','inpSlo']);
+
+  if(session.mode==='infinitive_all'){
+    showElements(['labInf','inpInf','labPast','inpPast','labPart','inpPart','labSlo','inpSlo']);
+    $('promptText').textContent=item.infinitive;
+  } else if(session.mode==='slovenian_all'){
+    showElements(['labInf','inpInf','labPres','inpPres','labPast','inpPast','labPart','inpPart','labSlo','inpSlo']);
+    $('promptText').textContent=item.slovenian;
+  } else if(session.mode==='only_past'){
+    showElements(['labInf','inpInf','labPast','inpPast']);
+    $('promptText').textContent=item.infinitive;
+  } else if(session.mode==='only_participle'){
+    showElements(['labInf','inpInf','labPart','inpPart']);
+    $('promptText').textContent=item.infinitive;
+  }
 }
 
 function checkAnswer(){
-  if (session.checkedCurrent) return; 
+  const idx=session.order[session.index]; const item=verbs[idx]; session.attempts++;
+  const userInputs = {inf:$('inpInf').value, pres:$('inpPres').value, past:$('inpPast').value, part:$('inpPart').value, slo:$('inpSlo').value};
+  let correctCount=0, required=0;
+  const matchAnswer = (input,expected)=> normalize(input)===normalize(expected);
 
-  const idx=session.order[session.index]; const item=verbs[idx]; session.attempts++;
-  let correctCount=0, required=0; 
-  const userInputs = {inf:$('inpInf').value, pres:$('inpPres').value, past:$('inpPast').value, part:$('inpPart').value, slo:$('inpSlo').value};
-  
-  if(session.mode==='infinitive_all'){
-    required=3;
-    if(match(userInputs.past,item.past)) correctCount++; 
-    if(match(userInputs.part,item.participle)) correctCount++; 
-    if(match(userInputs.slo,item.slovenian)) correctCount++; 
-  } else if(session.mode==='slovenian_all'){
-    required=4;
-    if(match(userInputs.inf,item.infinitive)) correctCount++; 
-    if(match(userInputs.pres,item.praesens)) correctCount++; // Preverjanje Präsensa
-    if(match(userInputs.past,item.past)) correctCount++; 
-    if(match(userInputs.part,item.participle)) correctCount++; 
-  } else if(session.mode==='only_past'){ 
-    required=1; 
-    if(match(userInputs.past,item.past)) correctCount++; 
-  }
-  else if(session.mode==='only_participle'){ 
-    required=1; 
-    if(match(userInputs.part,item.participle)) correctCount++; 
-  }
-  const success=(correctCount===required);
-  
-  // Zapiši poskus v zgodovino seje
-  session.history.push({
-    index: idx,
-    mode: session.mode,
-    provided: userInputs,
-    expected: verbs[idx],
-    correct: success
-  });
-  
-  if(success){ 
-    session.score+=10; session.correct++; 
-  } else { 
-    session.score-=2; session.wrong++; 
-    // Dodaj samo enkrat v napačne (persistent mistakes)
-    const alreadyMistake = session.mistakes.some(m => m.index === idx);
-    if(!alreadyMistake) {
-      session.mistakes.push({index:idx,mode:session.mode,provided:userInputs,expected:verbs[idx]});
-    }
-  }
+  if(session.mode==='infinitive_all'){ required=3; if(matchAnswer(userInputs.past,item.past)) correctCount++; if(matchAnswer(userInputs.part,item.participle)) correctCount++; if(matchAnswer(userInputs.slo,item.slovenian)) correctCount++; }
+  else if(session.mode==='slovenian_all'){ required=4; if(matchAnswer(userInputs.inf,item.infinitive)) correctCount++; if(matchAnswer(userInputs.pres,item.praesens)) correctCount++; if(matchAnswer(userInputs.past,item.past)) correctCount++; if(matchAnswer(userInputs.part,item.participle)) correctCount++; }
+  else if(session.mode==='only_past'){ required=1; if(matchAnswer(userInputs.past,item.past)) correctCount++; }
+  else if(session.mode==='only_participle'){ required=1; if(matchAnswer(userInputs.part,item.participle)) correctCount++; }
 
-  session.checkedCurrent = true; 
-  saveToStorage(); updateStats(); showFeedback(success);
-  
-  // Osveži zgodovino, če je plošča odprta
-  if ($('historyPanel').style.display === 'block') {
-    renderHistory();
-  }
-  
-  if($('autocheck').checked) {
-    nextCard();
-  } else {
-    $('nextBtn').focus();
-  }
+  const success=(correctCount===required);
+  if(success){ session.score+=10; session.correct++; } else { session.score-=2; session.wrong++; session.mistakes.push({index:idx,provided:userInputs,expected:item}); }
+  session.history.push({index:idx,mode:session.mode,provided:userInputs,expected:item,correct:success});
+  $('promptText').innerHTML=success? `<span style="color:var(--success)">✅ Pravilno!</span>` : `<span style="color:var(--error)">❌ Napačno</span> — Pričakovano: ${item.infinitive} / ${item.praesens} / ${item.past} / ${item.participle} — ${item.slovenian}`;
+  updateStats();
 }
 
-function showFeedback(ok){
-  const idx=session.order[session.index]; const e=verbs[idx]; 
-  // Prikaži vse 4 oblike
-  const feedback = ok ? 
-    `<span style="color:var(--success)">✅ Pravilno!</span>` : 
-    `<span style="color:var(--error)">❌ Napačno</span> — Pričakovano: ${e.infinitive} / ${e.praesens} / ${e.past} / ${e.participle} — ${e.slovenian}`;
-  $('promptText').innerHTML = feedback; 
-}
-
-function nextCard(){ 
-  session.index=(session.index+1)%session.order.length; 
-  session.checkedCurrent = false; 
-  updateStats(); renderCard(); saveToStorage(); 
-}
-
+function nextCard(){ session.index=(session.index+1)%session.order.length; renderCard(); }
 function updateStats(){ $('score').textContent=session.score; $('attempts').textContent=session.attempts; $('correct').textContent=session.correct; $('wrong').textContent=session.wrong; }
 
-/**
- * Prikazuje/skrije ploščo z napačnimi odgovori.
- * Zagotavlja, da je druga plošča skrita.
- */
-function toggleProgress(){ 
-  const progressPanel = $('progressPanel');
-  const vis = progressPanel.style.display === 'block'; 
-  progressPanel.style.display = vis ? 'none' : 'block'; 
-  $('historyPanel').style.display='none'; 
-  if (!vis) renderMistakes(); 
+// ---------------- Panels ----------------
+function renderList(list, container){
+  const html = list.map(entry=>{
+    const {expected, provided} = entry;
+    const colorize = (exp, prov) => prov ? (normalize(prov)===normalize(exp) ? `<span style="color:var(--success)">${prov}</span>` : `<span style="color:var(--error)">${prov}</span>`) : `<span style="color:var(--muted)">${exp}</span>`;
+    return `<div style="margin-bottom:6px;"><strong>${expected.infinitive}</strong> | ${colorize(expected.praesens,provided.pres)} | ${colorize(expected.past,provided.past)} | ${colorize(expected.participle,provided.part)} | ${colorize(expected.slovenian,provided.slo)}</div>`;
+  }).join('');
+  container.innerHTML = html || '<em>Ni podatkov.</em>';
 }
 
-/**
- * Prikazuje/skrije ploščo z zgodovino seje.
- * Zagotavlja, da je druga plošča skrita.
- */
-function toggleHistory(){
-  const historyPanel = $('historyPanel');
-  const vis = historyPanel.style.display === 'block'; 
-  historyPanel.style.display = vis ? 'none' : 'block'; 
-  $('progressPanel').style.display='none'; 
-  if (!vis) renderHistory();
-}
+$('showHistory').addEventListener('click',()=>{ $('historyPanel').style.display='block'; $('progressPanel').style.display='none'; renderList(session.history,$('historyList')); });
+$('showProgress').addEventListener('click',()=>{ $('progressPanel').style.display='block'; $('historyPanel').style.display='none'; renderList(session.mistakes,$('mistakeList')); });
+$('markAllKnown').addEventListener('click',()=>{ session.mistakes=[]; $('mistakeList').innerHTML='<em>Ni napak v tej seji.</em>'; });
 
-// Render all session attempts
-function renderHistory(){
-  const cont=$('historyList'); cont.innerHTML='';
-  if(!session.history||!session.history.length){ cont.innerHTML='<div class="small">Še ni zabeleženih poskusov.</div>'; return; }
-  
-  const reversedHistory = [...session.history].reverse();
-  
-  reversedHistory.forEach((h, i)=>{
-    const v=h.expected;
-    const isCorrect = h.correct;
-    const entryClass = isCorrect ? 'correct-entry' : 'wrong-entry';
-    const marker = isCorrect ? '✅' : '❌';
-
-    const row=document.createElement('div'); 
-    row.style.padding='8px'; 
-    row.style.borderBottom='1px solid rgba(255,255,255,0.02)';
-    row.className = entryClass;
-    
-    row.innerHTML = `
-      <div>
-        <strong>${marker} ${v.infinitive}</strong> / ${v.praesens} / ${v.past} / ${v.participle} (${v.slovenian}) 
-        <div class="small">Način: ${h.mode}</div>
-      </div>
-      ${!isCorrect ? 
-        `<div class="small" style="margin-top:4px;">
-          <strong>Vaš vnos:</strong> ${h.provided.inf} | ${h.provided.pres} | ${h.provided.past} | ${h.provided.part} | ${h.provided.slo}
-        </div>` : ''}
-    `;
-    cont.appendChild(row);
-  });
-}
-
-function renderMistakes(){
-  const cont=$('mistakeList'); cont.innerHTML='';
-  if(!session.mistakes||!session.mistakes.length){ cont.innerHTML='<div class="small">Še ni napak — odlično!</div>'; return; }
-  session.mistakes.forEach((m,i)=>{
-    const v=verbs[m.index]; const row=document.createElement('div'); row.style.padding='8px'; row.style.borderBottom='1px solid rgba(255,255,255,0.02)';
-    row.innerHTML=`<div style="display:flex;justify-content:space-between"><div><strong>${v.infinitive}</strong> — ${v.praesens} — ${v.past} — ${v.participle} <div class='small'>${v.slovenian}</div></div><div><button data-i='${i}' class='ghost btnMark'>Označi OK</button></div></div>`;
-    cont.appendChild(row);
-  });
-  document.querySelectorAll('.btnMark').forEach(b=>b.addEventListener('click',e=>{ const i=parseInt(e.target.dataset.i); session.mistakes.splice(i,1); saveToStorage(); renderMistakes(); }));
-}
-
-function clearProgress(){ 
-  if(confirm('Ali res želiš izbrisati celoten napredek? To bo izbrisalo vse rezultate in shranjene napake.')){ 
-    session={order:[],index:0,mode:'infinitive_all',score:0,attempts:0,correct:0,wrong:0,mistakes:[], history:[]}; 
-    saveToStorage(); updateStats(); renderCard(); renderMistakes(); renderHistory(); 
-  } 
-}
-
-/**
- * Vključi Unicode podporo za šumnike (č, š, ž) in nemške preglase.
- */
-function exportPDF(data,title){ 
-  const { jsPDF } = window.jspdf; 
-  // Nastavimo opcijo "encoding: 'Unicode'" za boljšo podporo znakom
-  const doc = new jsPDF({ encoding: 'Unicode' }); 
+// ---------------- PDF Export using html2canvas (The working method) ----------------
+async function exportPDF(list, title) {
+  const { jsPDF } = window.jspdf;
   
-  // Uporabimo standardni font, ki deluje z dodanim kodiranjem
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(10); // Zmanjšana pisava za 4 stolpce
+  // 1. Create temporary element to render the data in HTML
+  const container = document.createElement('div');
+  container.style.padding = '20px';
+  container.style.fontFamily = 'Arial, sans-serif';
+  container.style.background = '#fff';
+  container.style.color = '#000';
+  container.style.width = '800px'; 
   
-  let y=10; 
-  doc.text(title,10,y); 
-  y+=8; 
+  // Format the list data for HTML rendering (unchanged)
+  let content = `
+    <h2 style="color:#333; margin-bottom: 20px;">${title}</h2>
+    <div style="font-weight:bold; border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 5px;">
+        <span style="display:inline-block; width: 100px;">Infinitiv</span>
+        <span style="display:inline-block; width: 100px;">Präsens</span>
+        <span style="display:inline-block; width: 100px;">Präteritum</span>
+        <span style="display:inline-block; width: 140px;">Partizip II</span>
+        <span style="display:inline-block; width: 200px;">Slovenian</span>
+    </div>`;
 
-  // Glave
-  doc.setFontSize(10);
-  doc.text('Infinitiv', 10, y);
-  doc.text('Präsens (er)', 55, y);
-  doc.text('Präteritum', 100, y);
-  doc.text('Partizip II', 130, y);
-  doc.text('Slovenščina', 165, y);
-  y+=4;
+  content += list.map(v => `
+    <div style="margin-bottom: 3px; font-size: 14px;">
+        <span style="display:inline-block; width: 100px;">${v.infinitive}</span>
+        <span style="display:inline-block; width: 100px;">${v.praesens}</span>
+        <span style="display:inline-block; width: 100px;">${v.past}</span>
+        <span style="display:inline-block; width: 140px;">${v.participle}</span>
+        <span style="display:inline-block; width: 200px;">${v.slovenian}</span>
+    </div>`).join('');
+    
+  container.innerHTML = content;
+  document.body.appendChild(container);
+
+  // 2. Convert HTML content to a single large image
+  const canvas = await html2canvas(container, { scale: 2, useCORS: true });
+  const imgData = canvas.toDataURL('image/png');
+  document.body.removeChild(container); // Remove temporary HTML element
+
+  // 3. Use jsPDF to slice and place the image across multiple pages
+  const pdf = new jsPDF('p', 'pt', 'a4');
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
   
-  data.forEach((d,i)=>{ 
-    doc.setFontSize(9);
-    doc.text(`${i+1}.`, 5, y);
-    doc.text(d.infinitive, 10, y); 
-    doc.text(d.praesens.replace('er ','').trim(), 55, y); // Prikaži samo glagol
-    doc.text(d.past, 100, y); 
-    doc.text(d.participle, 130, y); 
-    doc.text(d.slovenian, 165, y); 
-    y+=6; 
-    if(y>280){ 
-      doc.addPage(); y=10; 
-    } 
-  }); 
-  doc.save(title.replace(/\s/g,'_')+'.pdf'); 
-}
+  // Calculate the total image height based on the PDF width scaling
+  const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+  
+  let heightLeft = imgHeight;
+  let position = 0; // Vertical position on the PDF page
 
-function saveToStorage(){ localStorage.setItem('iv_trainer_progress_de', JSON.stringify(session)); }
-
-
-// ------------------ Inicializacija in dogodki ------------------
-
-function addEnterListeners() {
-  document.querySelectorAll('#answerInputs input').forEach(input => {
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault(); 
-        if (!session.checkedCurrent) {
-          checkAnswer();
-        } else {
-          nextCard();
-        }
-      }
-    });
-  });
-}
-
-document.getElementById('startBtn').addEventListener('click',startSession);
-document.getElementById('checkBtn').addEventListener('click',()=>{  checkAnswer(); });
-document.getElementById('nextBtn').addEventListener('click',nextCard);
-document.getElementById('showProgress').addEventListener('click',toggleProgress);
-document.getElementById('showHistory').addEventListener('click',toggleHistory); 
-document.getElementById('clearProgress').addEventListener('click',clearProgress);
-document.getElementById('exportWrong').addEventListener('click',()=>{ exportPDF(session.mistakes.map(m=>verbs[m.index]),'Napake'); });
-document.getElementById('exportDB').addEventListener('click',()=>{ exportPDF(verbs,'Baza glagolov'); });
-
-
-// load previous session if exists
-try{ 
-  const raw = localStorage.getItem('iv_trainer_progress_de'); 
-  if(raw) {
-    // Ohrani samo mistake in history pri nalaganju stare seje, zagon ponastavi statistiko.
-    const loadedSession = JSON.parse(raw);
-    session.mistakes = loadedSession.mistakes || [];
-    session.history = loadedSession.history || [];
+  // Draw the first page
+  pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, imgHeight);
+  heightLeft -= pageHeight;
+  
+  // Loop for remaining pages
+  while (heightLeft > 0) {
+    position = position - pageHeight; // Move the position up by one page height
+    pdf.addPage();
+    
+    // Draw the next segment of the image, starting from the new negative position
+    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+    heightLeft -= pageHeight;
   }
-}catch{}
-updateStats(); renderCard();
-addEnterListeners(); 
+
+  pdf.save(title.replace(/\s/g,'_') + '.pdf');
+}
+
+// ---------------- Event Listeners ----------------
+$('startBtn').addEventListener('click', startSession);
+$('nextBtn').addEventListener('click', nextCard);
+$('checkBtn').addEventListener('click', checkAnswer);
+$('exportDB').addEventListener('click',()=>exportPDF(verbs,'Verbdatenbank'));
+$('exportWrong').addEventListener('click',()=>exportPDF(session.mistakes.map(m=>m.expected),'Napačne'));
 </script>
 </body>
 </html>
