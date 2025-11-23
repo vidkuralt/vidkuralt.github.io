@@ -1,0 +1,62 @@
+---
+layout: archive
+title: "The Pinned Globe"
+permalink: /map.html
+author_profile: true
+---
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Travel Map</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    #map { width: 100%; height: 600px; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script>
+    async function initMap() {
+      // Load your exported JSON/KML file
+      const response = await fetch('/map/org-locations.js');
+      const savedData = await response.json();
+
+      // Initialize map
+      const map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 2,
+        center: { lat: 20, lng: 0 },
+      });
+
+      const bounds = new google.maps.LatLngBounds();
+
+      // Extract coordinates + create markers
+      savedData.features.forEach(feature => {
+        if (!feature.geometry) return;
+
+        const coords = feature.geometry.coordinates;
+        const lng = coords[0];
+        const lat = coords[1];
+
+        const marker = new google.maps.Marker({
+          position: { lat, lng },
+          map,
+          title: feature.properties.name,
+        });
+
+        bounds.extend({ lat, lng });
+      });
+
+      map.fitBounds(bounds);
+    }
+  </script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
+</body>
+</html>
+
+
+ <!-- <iframe src="/talkmap/map.html" height="700" width="850" style="border:none;"></iframe> -->
