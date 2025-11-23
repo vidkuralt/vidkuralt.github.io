@@ -42,19 +42,7 @@
 
 <script>
 // ------------------- Database -----------------------
-const verbs = {
-  "abhängen": [ { prep: "von", case: "dat" } ],
-  "arbeiten": [
-    { prep: "als", case: "nom" },
-    { prep: "bei", case: "dat" },
-    { prep: "an", case: "dat" }
-  ],
-  "sich freuen": [ 
-    { prep: "auf", case: "akk" },
-    { prep: "über", case: "akk" }
-  ]
-  // Add more verbs as needed
-};
+const verbs = { "abhängen": [ { prep: "von", case: "dat" } ], "achten": [ { prep: "auf", case: "akk" } ], "anfangen": [ { prep: "mit", case: "dat" } ], "anrufen": [ { prep: "bei", case: "dat" } ], "antworten": [ { prep: "auf", case: "akk" } ], "arbeiten": [ { prep: "als", case: "nom" }, { prep: "bei", case: "dat" }, { prep: "an", case: "dat" } ], "sich ärgern": [ { prep: "über", case: "akk" } ], "aufhören": [ { prep: "mit", case: "dat" } ], "bedeuten": [ { prep: "für", case: "akk" } ], "sich beeilen": [ { prep: "mit", case: "dat" } ], "beginnen": [ { prep: "mit", case: "dat" } ], "berichten": [ { prep: "über", case: "akk" }, { prep: "von", case: "dat" } ], "beschweren": [ { prep: "bei", case: "dat" }, { prep: "über", case: "akk" } ], "bestehen": [ { prep: "aus", case: "dat" } ], "bitten": [ { prep: "um", case: "akk" } ], "denken": [ { prep: "an", case: "akk" } ], "teilnehmen": [ { prep: "an", case: "dat" } ], "sprechen": [ { prep: "über", case: "akk" }, { prep: "mit", case: "dat" }, { prep: "von", case: "dat" } ], "sich freuen": [ { prep: "auf", case: "akk" }, { prep: "über", case: "akk" } ], "sich interessieren": [ { prep: "für", case: "akk" } ], "kämpfen": [ { prep: "für", case: "akk" }, { prep: "gegen", case: "akk" }, { prep: "mit", case: "dat" }, { prep: "um", case: "akk" } ], "sich konzentrieren": [ { prep: "auf", case: "akk" } ], "sich kümmern": [ { prep: "um", case: "akk" } ], "lachen": [ { prep: "über", case: "akk" } ], "leiden": [ { prep: "an", case: "dat" }, { prep: "unter", case: "dat" } ], "lesen": [ { prep: "von", case: "dat" }, { prep: "über", case: "akk" } ], "passen": [ { prep: "zu", case: "dat" } ], "protestieren": [ { prep: "gegen", case: "akk" } ], "reagieren": [ { prep: "auf", case: "akk" } ], "riechen": [ { prep: "nach", case: "dat" } ], "schicken": [ { prep: "an", case: "akk" } ], "schimpfen": [ { prep: "über", case: "akk" }, { prep: "mit", case: "dat" } ], "sich spezialisieren": [ { prep: "auf", case: "akk" } ], "sterben": [ { prep: "an", case: "dat" } ], "steigen": [ { prep: "auf", case: "akk" } ], "sich streiten": [ { prep: "mit", case: "dat" }, { prep: "über", case: "akk" } ], "suchen": [ { prep: "nach", case: "dat" } ], "tauschen": [ { prep: "gegen", case: "akk" } ], "telefonieren": [ { prep: "mit", case: "dat" } ], "träumen": [ { prep: "von", case: "dat" } ], "sich treffen": [ { prep: "mit", case: "dat" } ], "übersetzen": [ { prep: "in", case: "akk" }, { prep: "aus", case: "dat" } ], "überzeugen": [ { prep: "von", case: "dat" } ], "sich unterhalten": [ { prep: "über", case: "akk" }, { prep: "mit", case: "dat" } ], "sich verabreden": [ { prep: "mit", case: "dat" } ], "sich verlieben": [ { prep: "in", case: "akk" } ], "verzichten": [ { prep: "auf", case: "akk" } ], "sich vorbereiten": [ { prep: "auf", case: "akk" } ], "warnen": [ { prep: "vor", case: "dat" } ], "warten": [ { prep: "auf", case: "akk" } ], "sich wundern": [ { prep: "über", case: "akk" } ], "zweifeln": [ { prep: "an", case: "dat" } ] };
 
 // ------------------- Helper: remove umlauts -----------------------
 function normalize(text) {

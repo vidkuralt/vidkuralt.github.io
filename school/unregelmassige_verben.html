@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Unregelmäßige Verben Trainer</title>
+<style>
+:root{--bg:#0f172a;--card:#0b1220;--muted:#94a3b8;--accent:#60a5fa;--success:#10b981;--error:#ef4444;}
+body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#031026 0%, #07142a 100%);color:#e6eef8;margin:0;padding:24px}
+.wrap{max-width:980px;margin:0 auto}
+header{display:flex;align-items:center;gap:16px}
+h1{margin:0;font-size:20px}
+.card{background:rgba(255,255,255,0.03);padding:16px;border-radius:12px;margin-top:16px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+label{display:block;font-size:13px;color:var(--muted);margin-top:8px}
+select,input,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+button{background:var(--accent);color:#01203a;border:none;padding:10px 12px;border-radius:8px;cursor:pointer}
+button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:inherit;} 
+.prompt{font-size:24px;margin:12px 0}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+.stat{background:rgba(255,255,255,0.02);padding:8px;border-radius:8px;font-size:13px}
+.small{font-size:13px;color:var(--muted)}
+.flex{display:flex;gap:8px;align-items:center}
+.progress-list{max-height:220px;overflow:auto;margin-top:8px}
+.correct-entry{color:var(--success);}
+.wrong-entry{color:var(--error);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect rx='8' width='40' height='40' fill='%2360a5fa'/%3E%3Ctext x='50%25' y='54%25' font-size='20' text-anchor='middle' fill='white' font-family='Arial' dy='0.4em'%3EDe%3C/text%3E%3C/svg%3E" alt="logo" style="border-radius:8px"/>
+    <div>
+      <h1>Unregelmäßige Verben Trainer (Nemščina)</h1>
+      <div class="small">Hardcoded database • Multiple gamemodes • Export PDF</div>
+    </div>
+  </header>
+
+  <div class="card">
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+      <div style="flex:1">
+        <label>Izberi način učenja</label>
+        <select id="modeSelect">
+          <option value="infinitive_all">Prikaži Infinitiv — vpiši Präteritum, Partizip II in prevod</option>
+          <option value="slovenian_all">Prikaži Slovenščino — vpiši Infinitiv, Präsens, Präteritum in Partizip II</option>
+          <option value="only_past">Vpiši samo Präteritum (prompt: Infinitiv)</option>
+          <option value="only_participle">Vpiši samo Partizip II (prompt: Infinitiv)</option>
+          <option value="mixed">Mešani naključni pozivi</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="startBtn">Začni sejo</button>
+      <button id="nextBtn" class="ghost">Naprej</button>
+      <button id="checkBtn" class="ghost">Preveri</button>
+      <button id="showHistory">Zgodovina seje</button> 
+      <button id="showProgress">Prikaži napake</button> 
+      <button id="exportWrong">Izvozi napake (PDF)</button> 
+      <button id="exportDB">Izvozi DB (PDF)</button> 
+      <button id="clearProgress">Počisti napredek</button> 
+    </div>
+
+    <div id="trainer" style="margin-top:12px;display:none">
+      <div class="prompt" id="promptText">Poziv se bo prikazal tukaj</div>
+
+      <div id="answerInputs">
+        <label id="labInf">Infinitiv (Npr. geben)</label>
+        <input id="inpInf" data-form="infinitive" />
+        <label id="labPres">Präsens (er ...)</label>
+        <input id="inpPres" data-form="praesens" />
+        <label id="labPast">Präteritum (Npr. gab)</label>
+        <input id="inpPast" data-form="past" />
+        <label id="labPart">Partizip II (Npr. gegeben) - Upoštevajte sein/haben!</label>
+        <input id="inpPart" data-form="participle" />
+        <label id="labSlo">Slovenski prevod</label>
+        <input id="inpSlo" data-form="slovenian" />
+      </div>
+
+      <div class="stats">
+        <div class="stat">Točke: <span id="score">0</span></div>
+        <div class="stat">Poskusi: <span id="attempts">0</span></div>
+        <div class="stat">Pravilno: <span id="correct">0</span></div>
+        <div class="stat">Narobe: <span id="wrong">0</span></div>
+      </div>
+
+      <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+        <label class="small">Samodejno preveri ob pritisku ENTER</label>
+        <input id="autocheck" type="checkbox" checked />
+      </div>
+    </div>
+    
+    <div id="historyPanel" style="display:none;margin-top:12px">
+      <h3 style="margin:6px 0">Zgodovina seje (vsi poskusi)</h3>
+      <div class="progress-list" id="historyList"></div>
+    </div>
+
+    <div id="progressPanel" style="display:none;margin-top:12px">
+      <h3 style="margin:6px 0">Napredek in trajne napake</h3>
+      <div class="flex small"><strong>Napake v seji</strong><div style="flex:1"></div><button id="markAllKnown" class="ghost">Označi vse kot pregledano</button></div>
+      <div class="progress-list" id="mistakeList"></div>
+    </div>
+  </div>
+
+  <div class="card small">
+    <h3>Opombe in navodila</h3>
+    <ul>
+      <li>Napredek se shranjuje v vašem brskalniku (LocalStorage).</li>
+      <li>**Za vnos Präsensa (er ...) ni treba vpisovati 'er' (npr. 'zieht an' je dovolj).**</li>
+    </ul>
+  </div>
+
+  <footer class="small">Standalone HTML version</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+// ------------------ Hardcoded database (Deutsche unregelmäßige Verben) ------------------
+let verbs = [
+  // Struktura: {infinitive:"Infinitiv", praesens:"er Präsens", past:"Präteritum", participle:"Partizip II (sein/haben)", slovenian:"Prevod"}
+  {infinitive:"anbieten", praesens:"er bietet an", past:"bot an", participle:"angeboten", slovenian:"ponuditi"},
+  {infinitive:"anfangen", praesens:"er fängt an", past:"fing an", participle:"angefangen", slovenian:"začeti"},
+  {infinitive:"anrufen", praesens:"er ruft an", past:"rief an", participle:"angerufen", slovenian:"poklicati"},
+  {infinitive:"anziehen", praesens:"er zieht an", past:"zog an", participle:"angezogen", slovenian:"obleči"},
+  {infinitive:"aufstehen", praesens:"er steht auf", past:"stand auf", participle:"sein / aufgestanden", slovenian:"vstati"}, // sein
+  {infinitive:"backen", praesens:"er bäckt", past:"buk", participle:"gebacken", slovenian:"peči"},
+  {infinitive:"beginnen", praesens:"er beginnt", past:"begann", participle:"begonnen", slovenian:"začeti"},
+  {infinitive:"bekommen", praesens:"er bekommt", past:"bekam", participle:"bekommen", slovenian:"dobiti"},
+  {infinitive:"biegen", praesens:"er biegt", past:"bog", participle:"gebogen", slovenian:"upogniti"},
+  {infinitive:"bieten", praesens:"er bietet", past:"bot", participle:"geboten", slovenian:"nuditi"},
+  {infinitive:"binden", praesens:"er bindet", past:"band", participle:"gebunden", slovenian:"zavezati"},
+  {infinitive:"bitten", praesens:"er bittet", past:"bat", participle:"gebeten", slovenian:"prositi"},
+  {infinitive:"blasen", praesens:"er bläst", past:"blies", participle:"geblasen", slovenian:"pihati"},
+  {infinitive:"bleiben", praesens:"er bleibt", past:"blieb", participle:"sein / geblieben", slovenian:"ostati"}, // sein
+  {infinitive:"bleichen", praesens:"er bleicht", past:"blich", participle:"geblichen", slovenian:"beliti"},
+  {infinitive:"braten", praesens:"er brät", past:"briet", participle:"gebraten", slovenian:"peči"},
+  {infinitive:"brechen", praesens:"er bricht", past:"brach", participle:"gebrochen", slovenian:"zlomiti"},
+  {infinitive:"brennen", praesens:"er brennt", past:"brannte", participle:"gebrannt", slovenian:"goreti"},
+  {infinitive:"bringen", praesens:"er bringt", past:"brachte", participle:"gebracht", slovenian:"prinesti"},
+  {infinitive:"denken", praesens:"er denkt", past:"dachte", participle:"gedacht", slovenian:"misliti"},
+  {infinitive:"dürfen", praesens:"er darf", past:"durfte", participle:"gedurft", slovenian:"smeti"},
+  {infinitive:"einladen", praesens:"er lädt ein", past:"lud ein", participle:"eingeladen", slovenian:"povabiti"},
+  {infinitive:"einziehen", praesens:"er zieht ein", past:"zog ein", participle:"sein / eingezogen", slovenian:"vseliti se"}, // sein
+  {infinitive:"empfangen", praesens:"er empfängt", past:"empfing", participle:"empfangen", slovenian:"sprejeti"},
+  {infinitive:"empfehlen", praesens:"er empfiehlt", past:"empfahl", participle:"empfohlen", slovenian:"priporočati"},
+  {infinitive:"entscheiden", praesens:"er entscheidet", past:"entschied", participle:"entschieden", slovenian:"odločati"},
+  {infinitive:"erschrecken", praesens:"er erschrickt", past:"erschrak", participle:"sein / erschrocken", slovenian:"ustrašiti se"}, // sein (intranzitivno)
+  {infinitive:"erziehen", praesens:"er erzieht", past:"erzog", participle:"erzogen", slovenian:"vzgajati"},
+  {infinitive:"erhalten", praesens:"er erhält", past:"erhielt", participle:"erhalten", slovenian:"dobiti"},
+  {infinitive:"essen", praesens:"er isst", past:"aß", participle:"gegessen", slovenian:"jesti"},
+  {infinitive:"fahren", praesens:"er fährt", past:"fuhr", participle:"sein / gefahren", slovenian:"peljati se"}, // sein
+  {infinitive:"fallen", praesens:"er fällt", past:"fiel", participle:"sein / gefallen", slovenian:"pasti"}, // sein
+  {infinitive:"finden", praesens:"er findet", past:"fand", participle:"gefunden", slovenian:"najti, zdeti se"},
+  {infinitive:"fliegen", praesens:"er fliegt", past:"flog", participle:"sein / geflogen", slovenian:"leteti"}, // sein
+  {infinitive:"fliehen", praesens:"er flieht", past:"floh", participle:"sein / geflohen", slovenian:"bežati"}, // sein
+  {infinitive:"frieren", praesens:"er friert", past:"fror", participle:"gefroren", slovenian:"zebsti, zmrzovati"},
+  {infinitive:"geben", praesens:"er gibt", past:"gab", participle:"gegeben", slovenian:"dati"},
+  {infinitive:"gefallen", praesens:"er gefällt", past:"gefiel", participle:"gefallen", slovenian:"ugajati"},
+  {infinitive:"gehen", praesens:"er geht", past:"ging", participle:"sein / gegangen", slovenian:"iti"}, // sein
+  {infinitive:"gelingen", praesens:"es gelingt", past:"gelang", participle:"sein / gelungen", slovenian:"posrečiti se"}, // sein
+  {infinitive:"gelten", praesens:"er gilt", past:"galt", participle:"gegolten", slovenian:"veljati"},
+  {infinitive:"genießen", praesens:"er genießt", past:"genoss", participle:"genossen", slovenian:"uživati"},
+  {infinitive:"geraten", praesens:"er gerät", past:"geriet", participle:"sein / geraten", slovenian:"zapasti v"}, // sein
+  {infinitive:"geschehen", praesens:"es geschieht", past:"geschah", participle:"sein / geschehen", slovenian:"zgoditi se"}, // sein
+  {infinitive:"gewinnen", praesens:"er gewinnt", past:"gewann", participle:"gewonnen", slovenian:"dobiti, zmagati"},
+  {infinitive:"gießen", praesens:"er gießt", past:"goss", participle:"gegossen", slovenian:"politi"},
+  {infinitive:"haben", praesens:"er hat", past:"hatte", participle:"gehabt", slovenian:"imeti"},
+  {infinitive:"hängen", praesens:"er hängt", past:"hing", participle:"gehangen", slovenian:"viseti"},
+  {infinitive:"halten", praesens:"er hält", past:"hielt", participle:"gehalten", slovenian:"držati"},
+  {infinitive:"heißen", praesens:"er heißt", past:"hieß", participle:"geheißen", slovenian:"imenovati se"},
+  {infinitive:"helfen", praesens:"er hilft", past:"half", participle:"geholfen", slovenian:"pomagati"},
+  {infinitive:"kennen", praesens:"er kennt", past:"kannte", participle:"gekannt", slovenian:"poznati"},
+  {infinitive:"klingen", praesens:"er klingt", past:"klang", participle:"geklungen", slovenian:"zveneti"},
+  {infinitive:"kommen", praesens:"er kommt", past:"kam", participle:"sein / gekommen", slovenian:"priti"}, // sein
+  {infinitive:"können", praesens:"er kann", past:"konnte", participle:"gekonnt", slovenian:"moči, znati"},
+  {infinitive:"lassen", praesens:"er lässt", past:"ließ", participle:"gelassen", slovenian:"pustiti"},
+  {infinitive:"laufen", praesens:"er läuft", past:"lief", participle:"sein / gelaufen", slovenian:"teči"}, // sein
+  {infinitive:"leihen", praesens:"er leiht", past:"lieh", participle:"geliehen", slovenian:"posoditi"},
+  {infinitive:"lesen", praesens:"er liest", past:"las", participle:"gelesen", slovenian:"brati"},
+  {infinitive:"liegen", praesens:"er liegt", past:"lag", participle:"gelegen", slovenian:"ležati"},
+  {infinitive:"messen", praesens:"er misst", past:"maß", participle:"gemessen", slovenian:"meriti"},
+  {infinitive:"müssen", praesens:"er muss", past:"musste", participle:"gemusst", slovenian:"morati"},
+  {infinitive:"nehmen", praesens:"er nimmt", past:"nahm", participle:"genommen", slovenian:"vzeti"},
+  {infinitive:"nennen", praesens:"er nennt", past:"nannte", participle:"genannt", slovenian:"imenovati"},
+  {infinitive:"pfeifen", praesens:"er pfeift", past:"pfiff", participle:"gepfiffen", slovenian:"žvižgati"},
+  {infinitive:"raten", praesens:"er rät", past:"riet", participle:"geraten", slovenian:"svetovati"},
+  {infinitive:"reißen", praesens:"er reißt", past:"riss", participle:"gerissen", slovenian:"trgati"},
+  {infinitive:"reiten", praesens:"er reitet", past:"ritt", participle:"sein / geritten", slovenian:"jahati"}, // sein
+  {infinitive:"rennen", praesens:"er rennt", past:"rannte", participle:"sein / gerannt", slovenian:"teči, dirjati"}, // sein
+  {infinitive:"rufen", praesens:"er ruft", past:"rief", participle:"gerufen", slovenian:"klicati"},
+  {infinitive:"schaffen", praesens:"er schafft", past:"schuf", participle:"geschaffen", slovenian:"ustvariti"},
+  {infinitive:"scheinen", praesens:"er scheint", past:"schien", participle:"geschienen", slovenian:"sijati, zdeti se"},
+  {infinitive:"schießen", praesens:"er schießt", past:"schoss", participle:"geschossen", slovenian:"streljati"},
+  {infinitive:"schlafen", praesens:"er schläft", past:"schlief", participle:"geschlafen", slovenian:"spati"},
+  {infinitive:"schlagen", praesens:"er schlägt", past:"schlug", participle:"geschlagen", slovenian:"udariti, tepsti"},
+  {infinitive:"schließen", praesens:"er schließt", past:"schloss", participle:"geschlossen", slovenian:"zapreti"},
+  {infinitive:"schneiden", praesens:"er schneidet", past:"schnitt", participle:"geschnitten", slovenian:"rezati"},
+  {infinitive:"schreiben", praesens:"er schreibt", past:"schrieb", participle:"geschrieben", slovenian:"pisati"},
+  {infinitive:"schreien", praesens:"er schreit", past:"schrie", participle:"geschrien", slovenian:"kričati, vpiti"},
+  {infinitive:"schweigen", praesens:"er schweigt", past:"schwieg", participle:"geschwiegen", slovenian:"molčati"},
+  {infinitive:"schwimmen", praesens:"er schwimmt", past:"schwamm", participle:"sein / geschwommen", slovenian:"plavati"}, // sein
+  {infinitive:"sehen", praesens:"er sieht", past:"sah", participle:"gesehen", slovenian:"videti"},
+  {infinitive:"senden", praesens:"er sendet", past:"sandte", participle:"gesandt", slovenian:"pošiljati, oddajati"},
+  {infinitive:"sein", praesens:"er ist", past:"war", participle:"sein / gewesen", slovenian:"biti"}, // sein
+  {infinitive:"singen", praesens:"er singt", past:"sang", participle:"gesungen", slovenian:"peti"},
+  {infinitive:"sinken", praesens:"er sinkt", past:"sank", participle:"sein / gesunken", slovenian:"potopiti se"}, // sein
+  {infinitive:"sitzen", praesens:"er sitzt", past:"saß", participle:"gesessen", slovenian:"sedeti"},
+  {infinitive:"sollen", praesens:"er soll", past:"sollte", participle:"gesollt", slovenian:"morati, naj"},
+  {infinitive:"sprechen", praesens:"er spricht", past:"sprach", participle:"gesprochen", slovenian:"govoriti"},
+  {infinitive:"springen", praesens:"er springt", past:"sprang", participle:"sein / gesprungen", slovenian:"skočiti"}, // sein
+  {infinitive:"stehen", praesens:"er steht", past:"stand", participle:"gestanden", slovenian:"stati"},
+  {infinitive:"stehlen", praesens:"er stiehlt", past:"stahl", participle:"gestohlen", slovenian:"krasti"},
+  {infinitive:"steigen", praesens:"er steigt", past:"stieg", participle:"sein / gestiegen", slovenian:"dvigati se"}, // sein
+  {infinitive:"sterben", praesens:"er stirbt", past:"starb", participle:"sein / gestorben", slovenian:"umreti"}, // sein
+  {infinitive:"streichen", praesens:"er streicht", past:"strich", participle:"gestrichen", slovenian:"gladiti"},
+  {infinitive:"streiten", praesens:"er streitet", past:"stritt", participle:"gestritten", slovenian:"prepirati se"},
+  {infinitive:"tragen", praesens:"er trägt", past:"trug", participle:"getragen", slovenian:"nositi"},
+  {infinitive:"treffen", praesens:"er trifft", past:"traf", participle:"getroffen", slovenian:"srečati"},
+  {infinitive:"treiben", praesens:"er treibt", past:"trieb", participle:"getrieben", slovenian:"gnati, ukvarjati se"},
+  {infinitive:"treten", praesens:"er tritt", past:"trat", participle:"sein / getreten", slovenian:"stopiti"}, // sein
+  {infinitive:"trinken", praesens:"er trinkt", past:"trank", participle:"getrunken", slovenian:"piti"},
+  {infinitive:"tun", praesens:"er tut", past:"tat", participle:"getan", slovenian:"storiti"},
+  {infinitive:"umziehen", praesens:"er zieht um", past:"zog um", participle:"sein / umgezogen", slovenian:"preseliti se"}, // sein
+  {infinitive:"sich unterhalten", praesens:"er unterhält sich", past:"unterhielt sich", participle:"sich unterhalten", slovenian:"pogovarjati se"},
+  {infinitive:"verderben", praesens:"er verdirbt", past:"verdarb", participle:"verdorben", slovenian:"pokvariti"},
+  {infinitive:"vergessen", praesens:"er vergisst", past:"vergaß", participle:"vergessen", slovenian:"pozabiti"},
+  {infinitive:"vergleichen", praesens:"er vergleicht", past:"verglich", participle:"verglichen", slovenian:"primerjati"},
+  {infinitive:"verlieren", praesens:"er verliert", past:"verlor", participle:"verloren", slovenian:"izgubiti"},
+  {infinitive:"verschwinden", praesens:"er verschwindet", past:"verschwand", participle:"sein / verschwunden", slovenian:"izginit"}, // sein
+  {infinitive:"verstehen", praesens:"er versteht", past:"verstand", participle:"verstanden", slovenian:"razumeti"},
+  {infinitive:"verzeihen", praesens:"er verzeiht", past:"verzieh", participle:"verziehen", slovenian:"odpustiti"},
+  {infinitive:"wachsen", praesens:"er wächst", past:"wuchs", participle:"sein / gewachsen", slovenian:"rasti"}, // sein
+  {infinitive:"waschen", praesens:"er wäscht", past:"wusch", participle:"gewaschen", slovenian:"umivati"},
+  {infinitive:"wenden", praesens:"er wendet", past:"wandte", participle:"gewandt", slovenian:"obrniti"},
+  {infinitive:"werden", praesens:"er wird", past:"wurde", participle:"sein / geworden", slovenian:"postati"}, // sein
+  {infinitive:"werfen", praesens:"er wirft", past:"warf", participle:"geworfen", slovenian:"vreči, metati"},
+  {infinitive:"wissen", praesens:"er weiß", past:"wusste", participle:"gewusst", slovenian:"vedeti"},
+  {infinitive:"wollen", praesens:"er will", past:"wollte", participle:"gewollt", slovenian:"hoteti"},
+  {infinitive:"wiegen", praesens:"er wiegt", past:"wog", participle:"gewogen", slovenian:"tehtati"},
+  {infinitive:"ziehen", praesens:"er zieht", past:"zog", participle:"gezogen", slovenian:"vleči, potegniti"},
+  {infinitive:"zwingen", praesens:"er zwingt", past:"zwang", participle:"gezwungen", slovenian:"siliti"}
+];
+
+
+let session = {order:[],index:0,mode:'infinitive_all',score:0,attempts:0,correct:0,wrong:0,mistakes:[], history:[]}; 
+const $ = id => document.getElementById(id);
+const normalize = s => {
+  // Odstrani 'er ' samo na začetku, da omogoči vnos brez "er"
+  let cleanS = (s||'').toString().trim().toLowerCase();
+  if (cleanS.startsWith('er ')) {
+    cleanS = cleanS.substring(3).trim();
+  }
+  // Normalizacija za šumnike in preglase
+  cleanS = cleanS.replace(/[äöüß]/g, (match) => { 
+    switch (match) {
+      case 'ä': return 'ae';
+      case 'ö': return 'oe';
+      case 'ü': return 'ue';
+      case 'ß': return 'ss';
+      default: return match;
+    }
+  });
+  // Odstrani slovenske šumnike po normalizaciji, če so še ostali (za nekatere prevode)
+  cleanS = cleanS.replace(/[čšž]/g, (match) => {
+    switch (match) {
+      case 'č': return 'c';
+      case 'š': return 's';
+      case 'ž': return 'z';
+      default: return match;
+    }
+  });
+  return cleanS;
+};
+
+/**
+ * Preveri ujemanje odgovora. Ločuje med prevodi (vejica) in nemškimi oblikami (poševnica).
+ */
+const match=(userInput, expectedAnswer)=>{
+    // Uporabi normalize() za pripravo uporabnikovega vnosa in pričakovanega odgovora
+    const normalizedInput = normalize(userInput);
+    
+    let possibleAnswers = [];
+
+    // 1. Ravnanje z več možnimi prevodi (ločeni z vejico)
+    if (expectedAnswer.includes(',')) {
+        possibleAnswers.push(...expectedAnswer.split(',').map(s => normalize(s.trim())));
+    } 
+    // 2. Ravnanje z alternativnimi nemškimi oblikami (ločene z '/')
+    else if (expectedAnswer.includes('/')) {
+        possibleAnswers.push(...expectedAnswer.split('/').map(s => normalize(s.trim())));
+    }
+    else {
+        possibleAnswers.push(normalize(expectedAnswer));
+    }
+
+    // 3. Posebno ravnanje za Partizip II (sein / gewesen) - omogoči vnos samo "gewesen"
+    if (expectedAnswer.includes(' / ') && expectedAnswer.includes('sein')) {
+        const coreParticiple = expectedAnswer.split(' / ')[1];
+        possibleAnswers.push(normalize(coreParticiple));
+    }
+    
+    // 4. Posebno ravnanje za Präsens (er ...) - omogoči vnos samo "sieht an" iz "er sieht an"
+    if (expectedAnswer.startsWith('er ')) {
+        const verbOnly = expectedAnswer.substring(3).trim();
+        possibleAnswers.push(normalize(verbOnly));
+    }
+
+
+    // Preveri, ali je normaliziran vnos enak kateremu koli izmed možnih odgovorov
+    // Filtriraj prazne ali undefined vnose, da preprečiš napačno ujemanje
+    return possibleAnswers.filter(a => a.length > 0).includes(normalizedInput);
+};
+
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } }
+
+function startSession(){
+  if(!verbs.length){ alert('No verbs in database'); return; }
+  session.mode=$('modeSelect').value;
+  session.order=verbs.map((_,i)=>i); 
+  shuffle(session.order); 
+  
+  session.index=0; session.score=0; session.attempts=0; session.correct=0; session.wrong=0; 
+  session.mistakes=session.mistakes||[];
+  session.history = []; 
+  
+  $('trainer').style.display='block'; 
+  $('progressPanel').style.display='none';
+  $('historyPanel').style.display='none'; 
+  
+  renderCard(); saveToStorage();
+}
+
+function renderCard(){
+  const idx=session.order[session.index]; const item=verbs[idx];
+  $('inpInf').value=''; $('inpPres').value=''; $('inpPast').value=''; $('inpPart').value=''; $('inpSlo').value='';
+  let prompt=''; 
+  // Skrij vse labele in inpute
+  document.querySelectorAll('#answerInputs label').forEach(l=>l.style.display='none'); 
+  document.querySelectorAll('#answerInputs input').forEach(i=>i.style.display='none');
+  
+  if(session.mode==='infinitive_all'){ 
+    prompt=item.infinitive; 
+    // Prikaži polja za odgovor (Präteritum, Partizip II, Prevod)
+    $('labPast').style.display='block'; $('inpPast').style.display='block';
+    $('labPart').style.display='block'; $('inpPart').style.display='block';
+    $('labSlo').style.display='block'; $('inpSlo').style.display='block';
+  }
+  else if(session.mode==='slovenian_all'){ 
+    prompt=item.slovenian||'(ni prevoda)'; 
+    // Prikaži polja za odgovor (Infinitiv, Präsens, Präteritum, Partizip II)
+    $('labInf').style.display='block'; $('inpInf').style.display='block'; 
+    $('labPres').style.display='block'; $('inpPres').style.display='block'; 
+    $('labPast').style.display='block'; $('inpPast').style.display='block';
+    $('labPart').style.display='block'; $('inpPart').style.display='block';
+  }
+  else if(session.mode==='only_past'){ 
+    prompt=item.infinitive; 
+    $('labPast').style.display='block'; $('inpPast').style.display='block';
+  }
+  else if(session.mode==='only_participle'){ 
+    prompt=item.infinitive; 
+    $('labPart').style.display='block'; $('inpPart').style.display='block';
+  }
+  else if(session.mode==='mixed'){ 
+    const rnd=Math.random(); 
+    if(rnd<0.33){session.mode='infinitive_all';} 
+    else if(rnd<0.66){session.mode='slovenian_all';} 
+    else {
+      // V mešanem načinu se za preostalo 1/3 izbere ali samo Präteritum ali Partizip II
+      session.mode=Math.random()<0.5 ? 'only_past' : 'only_participle';
+    }
+    return renderCard();  
+  }
+  $('promptText').textContent=prompt;
+
+  const visibleInputs = Array.from(document.querySelectorAll('#answerInputs input')).filter(input => input.style.display !== 'none');
+  if(visibleInputs.length > 0) {
+    visibleInputs[0].focus();
+  }
+}
+
+function checkAnswer(){
+  if (session.checkedCurrent) return; 
+
+  const idx=session.order[session.index]; const item=verbs[idx]; session.attempts++;
+  let correctCount=0, required=0; 
+  const userInputs = {inf:$('inpInf').value, pres:$('inpPres').value, past:$('inpPast').value, part:$('inpPart').value, slo:$('inpSlo').value};
+  
+  if(session.mode==='infinitive_all'){
+    required=3;
+    if(match(userInputs.past,item.past)) correctCount++; 
+    if(match(userInputs.part,item.participle)) correctCount++; 
+    if(match(userInputs.slo,item.slovenian)) correctCount++; 
+  } else if(session.mode==='slovenian_all'){
+    required=4;
+    if(match(userInputs.inf,item.infinitive)) correctCount++; 
+    if(match(userInputs.pres,item.praesens)) correctCount++; // Preverjanje Präsensa
+    if(match(userInputs.past,item.past)) correctCount++; 
+    if(match(userInputs.part,item.participle)) correctCount++; 
+  } else if(session.mode==='only_past'){ 
+    required=1; 
+    if(match(userInputs.past,item.past)) correctCount++; 
+  }
+  else if(session.mode==='only_participle'){ 
+    required=1; 
+    if(match(userInputs.part,item.participle)) correctCount++; 
+  }
+  const success=(correctCount===required);
+  
+  // Zapiši poskus v zgodovino seje
+  session.history.push({
+    index: idx,
+    mode: session.mode,
+    provided: userInputs,
+    expected: verbs[idx],
+    correct: success
+  });
+  
+  if(success){ 
+    session.score+=10; session.correct++; 
+  } else { 
+    session.score-=2; session.wrong++; 
+    // Dodaj samo enkrat v napačne (persistent mistakes)
+    const alreadyMistake = session.mistakes.some(m => m.index === idx);
+    if(!alreadyMistake) {
+      session.mistakes.push({index:idx,mode:session.mode,provided:userInputs,expected:verbs[idx]});
+    }
+  }
+
+  session.checkedCurrent = true; 
+  saveToStorage(); updateStats(); showFeedback(success);
+  
+  // Osveži zgodovino, če je plošča odprta
+  if ($('historyPanel').style.display === 'block') {
+    renderHistory();
+  }
+  
+  if($('autocheck').checked) {
+    nextCard();
+  } else {
+    $('nextBtn').focus();
+  }
+}
+
+function showFeedback(ok){
+  const idx=session.order[session.index]; const e=verbs[idx]; 
+  // Prikaži vse 4 oblike
+  const feedback = ok ? 
+    `<span style="color:var(--success)">✅ Pravilno!</span>` : 
+    `<span style="color:var(--error)">❌ Napačno</span> — Pričakovano: ${e.infinitive} / ${e.praesens} / ${e.past} / ${e.participle} — ${e.slovenian}`;
+  $('promptText').innerHTML = feedback; 
+}
+
+function nextCard(){ 
+  session.index=(session.index+1)%session.order.length; 
+  session.checkedCurrent = false; 
+  updateStats(); renderCard(); saveToStorage(); 
+}
+
+function updateStats(){ $('score').textContent=session.score; $('attempts').textContent=session.attempts; $('correct').textContent=session.correct; $('wrong').textContent=session.wrong; }
+
+/**
+ * Prikazuje/skrije ploščo z napačnimi odgovori.
+ * Zagotavlja, da je druga plošča skrita.
+ */
+function toggleProgress(){ 
+  const progressPanel = $('progressPanel');
+  const vis = progressPanel.style.display === 'block'; 
+  progressPanel.style.display = vis ? 'none' : 'block'; 
+  $('historyPanel').style.display='none'; 
+  if (!vis) renderMistakes(); 
+}
+
+/**
+ * Prikazuje/skrije ploščo z zgodovino seje.
+ * Zagotavlja, da je druga plošča skrita.
+ */
+function toggleHistory(){
+  const historyPanel = $('historyPanel');
+  const vis = historyPanel.style.display === 'block'; 
+  historyPanel.style.display = vis ? 'none' : 'block'; 
+  $('progressPanel').style.display='none'; 
+  if (!vis) renderHistory();
+}
+
+// Render all session attempts
+function renderHistory(){
+  const cont=$('historyList'); cont.innerHTML='';
+  if(!session.history||!session.history.length){ cont.innerHTML='<div class="small">Še ni zabeleženih poskusov.</div>'; return; }
+  
+  const reversedHistory = [...session.history].reverse();
+  
+  reversedHistory.forEach((h, i)=>{
+    const v=h.expected;
+    const isCorrect = h.correct;
+    const entryClass = isCorrect ? 'correct-entry' : 'wrong-entry';
+    const marker = isCorrect ? '✅' : '❌';
+
+    const row=document.createElement('div'); 
+    row.style.padding='8px'; 
+    row.style.borderBottom='1px solid rgba(255,255,255,0.02)';
+    row.className = entryClass;
+    
+    row.innerHTML = `
+      <div>
+        <strong>${marker} ${v.infinitive}</strong> / ${v.praesens} / ${v.past} / ${v.participle} (${v.slovenian}) 
+        <div class="small">Način: ${h.mode}</div>
+      </div>
+      ${!isCorrect ? 
+        `<div class="small" style="margin-top:4px;">
+          <strong>Vaš vnos:</strong> ${h.provided.inf} | ${h.provided.pres} | ${h.provided.past} | ${h.provided.part} | ${h.provided.slo}
+        </div>` : ''}
+    `;
+    cont.appendChild(row);
+  });
+}
+
+function renderMistakes(){
+  const cont=$('mistakeList'); cont.innerHTML='';
+  if(!session.mistakes||!session.mistakes.length){ cont.innerHTML='<div class="small">Še ni napak — odlično!</div>'; return; }
+  session.mistakes.forEach((m,i)=>{
+    const v=verbs[m.index]; const row=document.createElement('div'); row.style.padding='8px'; row.style.borderBottom='1px solid rgba(255,255,255,0.02)';
+    row.innerHTML=`<div style="display:flex;justify-content:space-between"><div><strong>${v.infinitive}</strong> — ${v.praesens} — ${v.past} — ${v.participle} <div class='small'>${v.slovenian}</div></div><div><button data-i='${i}' class='ghost btnMark'>Označi OK</button></div></div>`;
+    cont.appendChild(row);
+  });
+  document.querySelectorAll('.btnMark').forEach(b=>b.addEventListener('click',e=>{ const i=parseInt(e.target.dataset.i); session.mistakes.splice(i,1); saveToStorage(); renderMistakes(); }));
+}
+
+function clearProgress(){ 
+  if(confirm('Ali res želiš izbrisati celoten napredek? To bo izbrisalo vse rezultate in shranjene napake.')){ 
+    session={order:[],index:0,mode:'infinitive_all',score:0,attempts:0,correct:0,wrong:0,mistakes:[], history:[]}; 
+    saveToStorage(); updateStats(); renderCard(); renderMistakes(); renderHistory(); 
+  } 
+}
+
+/**
+ * Vključi Unicode podporo za šumnike (č, š, ž) in nemške preglase.
+ */
+function exportPDF(data,title){ 
+  const { jsPDF } = window.jspdf; 
+  // Nastavimo opcijo "encoding: 'Unicode'" za boljšo podporo znakom
+  const doc = new jsPDF({ encoding: 'Unicode' }); 
+  
+  // Uporabimo standardni font, ki deluje z dodanim kodiranjem
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10); // Zmanjšana pisava za 4 stolpce
+  
+  let y=10; 
+  doc.text(title,10,y); 
+  y+=8; 
+
+  // Glave
+  doc.setFontSize(10);
+  doc.text('Infinitiv', 10, y);
+  doc.text('Präsens (er)', 55, y);
+  doc.text('Präteritum', 100, y);
+  doc.text('Partizip II', 130, y);
+  doc.text('Slovenščina', 165, y);
+  y+=4;
+  
+  data.forEach((d,i)=>{ 
+    doc.setFontSize(9);
+    doc.text(`${i+1}.`, 5, y);
+    doc.text(d.infinitive, 10, y); 
+    doc.text(d.praesens.replace('er ','').trim(), 55, y); // Prikaži samo glagol
+    doc.text(d.past, 100, y); 
+    doc.text(d.participle, 130, y); 
+    doc.text(d.slovenian, 165, y); 
+    y+=6; 
+    if(y>280){ 
+      doc.addPage(); y=10; 
+    } 
+  }); 
+  doc.save(title.replace(/\s/g,'_')+'.pdf'); 
+}
+
+function saveToStorage(){ localStorage.setItem('iv_trainer_progress_de', JSON.stringify(session)); }
+
+
+// ------------------ Inicializacija in dogodki ------------------
+
+function addEnterListeners() {
+  document.querySelectorAll('#answerInputs input').forEach(input => {
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault(); 
+        if (!session.checkedCurrent) {
+          checkAnswer();
+        } else {
+          nextCard();
+        }
+      }
+    });
+  });
+}
+
+document.getElementById('startBtn').addEventListener('click',startSession);
+document.getElementById('checkBtn').addEventListener('click',()=>{  checkAnswer(); });
+document.getElementById('nextBtn').addEventListener('click',nextCard);
+document.getElementById('showProgress').addEventListener('click',toggleProgress);
+document.getElementById('showHistory').addEventListener('click',toggleHistory); 
+document.getElementById('clearProgress').addEventListener('click',clearProgress);
+document.getElementById('exportWrong').addEventListener('click',()=>{ exportPDF(session.mistakes.map(m=>verbs[m.index]),'Napake'); });
+document.getElementById('exportDB').addEventListener('click',()=>{ exportPDF(verbs,'Baza glagolov'); });
+
+
+// load previous session if exists
+try{ 
+  const raw = localStorage.getItem('iv_trainer_progress_de'); 
+  if(raw) {
+    // Ohrani samo mistake in history pri nalaganju stare seje, zagon ponastavi statistiko.
+    const loadedSession = JSON.parse(raw);
+    session.mistakes = loadedSession.mistakes || [];
+    session.history = loadedSession.history || [];
+  }
+}catch{}
+updateStats(); renderCard();
+addEnterListeners(); 
+</script>
+</body>
+</html>
