@@ -1,408 +1,520 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Irregular Verbs Trainer</title>
-  <style>
-    :root{--bg:#0f172a;--card:#0b1220;--muted:#94a3b8;--accent:#60a5fa}
-    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#031026 0%, #07142a 100%);color:#e6eef8;margin:0;padding:24px}
-    .wrap{max-width:980px;margin:0 auto}
-    header{display:flex;align-items:center;gap:16px}
-    h1{margin:0;font-size:20px}
-    .card{background:rgba(255,255,255,0.03);padding:16px;border-radius:12px;margin-top:16px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
-    label{display:block;font-size:13px;color:var(--muted);margin-top:8px}
-    select,input,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
-    .row{display:flex;gap:12px}
-    .row > *{flex:1}
-    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-    button{background:var(--accent);color:#01203a;border:none;padding:10px 12px;border-radius:8px;cursor:pointer}
-    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06)}
-    .prompt{font-size:24px;margin:12px 0}
-    .stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
-    .stat{background:rgba(255,255,255,0.02);padding:8px;border-radius:8px;font-size:13px}
-    table{width:100%;border-collapse:collapse;margin-top:12px}
-    th,td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left}
-    .small{font-size:13px;color:var(--muted)}
-    footer{margin-top:18px;font-size:13px;color:var(--muted)}
-    .flex{display:flex;gap:8px;align-items:center}
-    .progress-list{max-height:220px;overflow:auto;margin-top:8px}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Irregular Verbs Trainer</title>
+<style>
+:root{--bg:#0f172a;--card:#0b1220;--muted:#94a3b8;--accent:#60a5fa;--success:#10b981;--error:#ef4444;}
+body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#031026 0%, #07142a 100%);color:#e6eef8;margin:0;padding:24px}
+.wrap{max-width:980px;margin:0 auto}
+header{display:flex;align-items:center;gap:16px}
+h1{margin:0;font-size:20px}
+.card{background:rgba(255,255,255,0.03);padding:16px;border-radius:12px;margin-top:16px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+label{display:block;font-size:13px;color:var(--muted);margin-top:8px}
+select,input,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+button{background:var(--accent);color:#01203a;border:none;padding:10px 12px;border-radius:8px;cursor:pointer}
+button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:inherit;} 
+.prompt{font-size:24px;margin:12px 0}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+.stat{background:rgba(255,255,255,0.02);padding:8px;border-radius:8px;font-size:13px}
+.small{font-size:13px;color:var(--muted)}
+.flex{display:flex;gap:8px;align-items:center}
+.progress-list{max-height:220px;overflow:auto;margin-top:8px}
+.correct-entry{color:var(--success);}
+.wrong-entry{color:var(--error);}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect rx='8' width='40' height='40' fill='%2360a5fa'/%3E%3Ctext x='50%25' y='54%25' font-size='20' text-anchor='middle' fill='white' font-family='Arial' dy='0.4em'%3EIr%3C/text%3E%3C/svg%3E" alt="logo" style="border-radius:8px"/>
-      <div>
-        <h1>Irregular Verbs Trainer</h1>
-        <div class="small">Multiple gamemodes • Upload Excel • Export progress & database as PDF</div>
-      </div>
-    </header>
+<div class="wrap">
+  <header>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect rx='8' width='40' height='40' fill='%2360a5fa'/%3E%3Ctext x='50%25' y='54%25' font-size='20' text-anchor='middle' fill='white' font-family='Arial' dy='0.4em'%3EIr%3C/text%3E%3C/svg%3E" alt="logo" style="border-radius:8px"/>
+    <div>
+      <h1>Irregular Verbs Trainer</h1>
+      <div class="small">Hardcoded database • Multiple gamemodes • Export PDF</div>
+    </div>
+  </header>
 
-    <div class="card">
-      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
-        <div style="flex:1">
-          <label>Upload verbs from Excel (.xlsx)</label>
-          <input id="xlsFile" type="file" accept=".xlsx,.xls" />
-          <div class="small">Expected columns (case-insensitive): <strong>infinitive, past, past_participle, slovenian</strong></div>
-        </div>
-        <div style="width:260px">
-          <label>Choose gamemode</label>
-          <select id="modeSelect">
-            <option value="infinitive_all">Show infinitive — write all forms</option>
-            <option value="slovenian_all">Show Slovenian — write all English forms</option>
-            <option value="only_past">Write only Past Simple (prompt: infinitive)</option>
-            <option value="only_participle">Write only Past Participle (prompt: infinitive)</option>
-            <option value="mixed">Mixed random prompts</option>
-          </select>
-        </div>
-      </div>
+  <div class="card">
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+      <div style="flex:1">
+        <label>Choose gamemode</label>
+        <select id="modeSelect">
+          <option value="infinitive_all">Show infinitive — write all forms</option>
+          <option value="slovenian_all">Show Slovenian — write all English forms</option>
+          <option value="only_past">Write only Past Simple (prompt: infinitive)</option>
+          <option value="only_participle">Write only Past Participle (prompt: infinitive)</option>
+          <option value="mixed">Mixed random prompts</option>
+        </select>
+      </div>
+    </div>
 
-      <div class="controls">
-        <button id="startBtn">Start session</button>
-        <button id="nextBtn" class="ghost">Next</button>
-        <button id="checkBtn" class="ghost">Check answer</button>
-        <button id="showProgress" class="ghost">Show progress</button>
-        <button id="exportWrong" class="ghost">Export mistakes (PDF)</button>
-        <button id="exportDB" class="ghost">Export DB (PDF)</button>
-        <button id="clearProgress" class="ghost">Clear progress</button>
-      </div>
+    <div class="controls">
+      <button id="startBtn">Start session</button>
+      <button id="nextBtn" class="ghost">Next</button>
+      <button id="checkBtn" class="ghost">Check answer</button>
+      <button id="showHistory">Show History</button> 
+      <button id="showProgress">Show mistakes</button> 
+      <button id="exportWrong">Export mistakes (PDF)</button> 
+      <button id="exportDB">Export DB (PDF)</button> 
+      <button id="clearProgress">Clear progress</button> 
+    </div>
 
-      <div id="trainer" style="margin-top:12px;display:none">
-        <div class="prompt" id="promptText">Prompt will appear here</div>
+    <div id="trainer" style="margin-top:12px;display:none">
+      <div class="prompt" id="promptText">Prompt will appear here</div>
 
-        <div id="answerInputs">
-          <label id="labInf">Infinitive</label>
-          <input id="inpInf" />
-          <label id="labPast">Past Simple</label>
-          <input id="inpPast" />
-          <label id="labPart">Past Participle</label>
-          <input id="inpPart" />
-          <label id="labSlo">Slovenian translation</label>
-          <input id="inpSlo" />
-        </div>
+      <div id="answerInputs">
+        <label id="labInf">Infinitive</label>
+        <input id="inpInf" data-form="infinitive" />
+        <label id="labPast">Past Simple</label>
+        <input id="inpPast" data-form="past" />
+        <label id="labPart">Past Participle</label>
+        <input id="inpPart" data-form="participle" />
+        <label id="labSlo">Slovenian translation</label>
+        <input id="inpSlo" data-form="slovenian" />
+      </div>
 
-        <div class="stats">
-          <div class="stat">Score: <span id="score">0</span></div>
-          <div class="stat">Attempts: <span id="attempts">0</span></div>
-          <div class="stat">Correct: <span id="correct">0</span></div>
-          <div class="stat">Wrong: <span id="wrong">0</span></div>
-        </div>
+      <div class="stats">
+        <div class="stat">Score: <span id="score">0</span></div>
+        <div class="stat">Attempts: <span id="attempts">0</span></div>
+        <div class="stat">Correct: <span id="correct">0</span></div>
+        <div class="stat">Wrong: <span id="wrong">0</span></div>
+      </div>
 
-        <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
-          <label class="small">Auto-check on submit</label>
-          <input id="autocheck" type="checkbox" checked />
-        </div>
-      </div>
+      <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+        <label class="small">Auto-check on submit</label>
+        <input id="autocheck" type="checkbox" checked />
+      </div>
+    </div>
+    
+    <div id="historyPanel" style="display:none;margin-top:12px">
+      <h3 style="margin:6px 0">Session History (All attempts)</h3>
+      <div class="progress-list" id="historyList"></div>
+    </div>
 
-      <div id="progressPanel" style="display:none;margin-top:12px">
-        <h3 style="margin:6px 0">Progress & mistakes</h3>
-        <div class="flex small"><strong>Session mistakes</strong><div style="flex:1"></div><button id="markAllKnown" class="ghost">Mark all as reviewed</button></div>
-        <div class="progress-list" id="mistakeList"></div>
-      </div>
+    <div id="progressPanel" style="display:none;margin-top:12px">
+      <h3 style="margin:6px 0">Progress & persistent mistakes</h3>
+      <div class="flex small"><strong>Session mistakes</strong><div style="flex:1"></div><button id="markAllKnown" class="ghost">Mark all as reviewed</button></div>
+      <div class="progress-list" id="mistakeList"></div>
+    </div>
+  </div>
 
-    </div>
+  <div class="card small">
+    <h3>Notes & instructions</h3>
+    <ul>
+      <li>Napredek se shranjuje v vašem brskalniku (LocalStorage).</li>
+    </ul>
+  </div>
 
-    <div class="card small">
-      <h3>Notes & instructions</h3>
-      <ul>
-        <li>Upload an Excel file where each row is a verb. Column headers: <code>infinitive</code>, <code>past</code>, <code>past_participle</code>, <code>slovenian</code>. Column names are case-insensitive.</li>
-        <li>Save progress to your browser (LocalStorage). You can clear it with <em>Clear progress</em>.</li>
-        <li>Exports create simple PDFs using jsPDF (client-side).</li>
-      </ul>
-    </div>
+  <footer class="small">Standalone HTML version</footer>
+</div>
 
-    <footer class="small">If you want a downloadable .html packaged version or an Electron version, tell me — I can adapt it.</footer>
-  </div>
-
-  <!-- Libraries from CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-  <script>
-    // App state
-    let verbs = []; // objects: {infinitive,past,participle,slovenian}
-    let session = {order:[],index:0,mode:'infinitive_all',score:0,attempts:0,correct:0,wrong:0,mistakes:[]};
-
-    const $ = id => document.getElementById(id);
-
-    // Helpers
-    const normalize = s => (s||'').toString().trim().toLowerCase();
-    const loadFromStorage = ()=>{
-      const raw = localStorage.getItem('iv_trainer_progress');
-      if(raw) try{ const obj=JSON.parse(raw); session = Object.assign(session,obj); }catch(e){}
-      const rawV = localStorage.getItem('iv_trainer_db');
-      if(rawV) try{ verbs = JSON.parse(rawV); }catch(e){}
-    }
-    const saveToStorage = ()=>{
-      localStorage.setItem('iv_trainer_progress', JSON.stringify(session));
-      localStorage.setItem('iv_trainer_db', JSON.stringify(verbs));
-    }
-
-    function parseWorkbook(wb){
-      const name = wb.SheetNames[0];
-      const ws = wb.Sheets[name];
-      const data = XLSX.utils.sheet_to_json(ws,{defval:''});
-      const out = data.map(r=>({
-        infinitive: r.infinitive || r.Infinitive || r.INFINITIVE || r['Infinitive (EN)'] || '',
-        past: r.past || r.Past || r.PAST || r['Past Simple'] || r['past_simple'] || '',
-        participle: r.past_participle || r.PAST_PARTICIPLE || r['Past Participle'] || r.participle || r.Participle || '',
-        slovenian: r.slovenian || r.Slovenian || r.SLOVENIAN || r['slovene'] || r['slovenščina'] || ''
-      })).filter(x=>x.infinitive || x.past || x.participle);
-      return out;
-    }
-
-    function onFile(e){
-      const f = e.target.files[0];
-      if(!f) return;
-      const reader = new FileReader();
-      reader.onload = function(evt){
-        const data = evt.target.result;
-        try{
-          const wb = XLSX.read(data, {type: 'binary'});
-          const parsed = parseWorkbook(wb);
-          if(parsed.length===0){ alert('No valid rows found. Check column headers.'); return; }
-          verbs = parsed.map(v=>({infinitive:v.infinitive.toString().trim(), past:v.past.toString().trim(), participle:v.participle.toString().trim(), slovenian:v.slovenian.toString().trim()}));
-          session.order = verbs.map((_,i)=>i);
-          shuffle(session.order);
-          session.index = 0; session.score=0; session.attempts=0; session.correct=0; session.wrong=0; session.mistakes=[];
-          saveToStorage();
-          alert('Loaded '+verbs.length+' verbs. Start a session.');
-        }catch(err){ console.error(err); alert('Failed to parse Excel: '+err.message); }
-      };
-      reader.readAsBinaryString(f);
-    }
-
-    function shuffle(a){
-      for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
-    }
-
-    function startSession(){
-      if(verbs.length===0){ alert('Please upload verbs first (.xlsx with required columns).'); return; }
-      session.mode = $('modeSelect').value;
-      // create order
-      session.order = verbs.map((_,i)=>i);
-      if(session.mode === 'mixed') shuffle(session.order);
-      session.index = 0; session.score=0; session.attempts=0; session.correct=0; session.wrong=0; session.mistakes = session.mistakes || [];
-      $('trainer').style.display = 'block'; $('progressPanel').style.display='none';
-      renderCard(); saveToStorage();
-    }
-
-    function renderCard(){
-      const idx = session.order[session.index];
-      const item = verbs[idx];
-      const mode = session.mode;
-      $('inpInf').value = ''; $('inpPast').value=''; $('inpPart').value=''; $('inpSlo').value='';
-
-      // Determine prompt and which inputs to show
-      let prompt = '';
-      document.querySelectorAll('#answerInputs label').forEach(l=>l.style.display='block');
-      document.querySelectorAll('#answerInputs input').forEach(i=>i.style.display='block');
-
-      if(mode==='infinitive_all'){ prompt = item.infinitive; $('labInf').style.display='none'; $('inpInf').style.display='none'; }
-      else if(mode==='slovenian_all'){ prompt = item.slovenian || '(no translation)'; $('labSlo').style.display='none'; $('inpSlo').style.display='none'; }
-      else if(mode==='only_past'){ prompt = item.infinitive; $('labInf').style.display='none'; $('inpInf').style.display='none'; $('labPart').style.display='none'; $('inpPart').style.display='none'; }
-      else if(mode==='only_participle'){ prompt = item.infinitive; $('labInf').style.display='none'; $('inpInf').style.display='none'; $('labPast').style.display='none'; $('inpPast').style.display='none'; }
-      else if(mode==='mixed'){
-        const rnd = Math.random();
-        if(rnd<0.25){ session.mode = 'infinitive_all'; return renderCard(); }
-        if(rnd<0.5){ session.mode='slovenian_all'; return renderCard(); }
-        if(rnd<0.75){ session.mode='only_past'; return renderCard(); }
-        session.mode='only_participle'; return renderCard();
-      }
-      $('promptText').textContent = prompt;
-    }
-
-    function checkAnswer(){
-      const idx = session.order[session.index];
-      const item = verbs[idx];
-      const mode = session.mode;
-      session.attempts++;
-      let correctCount = 0, required = 0;
-
-      function match(a,b){ return normalize(a)===normalize(b); }
-
-      // depending on mode, check fields
-      if(mode==='infinitive_all' || mode==='slovenian_all'){
-        // require past, participle, infinitive (or translation)
-        required = 3;
-        if(mode==='infinitive_all'){ if(match($('inpPast').value,item.past)) correctCount++; if(match($('inpPart').value,item.participle)) correctCount++; if(match($('inpSlo').value,item.slovenian)) correctCount++; }
-        else { if(match($('inpInf').value,item.infinitive)) correctCount++; if(match($('inpPast').value,item.past)) correctCount++; if(match($('inpPart').value,item.participle)) correctCount++; }
-      } else if(mode==='only_past'){ required=1; if(match($('inpPast').value,item.past)) correctCount++; }
-      else if(mode==='only_participle'){ required=1; if(match($('inpPart').value,item.participle)) correctCount++; }
-
-      const success = (correctCount===required);
-      if(success){ session.score+=10; session.correct++; }
-      else{ session.score-=2; session.wrong++; session.mistakes.push({index:idx,mode:mode,provided:{inf:$('inpInf').value,past:$('inpPast').value,part:$('inpPart').value,slo:$('inpSlo').value},expected:verbs[idx]}); }
-      saveToStorage(); updateStats();
-      if(success) showFeedback(true);
-      else showFeedback(false);
-    }
-
-    function showFeedback(ok){
-      const idx = session.order[session.index];
-      const e = verbs[idx];
-      const msg = ok? 'Correct!': `Wrong — expected: ${e.infinitive} / ${e.past} / ${e.participle} — ${e.slovenian}`;
-      alert(msg);
-    }
-
-    function nextCard(){
-      session.index = (session.index+1) % session.order.length; updateStats(); renderCard(); saveToStorage();
-    }
-
-    function updateStats(){
-      $('score').textContent = session.score;
-      $('attempts').textContent = session.attempts;
-      $('correct').textContent = session.correct;
-      $('wrong').textContent = session.wrong;
-    }
-
-    function toggleProgress(){
-      const vis = $('progressPanel').style.display === 'block';
-      $('progressPanel').style.display = vis? 'none':'block';
-      renderMistakes();
-    }
-
-    function renderMistakes(){
-      const cont = $('mistakeList'); cont.innerHTML='';
-      if(!session.mistakes || session.mistakes.length===0){ cont.innerHTML='<div class="small">No mistakes yet — good job!</div>'; return; }
-      session.mistakes.forEach((m,i)=>{
-        const v = verbs[m.index];
-        const row = document.createElement('div'); row.style.padding='8px'; row.style.borderBottom='1px solid rgba(255,255,255,0.02)';
-        row.innerHTML = `<div style="display:flex;justify-content:space-between"><div><strong>${v.infinitive}</strong> — ${v.past} — ${v.participle} <div class='small'>${v.slovenian}</div></div><div><button data-i='${i}' class='ghost btnMark'>Mark OK</button></div></div>`;
-        cont.appendChild(row);
-      });
-      document.querySelectorAll('.btnMark').forEach(b=>b.addEventListener('click',e=>{ const i=parseInt(e.target.dataset.i); session.mistakes.splice(i,1); saveToStorage(); renderMistakes(); }));
-    }
-
-    async function exportMistakesPDF(){
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.setFontSize(14); doc.text('Mistakes — Irregular Verbs Trainer', 10, 14);
-      doc.setFontSize(11);
-      let y=22;
-      if(!session.mistakes || session.mistakes.length===0){ doc.text('No mistakes logged.',10,y); doc.save('mistakes.pdf'); return; }
-      session.mistakes.forEach((m)=>{
-        const v = verbs[m.index];
-        const line = `${v.infinitive} — ${v.past} — ${v.participle} — ${v.slovenian}`;
-        doc.text(line, 10, y); y+=7; if(y>280){ doc.addPage(); y=20; }
-      });
-      doc.save('mistakes.pdf');
-    }
-
-    async function exportDBPDF(){
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF(); doc.setFontSize(14); doc.text('Irregular verbs database',10,14); doc.setFontSize(11);
-      let y=22;
-      if(!verbs || verbs.length===0){ doc.text('Database empty.',10,y); doc.save('irregular_verbs.pdf'); return; }
-      verbs.forEach(v=>{ const line = `${v.infinitive} — ${v.past} — ${v.participle} — ${v.slovenian}`; doc.text(line,10,y); y+=7; if(y>280){ doc.addPage(); y=20; } });
-      doc.save('irregular_verbs.pdf');
-    }
-
-    function clearProgress(){ if(!confirm('Clear saved progress and mistakes?')) return; session={order:[],index:0,mode:'infinitive_all',score:0,attempts:0,correct:0,wrong:0,mistakes:[]}; verbs=[]; localStorage.removeItem('iv_trainer_progress'); localStorage.removeItem('iv_trainer_db'); alert('Cleared. Reload page to start fresh.'); }
-
-    // Events
-    $('xlsFile').addEventListener('change', onFile);
-    $('startBtn').addEventListener('click', startSession);
-    $('nextBtn').addEventListener('click', nextCard);
-    $('checkBtn').addEventListener('click', ()=>{ checkAnswer(); if($('autocheck').checked) nextCard(); });
-    $('showProgress').addEventListener('click', toggleProgress);
-    $('exportWrong').addEventListener('click', exportMistakesPDF);
-    $('exportDB').addEventListener('click', exportDBPDF);
-    $('clearProgress').addEventListener('click', clearProgress);
-    $('markAllKnown').addEventListener('click', ()=>{ session.mistakes = []; saveToStorage(); renderMistakes(); });
-
-    // init
-    loadFromStorage(); updateStats();
-  </script>
-  <!-- Load Excel from URL -->
-  <div style="margin-top:20px;">
-    <label>Load Excel from URL</label>
-    <input id="xlsUrl" placeholder="https://docs.google.com/spreadsheets/d/1t9EudhmSLDD7i9tBN343ffYXTwLakYk3/export?format=xlsx
-" style="width:100%;padding:6px;margin-top:4px;" />
-    <button id="loadUrlBtn">Load from URL</button>
-  </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-// =============================
-// AUTO-LOAD EXCEL FROM URL
-// =============================
-const AUTO_DB_URL = "https://docs.google.com/spreadsheets/d/1t9EudhmSLDD7i9tBN343ffYXTwLakYk3/export?format=xlsx
-"; // <-- Replace with real URL
+// ------------------ Hardcoded database ------------------
+let verbs = [
+  {infinitive:"be", past:"was/were", participle:"been", slovenian:"biti"},
+  {infinitive:"bear", past:"bore", participle:"born", slovenian:"roditi"},
+  {infinitive:"beat", past:"beat", participle:"beaten", slovenian:"udarjati"},
+  {infinitive:"become", past:"became", participle:"become", slovenian:"postati"},
+  {infinitive:"begin", past:"began", participle:"begun", slovenian:"začeti"},
+  {infinitive:"bite", past:"bit", participle:"bitten", slovenian:"gristi"},
+  {infinitive:"blow", past:"blew", participle:"blown", slovenian:"pihati"},
+  {infinitive:"break", past:"broke", participle:"broken", slovenian:"zlomiti"},
+  {infinitive:"bring", past:"brought", participle:"brought", slovenian:"prinesti"},
+  {infinitive:"build", past:"built", participle:"built", slovenian:"graditi"},
+  {infinitive:"burn", past:"burnt", participle:"burnt", slovenian:"goreti"},
+  {infinitive:"burst", past:"burst", participle:"burst", slovenian:"razpočiti se"},
+  {infinitive:"buy", past:"bought", participle:"bought", slovenian:"kupiti"},
+  {infinitive:"can", past:"could", participle:"been able to", slovenian:"moči, znati"}, 
+  {infinitive:"catch", past:"caught", participle:"caught", slovenian:"ujeti"},
+  {infinitive:"choose", past:"chose", participle:"chosen", slovenian:"izbrati"},
+  {infinitive:"come", past:"came", participle:"come", slovenian:"priti"},
+  {infinitive:"cost", past:"cost", participle:"cost", slovenian:"stati (imeti ceno)"},
+  {infinitive:"cut", past:"cut", participle:"cut", slovenian:"rezati"},
+  {infinitive:"deal", past:"dealt", participle:"dealt", slovenian:"deliti, poslovati"},
+  {infinitive:"dig", past:"dug", participle:"dug", slovenian:"kopati"},
+  {infinitive:"do", past:"did", participle:"done", slovenian:"delati"},
+  {infinitive:"draw", past:"drew", participle:"drawn", slovenian:"risati, vleči"},
+  {infinitive:"dream", past:"dreamt", participle:"dreamt", slovenian:"sanjati"},
+  {infinitive:"drink", past:"drank", participle:"drunk", slovenian:"piti"},
+  {infinitive:"drive", past:"drove", participle:"driven", slovenian:"voziti"},
+  {infinitive:"eat", past:"ate", participle:"eaten", slovenian:"jesti"},
+  {infinitive:"fall", past:"fell", participle:"fallen", slovenian:"pasti"},
+  {infinitive:"feed", past:"fed", participle:"fed", slovenian:"nahraniti"},
+  {infinitive:"feel", past:"felt", participle:"felt", slovenian:"čutiti"},
+  {infinitive:"fight", past:"fought", participle:"fought", slovenian:"boriti se, prepirati se"},
+  {infinitive:"find", past:"found", participle:"found", slovenian:"najti"},
+  {infinitive:"flee", past:"fled", participle:"fled", slovenian:"bežati"},
+  {infinitive:"fly", past:"flew", participle:"flown", slovenian:"leteti"},
+  {infinitive:"forbid", past:"forbade", participle:"forbidden", slovenian:"prepovedati"},
+  {infinitive:"forget", past:"forgot", participle:"forgotten", slovenian:"pozabiti"},
+  {infinitive:"forgive", past:"forgave", participle:"forgiven", slovenian:"oprostiti"},
+  {infinitive:"freeze", past:"froze", participle:"frozen", slovenian:"zmrzniti"},
+  {infinitive:"get", past:"got", participle:"got", slovenian:"dobiti"},
+  {infinitive:"give", past:"gave", participle:"given", slovenian:"dati"},
+  {infinitive:"go", past:"went", participle:"gone", slovenian:"iti"},
+  {infinitive:"grow", past:"grew", participle:"grown", slovenian:"rasti, gojiti"},
+  {infinitive:"have", past:"had", participle:"had", slovenian:"imeti"},
+  {infinitive:"hear", past:"heard", participle:"heard", slovenian:"slišati"},
+  {infinitive:"hide", past:"hid", participle:"hidden", slovenian:"skriti"},
+  {infinitive:"hit", past:"hit", participle:"hit", slovenian:"udariti"},
+  {infinitive:"hang", past:"hung", participle:"hung", slovenian:"visenje, obešati"},
+  {infinitive:"hold", past:"held", participle:"held", slovenian:"držati"},
+  {infinitive:"hurt", past:"hurt", participle:"hurt", slovenian:"poškodovati, boleti"},
+  {infinitive:"keep", past:"kept", participle:"kept", slovenian:"držati, hraniti"},
+  {infinitive:"know", past:"knew", participle:"known", slovenian:"vedeti"},
+  {infinitive:"lay", past:"laid", participle:"laid", slovenian:"položiti"},
+  {infinitive:"lead", past:"led", participle:"led", slovenian:"voditi"},
+  {infinitive:"learn", past:"learned", participle:"learned", slovenian:"učiti se"},
+  {infinitive:"leave", past:"left", participle:"left", slovenian:"zapustiti"},
+  {infinitive:"lend", past:"lent", participle:"lent", slovenian:"posojati"},
+  {infinitive:"let", past:"let", participle:"let", slovenian:"pustiti"},
+  {infinitive:"lie", past:"lay", participle:"lain", slovenian:"ležati, lagati"},
+  {infinitive:"light", past:"lit", participle:"lit", slovenian:"goreti, sijati"},
+  {infinitive:"lose", past:"lost", participle:"lost", slovenian:"izgubiti"},
+  {infinitive:"make", past:"made", participle:"made", slovenian:"narediti"},
+  {infinitive:"mean", past:"meant", participle:"meant", slovenian:"pomeniti, nameravati"},
+  {infinitive:"meet", past:"met", participle:"met", slovenian:"srečati"},
+  {infinitive:"mow", past:"mowed", participle:"mown", slovenian:"kositi"},
+  {infinitive:"pay", past:"paid", participle:"paid", slovenian:"plačati"},
+  {infinitive:"put", past:"put", participle:"put", slovenian:"postaviti, položiti"},
+  {infinitive:"quit", past:"quit", participle:"quit", slovenian:"zapustiti"},
+  {infinitive:"read", past:"read", participle:"read", slovenian:"brati"},
+  {infinitive:"ride", past:"rode", participle:"ridden", slovenian:"jahati, peljati se"},
+  {infinitive:"ring", past:"rang", participle:"rung", slovenian:"zvoniti"},
+  {infinitive:"rise", past:"rose", participle:"risen", slovenian:"vstati"},
+  {infinitive:"run", past:"ran", participle:"run", slovenian:"teči"},
+  {infinitive:"say", past:"said", participle:"said", slovenian:"reči"},
+  {infinitive:"see", past:"saw", participle:"seen", slovenian:"videti"},
+  {infinitive:"sell", past:"sold", participle:"sold", slovenian:"prodati"},
+  {infinitive:"send", past:"sent", participle:"sent", slovenian:"poslati"},
+  {infinitive:"set", past:"set", participle:"set", slovenian:"postaviti"},
+  {infinitive:"sew", past:"sewed", participle:"sewn", slovenian:"šivati"},
+  {infinitive:"shake", past:"shook", participle:"shaken", slovenian:"tresti"},
+  {infinitive:"shine", past:"shone", participle:"shone", slovenian:"sijati"},
+  {infinitive:"shoot", past:"shot", participle:"shot", slovenian:"streljati"},
+  {infinitive:"show", past:"showed", participle:"shown", slovenian:"pokazati"},
+  {infinitive:"shrug", past:"shrugged", participle:"shrugged", slovenian:"skomigati"},
+  {infinitive:"shut", past:"shut", participle:"shut", slovenian:"zapreti"},
+  {infinitive:"sing", past:"sang", participle:"sung", slovenian:"peti"},
+  {infinitive:"sink", past:"sank", participle:"sunk", slovenian:"potoniti"},
+  {infinitive:"sit", past:"sat", participle:"sat", slovenian:"sedeti"},
+  {infinitive:"sleep", past:"slept", participle:"slept", slovenian:"spati"},
+  {infinitive:"smell", past:"smelt", participle:"smelt", slovenian:"vohati, dišati"},
+  {infinitive:"speak", past:"spoke", participle:"spoken", slovenian:"govoriti"},
+  {infinitive:"spell", past:"spelt", participle:"spelt", slovenian:"črkovati"},
+  {infinitive:"spend", past:"spent", participle:"spent", slovenian:"potrošiti, preživeti"},
+  {infinitive:"spin", past:"spun", participle:"spun", slovenian:"vrteti se"},
+  {infinitive:"spoil", past:"spoilt", participle:"spoilt", slovenian:"pokvariti"},
+  {infinitive:"spread", past:"spread", participle:"spread", slovenian:"razprostreti"},
+  {infinitive:"stand", past:"stood", participle:"stood", slovenian:"stati"},
+  {infinitive:"steal", past:"stole", participle:"stolen", slovenian:"krasti"},
+  {infinitive:"stick", past:"stuck", participle:"stuck", slovenian:"nalepiti, zabosti"},
+  {infinitive:"strike", past:"struck", participle:"struck", slovenian:"udarjati, treščiti"},
+  {infinitive:"sting", past:"stung", participle:"stung", slovenian:"pičiti"},
+  {infinitive:"swear", past:"swore", participle:"sworn", slovenian:"priseči, preklinjati"},
+  {infinitive:"sweep", past:"swept", participle:"swept", slovenian:"pometati"},
+  {infinitive:"swim", past:"swam", participle:"swum", slovenian:"plavati"},
+  {infinitive:"swing", past:"swung", participle:"swung", slovenian:"nihati"},
+  {infinitive:"take", past:"took", participle:"taken", slovenian:"vzeti"},
+  {infinitive:"teach", past:"taught", participle:"taught", slovenian:"učiti"},
+  {infinitive:"tear", past:"tore", participle:"torn", slovenian:"raztrgati"},
+  {infinitive:"tell", past:"told", participle:"told", slovenian:"povedati"},
+  {infinitive:"think", past:"thought", participle:"thought", slovenian:"misliti"},
+  {infinitive:"throw", past:"threw", participle:"thrown", slovenian:"vreči"},
+  {infinitive:"understand", past:"understood", participle:"understood", slovenian:"razumeti"},
+  {infinitive:"wake", past:"woke", participle:"woken", slovenian:"zbuditi"},
+  {infinitive:"wear", past:"wore", participle:"worn", slovenian:"nositi (biti oblečen)"},
+  {infinitive:"win", past:"won", participle:"won", slovenian:"zmagati"},
+  {infinitive:"write", past:"wrote", participle:"written", slovenian:"pisati"}
+];
 
-async function autoLoadExcel() {
-  try {
-    const res = await fetch(AUTO_DB_URL);
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    const blob = await res.blob();
-    const reader = new FileReader();
 
-    reader.onload = function(evt) {
-      const wb = XLSX.read(evt.target.result, { type: "binary" });
-      const parsed = parseWorkbook(wb);
-      if (parsed.length > 0) {
-        verbs = parsed;
-        saveToStorage();
-        console.log("Auto-loaded " + verbs.length + " verbs from website.");
-      }
-    };
+let session = {order:[],index:0,mode:'infinitive_all',score:0,attempts:0,correct:0,wrong:0,mistakes:[], history:[]}; 
+const $ = id => document.getElementById(id);
+const normalize = s => (s||'').toString().trim().toLowerCase();
 
-    reader.readAsBinaryString(blob);
-  } catch(e) {
-    console.warn("Could not auto-load Excel:", e);
-  }
+/**
+ * Preveri ujemanje odgovora. Ločuje med prevodi (vejica) in angleškimi oblikami (poševnica).
+ */
+const match=(userInput, expectedAnswer)=>{
+    const normalizedInput = normalize(userInput);
+    
+    // Uporabi '/' za ločevanje angleških oblik in ',' za ločevanje slovenskih prevodov (če je prisotna vejica)
+    let possibleAnswers;
+    if (expectedAnswer.includes(',')) {
+        possibleAnswers = expectedAnswer.split(',').map(normalize);
+    } else {
+        possibleAnswers = expectedAnswer.split('/').map(normalize);
+    }
+
+    // Preveri, ali je vnešeni odgovor enak kateremu koli izmed možnih odgovorov
+    return possibleAnswers.includes(normalizedInput);
+};
+
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } }
+
+function startSession(){
+  if(!verbs.length){ alert('No verbs in database'); return; }
+  session.mode=$('modeSelect').value;
+  session.order=verbs.map((_,i)=>i); 
+  shuffle(session.order); 
+  
+  session.index=0; session.score=0; session.attempts=0; session.correct=0; session.wrong=0; 
+  session.mistakes=session.mistakes||[];
+  session.history = []; 
+  
+  $('trainer').style.display='block'; 
+  $('progressPanel').style.display='none';
+  $('historyPanel').style.display='none'; 
+  
+  renderCard(); saveToStorage();
 }
 
-autoLoadExcel();
+function renderCard(){
+  const idx=session.order[session.index]; const item=verbs[idx];
+  $('inpInf').value=''; $('inpPast').value=''; $('inpPart').value=''; $('inpSlo').value='';
+  let prompt=''; 
+  document.querySelectorAll('#answerInputs label').forEach(l=>l.style.display='block'); 
+  document.querySelectorAll('#answerInputs input').forEach(i=>i.style.display='block');
+  
+  if(session.mode==='infinitive_all'){ prompt=item.infinitive; $('labInf').style.display='none'; $('inpInf').style.display='none'; }
+  else if(session.mode==='slovenian_all'){ prompt=item.slovenian||'(no translation)'; $('labSlo').style.display='none'; $('inpSlo').style.display='none'; }
+  else if(session.mode==='only_past'){ prompt=item.infinitive; $('labInf').style.display='none'; $('inpInf').style.display='none'; $('labPart').style.display='none'; $('inpPart').style.display='none'; }
+  else if(session.mode==='only_participle'){ prompt=item.infinitive; $('labInf').style.display='none'; $('inpInf').style.display='none'; $('labPast').style.display='none'; $('inpPast').style.display='none'; }
+  else if(session.mode==='mixed'){ 
+    const rnd=Math.random(); 
+    if(rnd<0.25){session.mode='infinitive_all';} else if(rnd<0.5){session.mode='slovenian_all';} else if(rnd<0.75){session.mode='only_past';} else {session.mode='only_participle';}
+    return renderCard();  
+  }
+  $('promptText').textContent=prompt;
 
-// =============================
-// MANUAL LOAD VIA URL BUTTON
-// =============================
+  const visibleInputs = Array.from(document.querySelectorAll('#answerInputs input')).filter(input => input.style.display !== 'none');
+  if(visibleInputs.length > 0) {
+    visibleInputs[0].focus();
+  }
+}
 
-document.getElementById("loadUrlBtn").addEventListener("click", async () => {
-  const url = document.getElementById("xlsUrl").value.trim();
-  if (!url) return alert("Please enter a URL.");
+function checkAnswer(){
+  if (session.checkedCurrent) return; 
 
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    const blob = await res.blob();
-    const reader = new FileReader();
+  const idx=session.order[session.index]; const item=verbs[idx]; session.attempts++;
+  let correctCount=0, required=0; 
+  const userInputs = {inf:$('inpInf').value,past:$('inpPast').value,part:$('inpPart').value,slo:$('inpSlo').value};
+  
+  if(session.mode==='infinitive_all'||session.mode==='slovenian_all'){
+    required=3;
+    if(session.mode==='infinitive_all'){ 
+      if(match(userInputs.past,item.past)) correctCount++; 
+      if(match(userInputs.part,item.participle)) correctCount++; 
+      if(match(userInputs.slo,item.slovenian)) correctCount++; 
+    } else { 
+      if(match(userInputs.inf,item.infinitive)) correctCount++; 
+      if(match(userInputs.past,item.past)) correctCount++; 
+      if(match(userInputs.part,item.participle)) correctCount++; 
+    }
+  } else if(session.mode==='only_past'){ 
+    required=1; 
+    if(match(userInputs.past,item.past)) correctCount++; 
+  }
+  else if(session.mode==='only_participle'){ 
+    required=1; 
+    if(match(userInputs.part,item.participle)) correctCount++; 
+  }
+  const success=(correctCount===required);
+  
+  // Zapiši poskus v zgodovino seje
+  session.history.push({
+    index: idx,
+    mode: session.mode,
+    provided: userInputs,
+    expected: verbs[idx],
+    correct: success
+  });
+  
+  if(success){ 
+    session.score+=10; session.correct++; 
+  } else { 
+    session.score-=2; session.wrong++; 
+    // Dodaj samo enkrat v napačne (persistent mistakes)
+    const alreadyMistake = session.mistakes.some(m => m.index === idx);
+    if(!alreadyMistake) {
+      session.mistakes.push({index:idx,mode:session.mode,provided:userInputs,expected:verbs[idx]});
+    }
+  }
 
-    reader.onload = function(evt) {
-      const wb = XLSX.read(evt.target.result, { type: "binary" });
-      const parsed = parseWorkbook(wb);
-      if (parsed.length === 0) {
-        alert("File loaded but contains no valid rows.");
-        return;
-      }
+  session.checkedCurrent = true; 
+  saveToStorage(); updateStats(); showFeedback(success);
+  
+  // Osveži zgodovino, če je plošča odprta
+  if ($('historyPanel').style.display === 'block') {
+    renderHistory();
+  }
+  
+  if($('autocheck').checked) {
+    nextCard();
+  } else {
+    $('nextBtn').focus();
+  }
+}
 
-      verbs = parsed.map(v => ({
-        infinitive: v.infinitive.toString().trim(),
-        past: v.past.toString().trim(),
-        participle: v.participle.toString().trim(),
-        slovenian: v.slovenian.toString().trim(),
-      }));
+function showFeedback(ok){
+  const idx=session.order[session.index]; const e=verbs[idx]; 
+  const feedback = ok ? 
+    `<span style="color:var(--success)">✅ Correct!</span>` : 
+    `<span style="color:var(--error)">❌ Wrong</span> — expected: ${e.infinitive} / ${e.past} / ${e.participle} — ${e.slovenian}`;
+  $('promptText').innerHTML = feedback; 
+}
 
-      session.order = verbs.map((_, i) => i);
-      shuffle(session.order);
-      session.index = 0;
-      session.score = 0;
-      session.attempts = 0;
-      session.correct = 0;
-      session.wrong = 0;
-      session.mistakes = [];
+function nextCard(){ 
+  session.index=(session.index+1)%session.order.length; 
+  session.checkedCurrent = false; 
+  updateStats(); renderCard(); saveToStorage(); 
+}
 
-      saveToStorage();
-      alert("Loaded " + verbs.length + " verbs from URL.");
-    };
+function updateStats(){ $('score').textContent=session.score; $('attempts').textContent=session.attempts; $('correct').textContent=session.correct; $('wrong').textContent=session.wrong; }
 
-    reader.readAsBinaryString(blob);
-  } catch (err) {
-    console.error(err);
-    alert("Failed to load from URL: " + err.message);
-  }
-});
+/**
+ * Prikazuje/skrije ploščo z napačnimi odgovori.
+ * Zagotavlja, da je druga plošča skrita.
+ */
+function toggleProgress(){ 
+  const progressPanel = $('progressPanel');
+  const vis = progressPanel.style.display === 'block'; 
+  progressPanel.style.display = vis ? 'none' : 'block'; 
+  $('historyPanel').style.display='none'; 
+  if (!vis) renderMistakes(); 
+}
+
+/**
+ * Prikazuje/skrije ploščo z zgodovino seje.
+ * Zagotavlja, da je druga plošča skrita.
+ */
+function toggleHistory(){
+  const historyPanel = $('historyPanel');
+  const vis = historyPanel.style.display === 'block'; 
+  historyPanel.style.display = vis ? 'none' : 'block'; 
+  $('progressPanel').style.display='none'; 
+  if (!vis) renderHistory();
+}
+
+// Render all session attempts
+function renderHistory(){
+  const cont=$('historyList'); cont.innerHTML='';
+  if(!session.history||!session.history.length){ cont.innerHTML='<div class="small">No attempts recorded yet.</div>'; return; }
+  
+  const reversedHistory = [...session.history].reverse();
+  
+  reversedHistory.forEach((h, i)=>{
+    const v=h.expected;
+    const isCorrect = h.correct;
+    const entryClass = isCorrect ? 'correct-entry' : 'wrong-entry';
+    const marker = isCorrect ? '✅' : '❌';
+
+    const row=document.createElement('div'); 
+    row.style.padding='8px'; 
+    row.style.borderBottom='1px solid rgba(255,255,255,0.02)';
+    row.className = entryClass;
+    
+    row.innerHTML = `
+      <div>
+        <strong>${marker} ${v.infinitive}</strong> / ${v.past} / ${v.participle} (${v.slovenian}) 
+        <div class="small">Mode: ${h.mode}</div>
+      </div>
+      ${!isCorrect ? 
+        `<div class="small" style="margin-top:4px;">
+          <strong>Your Input:</strong> ${h.provided.inf} | ${h.provided.past} | ${h.provided.part} | ${h.provided.slo}
+        </div>` : ''}
+    `;
+    cont.appendChild(row);
+  });
+}
+
+function renderMistakes(){
+  const cont=$('mistakeList'); cont.innerHTML='';
+  if(!session.mistakes||!session.mistakes.length){ cont.innerHTML='<div class="small">No mistakes yet — good job!</div>'; return; }
+  session.mistakes.forEach((m,i)=>{
+    const v=verbs[m.index]; const row=document.createElement('div'); row.style.padding='8px'; row.style.borderBottom='1px solid rgba(255,255,255,0.02)';
+    row.innerHTML=`<div style="display:flex;justify-content:space-between"><div><strong>${v.infinitive}</strong> — ${v.past} — ${v.participle} <div class='small'>${v.slovenian}</div></div><div><button data-i='${i}' class='ghost btnMark'>Mark OK</button></div></div>`;
+    cont.appendChild(row);
+  });
+  document.querySelectorAll('.btnMark').forEach(b=>b.addEventListener('click',e=>{ const i=parseInt(e.target.dataset.i); session.mistakes.splice(i,1); saveToStorage(); renderMistakes(); }));
+}
+
+function clearProgress(){ 
+  if(confirm('Really clear session progress? This will clear all scores and saved mistakes.')){ 
+    session={order:[],index:0,mode:'infinitive_all',score:0,attempts:0,correct:0,wrong:0,mistakes:[], history:[]}; 
+    saveToStorage(); updateStats(); renderCard(); renderMistakes(); renderHistory(); 
+  } 
+}
+
+/**
+ * POSODOBITEV: Vključi Unicode podporo za šumnike (č, š, ž).
+ */
+function exportPDF(data,title){ 
+  const { jsPDF } = window.jspdf; 
+  // Nastavimo opcijo "encoding: 'Unicode'" za boljšo podporo šumnikom
+  const doc = new jsPDF({ encoding: 'Unicode' }); 
+  
+  // Nastavimo font, ki je kompatibilen z Unicode (Helvetica je najbolj zanesljiva privzeta izbira)
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(12); 
+  
+  let y=10; 
+  doc.text(title,10,y); 
+  y+=8; 
+  data.forEach((d,i)=>{ 
+    // Uporaba doc.text bo zdaj podpirala šumnike
+    doc.text(`${i+1}. ${d.infinitive} — ${d.past} — ${d.participle} — ${d.slovenian}`,10,y); 
+    y+=6; 
+    if(y>280){ 
+      doc.addPage(); y=10; 
+    } 
+  }); 
+  doc.save(title.replace(/\s/g,'_')+'.pdf'); 
+}
+
+function saveToStorage(){ localStorage.setItem('iv_trainer_progress', JSON.stringify(session)); }
+
+
+// ------------------ Inicializacija in dogodki ------------------
+
+function addEnterListeners() {
+  document.querySelectorAll('#answerInputs input').forEach(input => {
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault(); 
+        if (!session.checkedCurrent) {
+          checkAnswer();
+        } else {
+          nextCard();
+        }
+      }
+    });
+  });
+}
+
+document.getElementById('startBtn').addEventListener('click',startSession);
+document.getElementById('checkBtn').addEventListener('click',()=>{  checkAnswer(); });
+document.getElementById('nextBtn').addEventListener('click',nextCard);
+document.getElementById('showProgress').addEventListener('click',toggleProgress);
+document.getElementById('showHistory').addEventListener('click',toggleHistory); 
+document.getElementById('clearProgress').addEventListener('click',clearProgress);
+document.getElementById('exportWrong').addEventListener('click',()=>{ exportPDF(session.mistakes.map(m=>verbs[m.index]),'Mistakes'); });
+document.getElementById('exportDB').addEventListener('click',()=>{ exportPDF(verbs,'Verbs Database'); });
+
+
+// load previous session if exists
+try{ 
+  const raw = localStorage.getItem('iv_trainer_progress'); 
+  if(raw) {
+    session=Object.assign({history:[]}, JSON.parse(raw)); 
+  }
+}catch{}
+updateStats(); renderCard();
+addEnterListeners(); 
 </script>
 </body>
 </html>
