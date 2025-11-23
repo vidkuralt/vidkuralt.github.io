@@ -318,7 +318,8 @@
   <!-- Load Excel from URL -->
   <div style="margin-top:20px;">
     <label>Load Excel from URL</label>
-    <input id="xlsUrl" placeholder="https://vidkuralt.github.io/files/Irregular-verbs.xlsx" style="width:100%;padding:6px;margin-top:4px;" />
+    <input id="xlsUrl" placeholder="https://docs.google.com/spreadsheets/d/1t9EudhmSLDD7i9tBN343ffYXTwLakYk3/export?format=xlsx
+" style="width:100%;padding:6px;margin-top:4px;" />
     <button id="loadUrlBtn">Load from URL</button>
   </div>
 
@@ -326,7 +327,8 @@
 // =============================
 // AUTO-LOAD EXCEL FROM URL
 // =============================
-const AUTO_DB_URL = "https://vidkuralt.github.io/files/Irregular-verbs.xlsx"; // <-- Replace with real URL
+const AUTO_DB_URL = "https://docs.google.com/spreadsheets/d/1t9EudhmSLDD7i9tBN343ffYXTwLakYk3/export?format=xlsx
+"; // <-- Replace with real URL
 
 async function autoLoadExcel() {
   try {
