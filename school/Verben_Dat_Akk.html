@@ -90,7 +90,7 @@ function buildLists() {
 // ------------------- Helper: update counter -----------------------
 function updateLeftCount() {
   const left = Math.max(0, currentList.length - currentIndex);
-  document.getElementById("leftCount").textContent = `Verbleibende Items: ${left} (in dieser Runde)`;
+  document.getElementById("leftCount").textContent = `Verbleibende Artikel: ${left} (in dieser Runde)`;
 }
 
 // ------------------- Mode toggle -----------------------
@@ -144,19 +144,22 @@ function checkAnswer() {
   const userPrep = normalize(document.getElementById("prepInput").value);
   const userCase = normalize(document.getElementById("caseInput").value);
 
-  const correctPrep = normalize(currentItem.prep);
-  const correctCase = normalize(currentItem.case);
+  // Get all valid options for this verb
+  const options = verbs[currentItem.verb];
 
-  const isCorrect = includeCase
-    ? (userPrep === correctPrep && userCase === correctCase)
-    : (userPrep === correctPrep);
+  // Check if user input matches any valid option
+  const isCorrect = options.some(opt => {
+    const prepMatch = userPrep === normalize(opt.prep);
+    const caseMatch = includeCase ? (userCase === normalize(opt.case)) : true;
+    return prepMatch && caseMatch;
+  });
 
   history.push({
     verb: currentItem.verb,
     yourPrep: userPrep || "(empty)",
     yourCase: includeCase ? (userCase || "(empty)") : "—",
-    correctPrep: currentItem.prep,
-    correctCase: includeCase ? currentItem.case : "—",
+    correctPrep: options.map(o => o.prep).join(" / "), // show all valid options
+    correctCase: includeCase ? options.map(o => o.case).join(" / ") : "—",
     mode: includeCase ? "Prep + Case" : "Prep only",
     result: isCorrect ? "Correct" : "Wrong",
     timestamp: new Date().toISOString()
@@ -168,10 +171,9 @@ function checkAnswer() {
   } else {
     wrong++;
     document.getElementById("result").textContent =
-      `❌ Falsch! Richtig: "${currentItem.prep}${includeCase ? ' + ' + currentItem.case : ''}"`;
+      `❌ Falsch! Richtig: "${options.map(o => o.prep + (includeCase ? ' + ' + o.case : '')).join(' / ')}"`;
 
     // add to repeat list (avoid duplicates)
-    // store the item object (verb, prep, case)
     const exists = repeatList.some(it =>
       it.verb === currentItem.verb && it.prep === currentItem.prep && it.case === currentItem.case
     );
@@ -180,7 +182,6 @@ function checkAnswer() {
 
   updateScore();
 
-  // move to next item after short delay
   currentIndex++;
   setTimeout(newRound, 900);
 }
