@@ -9,6 +9,7 @@
     button { padding: 10px; margin-top: 10px; width: 100%; cursor: pointer; }
     #result { margin-top: 20px; font-size: 1.2em; }
     #score { margin-top: 10px; font-weight: bold; }
+    #leftCount { margin-top: 6px; color: #333; }
     #history { margin-top: 30px; border-top: 1px solid #ccc; padding-top: 20px; }
     table { border-collapse: collapse; width: 100%; }
     th, td { border: 1px solid #ccc; padding: 8px; text-align:center; }
@@ -36,17 +37,18 @@
 
     <div id="result"></div>
     <div id="score"></div>
+    <div id="leftCount"></div>
 </div>
 
 <div id="history"></div>
 
 <script>
 // ------------------- Database -----------------------
-const verbs = { "abhängen": [ { prep: "von", case: "dat" } ], "achten": [ { prep: "auf", case: "akk" } ], "anfangen": [ { prep: "mit", case: "dat" } ], "anrufen": [ { prep: "bei", case: "dat" } ], "antworten": [ { prep: "auf", case: "akk" } ], "arbeiten": [ { prep: "als", case: "nom" }, { prep: "bei", case: "dat" }, { prep: "an", case: "dat" } ], "sich ärgern": [ { prep: "über", case: "akk" } ], "aufhören": [ { prep: "mit", case: "dat" } ], "bedeuten": [ { prep: "für", case: "akk" } ], "sich beeilen": [ { prep: "mit", case: "dat" } ], "beginnen": [ { prep: "mit", case: "dat" } ], "berichten": [ { prep: "über", case: "akk" }, { prep: "von", case: "dat" } ], "beschweren": [ { prep: "bei", case: "dat" }, { prep: "über", case: "akk" } ], "bestehen": [ { prep: "aus", case: "dat" } ], "bitten": [ { prep: "um", case: "akk" } ], "denken": [ { prep: "an", case: "akk" } ], "teilnehmen": [ { prep: "an", case: "dat" } ], "sprechen": [ { prep: "über", case: "akk" }, { prep: "mit", case: "dat" }, { prep: "von", case: "dat" } ], "sich freuen": [ { prep: "auf", case: "akk" }, { prep: "über", case: "akk" } ], "sich interessieren": [ { prep: "für", case: "akk" } ], "kämpfen": [ { prep: "für", case: "akk" }, { prep: "gegen", case: "akk" }, { prep: "mit", case: "dat" }, { prep: "um", case: "akk" } ], "sich konzentrieren": [ { prep: "auf", case: "akk" } ], "sich kümmern": [ { prep: "um", case: "akk" } ], "lachen": [ { prep: "über", case: "akk" } ], "leiden": [ { prep: "an", case: "dat" }, { prep: "unter", case: "dat" } ], "lesen": [ { prep: "von", case: "dat" }, { prep: "über", case: "akk" } ], "passen": [ { prep: "zu", case: "dat" } ], "protestieren": [ { prep: "gegen", case: "akk" } ], "reagieren": [ { prep: "auf", case: "akk" } ], "riechen": [ { prep: "nach", case: "dat" } ], "schicken": [ { prep: "an", case: "akk" } ], "schimpfen": [ { prep: "über", case: "akk" }, { prep: "mit", case: "dat" } ], "sich spezialisieren": [ { prep: "auf", case: "akk" } ], "sterben": [ { prep: "an", case: "dat" } ], "steigen": [ { prep: "auf", case: "akk" } ], "sich streiten": [ { prep: "mit", case: "dat" }, { prep: "über", case: "akk" } ], "suchen": [ { prep: "nach", case: "dat" } ], "tauschen": [ { prep: "gegen", case: "akk" } ], "telefonieren": [ { prep: "mit", case: "dat" } ], "träumen": [ { prep: "von", case: "dat" } ], "sich treffen": [ { prep: "mit", case: "dat" } ], "übersetzen": [ { prep: "in", case: "akk" }, { prep: "aus", case: "dat" } ], "überzeugen": [ { prep: "von", case: "dat" } ], "sich unterhalten": [ { prep: "über", case: "akk" }, { prep: "mit", case: "dat" } ], "sich verabreden": [ { prep: "mit", case: "dat" } ], "sich verlieben": [ { prep: "in", case: "akk" } ], "verzichten": [ { prep: "auf", case: "akk" } ], "sich vorbereiten": [ { prep: "auf", case: "akk" } ], "warnen": [ { prep: "vor", case: "dat" } ], "warten": [ { prep: "auf", case: "akk" } ], "sich wundern": [ { prep: "über", case: "akk" } ], "zweifeln": [ { prep: "an", case: "dat" } ] };
+const verbs = { "abhängen": [ { prep: "von", case: "dat" } ], "achten": [ { prep: "auf", case: "akk" } ], "anfangen": [ { prep: "mit", case: "dat" } ], "anrufen": [ { prep: "bei", case: "dat" } ], "antworten": [ { prep: "auf", case: "akk" } ], "arbeiten": [ { prep: "als", case: "nom" }, { prep: "bei", case: "dat" }, { prep: "an", case: "dat" } ], "sich ärgern": [ { prep: "über", case: "akk" } ], "aufhören": [ { prep: "mit", case: "dat" } ], "bedeuten": [ { prep: "für", case: "akk" } ], "sich beeilen": [ { prep: "mit", case: "dat" } ], "beginnen": [ { prep: "mit", case: "dat" } ], "berichten": [ { prep: "über", case: "akk" }, { prep: "von", case: "dat" } ], "beschweren": [ { prep: "bei", case: "dat" }, { prep: "über", case: "akk" } ], "bestehen": [ { prep: "aus", case: "dat" } ], "bitten": [ { prep: "um", case: "akk" } ], "danken": [ { prep: "für", case: "akk" } ], "demonstrieren": [ { prep: "für", case: "akk" } ], "denken": [ { prep: "an", case: "akk" } ], "diskutieren": [ { prep: "über", case: "akk" }, { prep: "mit", case: "dat" } ], "sich einigen": [ { prep: "auf", case: "akk" }, { prep: "mit", case: "dat" } ], "einladen": [ { prep: "zu", case: "dat" } ], "sich engagieren": [ { prep: "für", case: "akk" } ], "sich entscheiden": [ { prep: "für", case: "akk" }, { prep: "gegen", case: "akk" } ], "sich entschuldigen": [ { prep: "für", case: "akk" }, { prep: "bei", case: "dat" } ], "entstehen": [ { prep: "aus", case: "dat" } ], "sich erholen": [ { prep: "von", case: "dat" } ], "sich erinnern": [ { prep: "an", case: "akk" } ], "erwarten": [ { prep: "von", case: "dat" } ], "erzählen": [ { prep: "von", case: "dat" } ], "sich freuen": [ { prep: "auf", case: "akk" }, { prep: "über", case: "akk" } ], "fragen": [ { prep: "nach", case: "dat" } ], "es geht": [ { prep: "um", case: "akk" } ], "gehören": [ { prep: "zu", case: "dat" } ], "gelten": [ { prep: "als", case: "akk" } ], "sich gewöhnen": [ { prep: "an", case: "akk" } ], "glauben": [ { prep: "an", case: "akk" } ], "gratulieren": [ { prep: "zu", case: "dat" } ], "handeln": [ { prep: "von", case: "dat" }, { prep: "mit", case: "dat" } ], "helfen": [ { prep: "bei", case: "dat" }, { prep: "mit", case: "dat" } ], "teilnehmen": [ { prep: "an", case: "dat" } ], "sprechen": [ { prep: "über", case: "akk" }, { prep: "mit", case: "dat" }, { prep: "von", case: "dat" } ], "sich informieren": [ { prep: "über", case: "akk" } ], "sich interessieren": [ { prep: "für", case: "akk" } ], "kämpfen": [ { prep: "für", case: "akk" }, { prep: "gegen", case: "akk" }, { prep: "mit", case: "dat" }, { prep: "um", case: "akk" } ], "sich konzentrieren": [ { prep: "auf", case: "akk" } ], "sich kümmern": [ { prep: "um", case: "akk" } ], "lachen": [ { prep: "über", case: "akk" } ], "leiden": [ { prep: "an", case: "dat" }, { prep: "unter", case: "dat" } ], "lesen": [ { prep: "von", case: "dat" }, { prep: "über", case: "akk" } ], "passen": [ { prep: "zu", case: "dat" } ], "protestieren": [ { prep: "gegen", case: "akk" } ], "reagieren": [ { prep: "auf", case: "akk" } ], "riechen": [ { prep: "nach", case: "dat" } ], "schicken": [ { prep: "an", case: "akk" } ], "schimpfen": [ { prep: "über", case: "akk" }, { prep: "mit", case: "dat" } ], "sich spezialisieren": [ { prep: "auf", case: "akk" } ], "sterben": [ { prep: "an", case: "dat" } ], "steigen": [ { prep: "auf", case: "akk" } ], "sich streiten": [ { prep: "mit", case: "dat" }, { prep: "über", case: "akk" } ], "suchen": [ { prep: "nach", case: "dat" } ], "tauschen": [ { prep: "gegen", case: "akk" } ], "telefonieren": [ { prep: "mit", case: "dat" } ], "träumen": [ { prep: "von", case: "dat" } ], "sich treffen": [ { prep: "mit", case: "dat" } ], "übersetzen": [ { prep: "in", case: "akk" }, { prep: "aus", case: "dat" } ], "überzeugen": [ { prep: "von", case: "dat" } ], "sich unterhalten": [ { prep: "über", case: "akk" }, { prep: "mit", case: "dat" } ], "sich verabreden": [ { prep: "mit", case: "dat" } ], "sich verlieben": [ { prep: "in", case: "akk" } ], "verzichten": [ { prep: "auf", case: "akk" } ], "sich vorbereiten": [ { prep: "auf", case: "akk" } ], "warnen": [ { prep: "vor", case: "dat" } ], "warten": [ { prep: "auf", case: "akk" } ], "sich wundern (sich)": [ { prep: "über", case: "akk" } ], "zweifeln": [ { prep: "an", case: "dat" } ] };
 
-// ------------------- Helper: remove umlauts -----------------------
+// ------------------- Helper -----------------------
 function normalize(text) {
-  return text.toLowerCase()
+  return String(text || "").toLowerCase()
              .replace(/ä/g, "a")
              .replace(/ö/g, "o")
              .replace(/ü/g, "u")
@@ -54,67 +56,110 @@ function normalize(text) {
              .trim();
 }
 
-// ------------------- Mode toggle -----------------------
+// ------------------- State -----------------------
 let includeCase = false;
+let correct = 0;
+let wrong = 0;
+let history = [];
+
+// lists of question items (each verb-prep-case is one item)
+let initialList = [];     // shuffled list of all items (initial pass)
+let repeatList = [];      // items answered wrong to be repeated
+let currentList = [];     // currently used list (initialList or repeatList)
+let currentIndex = 0;     // index inside currentList
+let currentItem = null;   // currently shown item
+
+// ------------------- Build & shuffle questions -----------------------
+function buildLists() {
+  initialList = [];
+  for (const verb of Object.keys(verbs)) {
+    verbs[verb].forEach(entry => {
+      initialList.push({ verb, prep: entry.prep, case: entry.case });
+    });
+  }
+  // Fisher-Yates shuffle
+  for (let i = initialList.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [initialList[i], initialList[j]] = [initialList[j], initialList[i]];
+  }
+  repeatList = [];
+  currentList = initialList.slice();
+  currentIndex = 0;
+}
+
+// ------------------- Helper: update counter -----------------------
+function updateLeftCount() {
+  const left = Math.max(0, currentList.length - currentIndex);
+  document.getElementById("leftCount").textContent = `Verbleibende Items: ${left} (in dieser Runde)`;
+}
+
+// ------------------- Mode toggle -----------------------
 function toggleMode() {
   includeCase = document.getElementById("modeToggle").checked;
   document.getElementById("caseInput").style.display = includeCase ? "block" : "none";
   document.getElementById("result").textContent = "";
 }
 
-// ------------------- Training State -----------------------
-let currentVerb = "";
-let correct = 0;
-let wrong = 0;
-let history = [];
-
-// ------------------- Get a random verb -----------------------
-function getRandomVerb() {
-  const keys = Object.keys(verbs);
-  return keys[Math.floor(Math.random() * keys.length)];
-}
-
-// ------------------- Start new round -----------------------
+// ------------------- Start next round -----------------------
 function newRound() {
-  currentVerb = getRandomVerb();
-  document.getElementById("verbDisplay").textContent = `Verb: ${currentVerb}`;
-  document.getElementById("result").textContent = "";
+  // If no more items in current list, attempt to switch to repeat list
+  if (currentIndex >= currentList.length) {
+    if (repeatList.length > 0) {
+      // Start repeating mistakes in random order
+      currentList = repeatList.slice();
+      // shuffle repeat list
+      for (let i = currentList.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [currentList[i], currentList[j]] = [currentList[j], currentList[i]];
+      }
+      repeatList = [];
+      currentIndex = 0;
+    } else {
+      // Everything finished
+      currentItem = null;
+      document.getElementById("verbDisplay").textContent = "🎉 Alle Verben abgeschlossen!";
+      updateLeftCount();
+      return;
+    }
+  }
+
+  currentItem = currentList[currentIndex];
+  document.getElementById("verbDisplay").textContent = `Verb: ${currentItem.verb}`;
   document.getElementById("prepInput").value = "";
   document.getElementById("caseInput").value = "";
+  document.getElementById("result").textContent = "";
   updateScore();
+  updateLeftCount();
 }
 
-// ------------------- Update score -----------------------
+// ------------------- Score -----------------------
 function updateScore() {
   document.getElementById("score").textContent = `Score: ✅ ${correct} | ❌ ${wrong}`;
 }
 
 // ------------------- Check Answer -----------------------
 function checkAnswer() {
+  if (!currentItem) return;
+
   const userPrep = normalize(document.getElementById("prepInput").value);
   const userCase = normalize(document.getElementById("caseInput").value);
 
-  const correctEntries = verbs[currentVerb];
-  let isCorrect = false;
+  const correctPrep = normalize(currentItem.prep);
+  const correctCase = normalize(currentItem.case);
 
-  for (const entry of correctEntries) {
-    const correctPrep = normalize(entry.prep);
-    const correctCase = normalize(entry.case);
-    if (includeCase) {
-      if (userPrep === correctPrep && userCase === correctCase) { isCorrect = true; break; }
-    } else {
-      if (userPrep === correctPrep) { isCorrect = true; break; }
-    }
-  }
+  const isCorrect = includeCase
+    ? (userPrep === correctPrep && userCase === correctCase)
+    : (userPrep === correctPrep);
 
   history.push({
-    verb: currentVerb,
+    verb: currentItem.verb,
     yourPrep: userPrep || "(empty)",
     yourCase: includeCase ? (userCase || "(empty)") : "—",
-    correctPrep: correctEntries.map(e => e.prep).join(" / "),
-    correctCase: includeCase ? correctEntries.map(e => e.case).join(" / ") : "—",
+    correctPrep: currentItem.prep,
+    correctCase: includeCase ? currentItem.case : "—",
+    mode: includeCase ? "Prep + Case" : "Prep only",
     result: isCorrect ? "Correct" : "Wrong",
-    mode: includeCase ? "Prep + Case" : "Prep only"
+    timestamp: new Date().toISOString()
   });
 
   if (isCorrect) {
@@ -123,18 +168,30 @@ function checkAnswer() {
   } else {
     wrong++;
     document.getElementById("result").textContent =
-      `❌ Falsch! Richtig: ${correctEntries.map(e => `"${e.prep}${includeCase ? ' + ' + e.case : ''}"`).join(" / ")}`;
+      `❌ Falsch! Richtig: "${currentItem.prep}${includeCase ? ' + ' + currentItem.case : ''}"`;
+
+    // add to repeat list (avoid duplicates)
+    // store the item object (verb, prep, case)
+    const exists = repeatList.some(it =>
+      it.verb === currentItem.verb && it.prep === currentItem.prep && it.case === currentItem.case
+    );
+    if (!exists) repeatList.push({ ...currentItem });
   }
 
   updateScore();
-  setTimeout(newRound, 1500);
+
+  // move to next item after short delay
+  currentIndex++;
+  setTimeout(newRound, 900);
 }
 
-// ------------------- Show History -----------------------
+// ------------------- Show history + CSV export -----------------------
 function showHistory() {
   let html = "<h3>Ergebnisse</h3>";
+  html += `<button onclick="exportCSV()">Export CSV</button><br><br>`;
   html += "<table>";
   html += "<tr><th>Verb</th><th>Your Prep</th><th>Your Case</th><th>Correct Prep</th><th>Correct Case</th><th>Mode</th><th>Result</th></tr>";
+
   history.forEach(item => {
     html += `<tr>
       <td>${item.verb}</td>
@@ -146,8 +203,37 @@ function showHistory() {
       <td>${item.result === "Correct" ? "✅" : "❌"}</td>
     </tr>`;
   });
+
   html += "</table>";
   document.getElementById("history").innerHTML = html;
+}
+
+// ------------------- CSV Export -----------------------
+function exportCSV() {
+  if (history.length === 0) {
+    alert("Keine Ergebnisse zum Exportieren.");
+    return;
+  }
+
+  const rows = [
+    ["Verb", "Your Prep", "Your Case", "Correct Prep", "Correct Case", "Mode", "Result", "Timestamp"]
+  ];
+
+  history.forEach(h => {
+    rows.push([h.verb, h.yourPrep, h.yourCase, h.correctPrep, h.correctCase, h.mode, h.result, h.timestamp]);
+  });
+
+  const csv = rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")).join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "verb_trainer_results.csv";
+  a.style.display = "none";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 // ------------------- Submit on Enter -----------------------
@@ -159,6 +245,7 @@ document.getElementById("caseInput").addEventListener("keypress", function(e) {
 });
 
 // ------------------- Start -----------------------
+buildLists();
 newRound();
 </script>
 
