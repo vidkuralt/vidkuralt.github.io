@@ -12,7 +12,7 @@ title: "Other Projects"
 
 | Title            | Year   | Language | Description                                                 |
 | --------         | ------ | ---------|------------------------------------------------------------ |
-| [Distance](/files/)    | 2025   | ENG |A true story about long distance relationship.               |
+| [Miluji tě](/files/)    | 2025   | ENG |A true story about long distance relationship.               |
 | [Temačne misli](/files/)    | NaN | SLO | Zbirka krajših kriminalk.  |
 | [Čarovniki na Škotskem](/files/)     | NaN   | SLO| Fantastično zgodovinski roman o čarovnikih v Združenem Kraljestvu v času širjenja rimskega imperija.  |
 
@@ -53,6 +53,6 @@ title: "Other Projects"
 
 | Entry   | Year   | Language |     Description                                     |
 | --------| ------ | ---------| --------------------------------------------------- |
-| [/](#)  | /     | /       |     /         |
+| [CSV-reader/](https://github.com/vidkuralt/Side_projects/blob/main/show_csv.py)  | 2025     | Python      |     A simpe Python script to read         |
 | [/](#)  | /     | /          |     /         |
 | [/](#)  | /      | /        |      /         |
