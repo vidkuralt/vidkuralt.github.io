@@ -53,6 +53,6 @@ title: "Other Projects"
 
 | Entry   | Year   | Language |     Description                                     |
 | --------| ------ | ---------| --------------------------------------------------- |
-| [CSV-reader/](https://github.com/vidkuralt/Side_projects/blob/main/show_csv.py)  | 2025     | Python      |     A simpe Python script to read         |
+| [CSV-reader](https://github.com/vidkuralt/Side_projects/blob/main/show_csv.py)  | 2025     | Python      |     A simpe Python script to read         |
 | [/](#)  | /     | /          |     /         |
 | [/](#)  | /      | /        |      /         |
