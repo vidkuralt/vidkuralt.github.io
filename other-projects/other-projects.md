@@ -12,7 +12,7 @@ title: "Other Projects"
 
 | Title            | Year   | Language | Description                                                 |
 | --------         | ------ | ---------|------------------------------------------------------------ |
-| [Miluji tě](kutt.it/Miluje_te_book)    | 2025   | ENG |A true story about long distance relationship.               |
+| [Miluji tě](https://kutt.it/Miluje_te_book)    | 2025   | ENG |A true story about long distance relationship.               |
 | [Temačne misli](/files/)    | NaN | SLO | Zbirka krajših kriminalk.  |
 | [Čarovniki na Škotskem](/files/)     | NaN   | SLO| Fantastično zgodovinski roman o čarovnikih v Združenem Kraljestvu v času širjenja rimskega imperija.  |
 
