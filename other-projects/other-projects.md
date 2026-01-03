@@ -12,7 +12,7 @@ title: "Other Projects"
 
 | Title            | Year   | Language | Description                                                 |
 | --------         | ------ | ---------|------------------------------------------------------------ |
-| [Miluji tě](https://kutt.it/Miluje_te_book)    | 2025   | ENG |A true story about long distance relationship.               |
+| [Miluji tě](https://kutt.it/Miluje_te_book)    | 2025   | ENG | Finding my voice in the Silence of us. Romantic Memoir.             |
 | [Temačne misli](/files/)    | NaN | SLO | Zbirka krajših kriminalk.  |
 | [Čarovniki na Škotskem](/files/)     | NaN   | SLO| Fantastično zgodovinski roman o čarovnikih v Združenem Kraljestvu v času širjenja rimskega imperija.  |
 
@@ -41,18 +41,18 @@ title: "Other Projects"
 
 | Entry   | Year   | Language |     Description                                     |
 | --------| ------ | ---------| --------------------------------------------------- |
-| [Verben mit Präpositionen](https://vidkuralt.github.io/school/Verben_Dat_Akk.html)  | 2025      | DEU       |     Übung für Niveau B1.1         |
-| [Unregelmäßige Verben](https://vidkuralt.github.io/school/unregelmassige_verben.html)  | 2025     | DEU          |     Übung für Niveau B1.1         |
-| [Irregular Verbs](https://vidkuralt.github.io/school/irregular-verbs-trainer.html)  | 2025      | ENG        |      B2 Exercise         |
+| [Verben mit Präpositionen](https://vidkuralt.github.io/school/Verben_Dat_Akk.html)  | 2025      | DEU       |     Übung für Niveau B1.1.         |
+| [Unregelmäßige Verben](https://vidkuralt.github.io/school/unregelmassige_verben.html)  | 2025     | DEU          |     Übung für Niveau B1.1.         |
+| [Irregular Verbs](https://vidkuralt.github.io/school/irregular-verbs-trainer.html)  | 2025      | ENG        |      B2 Exercise.         |
 | [Polish-Slovenian Learning document](/files/Studying_Polish.pdf)  | 2025      | POL/SLO        |     Dla początkujących. Za začetnike.         |
 | [Czech-Slovenian Learning document](/files/Studying_Czech.pdf)  | 2024      | CZE/SLO        |     Pro začátečníky. Za začetnike.         |
-| [DEUTSCHE GRAMMATIK FÜR GYMNASIEN](/files/DEUTSCHE_GRAMMATIK_FÜR_GYMNASIEN.pdf)  | 2020     | DEU        |       Gimnazija Kranj       |
-| [ENGLISH GRAMMAR FOR GRAMMAR SCHOOLS](/files/ENGLISH_GRAMMAR_FOR_GRAMMAR_SCHOOLS.pdf)  | 2019      | ENG        |    Gimnazija Kranj          |
+| [DEUTSCHE GRAMMATIK FÜR GYMNASIEN](/files/DEUTSCHE_GRAMMATIK_FÜR_GYMNASIEN.pdf)  | 2020     | DEU        |       Zapiski iz Gimnazije Kranj.       |
+| [ENGLISH GRAMMAR FOR GRAMMAR SCHOOLS](/files/ENGLISH_GRAMMAR_FOR_GRAMMAR_SCHOOLS.pdf)  | 2019      | ENG        |    Zapiski iz Gimnazije Kranj.          |
 
 ## Tools
 
 | Entry   | Year   | Language |     Description                                     |
 | --------| ------ | ---------| --------------------------------------------------- |
+| [Samsung Health to Garmin TCX](https://github.com/vidkuralt/Samsung-Health-to-Garmin-conversion/tree/main)  | 2026     | Python          |     Here is a Python script to convert your running exercises recorded on a Samsung device into Garmin TCX format.         |
 | [CSV-reader](https://github.com/vidkuralt/Side_projects/blob/main/show_csv.py)  | 2025     | Python      |     A simpe Python script to read CSV files.       |
-| [/](#)  | /     | /          |     /         |
 | [/](#)  | /      | /        |      /         |
