@@ -12,7 +12,7 @@ title: "Other Projects"
 
 | Title            | Year   | Language | Description                                                 |
 | --------         | ------ | ---------|------------------------------------------------------------ |
-| [Miluji tě](https://kutt.it/Miluje_te_book)    | 2025   | ENG | Finding my voice in the silence of us. Romantic Memoir.             |
+| [Miluji tě](https://kutt.it/Miluje_te_book)    | 2025   | ENG | Romantic Memoir.             |
 | [Temačne misli](/files/)    | NaN | SLO | Zbirka krajših kriminalk.  |
 | [Čarovniki na Škotskem](/files/)     | NaN   | SLO| Fantastično zgodovinski roman o čarovnikih v Združenem Kraljestvu v času širjenja rimskega imperija.  |
 
