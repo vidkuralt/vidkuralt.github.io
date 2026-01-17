@@ -22,7 +22,7 @@ Passionate about advancing the role of AI in pharmaceutical research, Vid’s wo
 
 Looking ahead, Vid is dedicated to bridging the gap between computational predictions and experimental validation, with the goal of developing more effective and efficient strategies for discovering therapies.
 
-**[Headshot](images/vk.jpg), [Full resume](https://europa.eu/europass/eportfolio/api/eprofile/shared-profile/vid-kuralt/1e7a6d30-d8e9-4eb9-b525-4eef0945dd12?view=html)**
+**[Headshot](images/vk.jpg), [Full resume](https://europa.eu/europass/eportfolio/api/eprofile/shared-profile/vid-kuralt/36992aa9-f8fd-4fc4-bacd-131ba48f2b31?view=html)**
 
 **Acknowledgements**
 
