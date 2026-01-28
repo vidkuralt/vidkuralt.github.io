@@ -53,7 +53,7 @@ title: "Other Projects"
 
 | Entry   | Year   | Language |     Description                                     |
 | --------| ------ | ---------| --------------------------------------------------- |
-| [CSV reader 2.0](#)  | 2026      | JavaScript, CSS, HTML        |      A progressive web app to read CSV files.         |
+| [CSV reader 2.0](https://vidkuralt.github.io/CSV_reader/csv-viewer.html)  | 2026      | JavaScript, CSS, HTML        |      A progressive web app to read CSV files.         |
 | [Samsung Health to Garmin TCX](https://github.com/vidkuralt/Samsung-Health-to-Garmin-conversion/tree/main)  | 2026     | Python          |     Here is a Python script to convert your running exercises recorded on a Samsung device into Garmin TCX format.         |
 | [CSV-reader](https://github.com/vidkuralt/Side_projects/blob/main/show_csv.py)  | 2025     | Python      |     A simpe Python script to read CSV files.       |
 
