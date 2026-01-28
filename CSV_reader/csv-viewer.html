@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Beautiful CSV viewer with drag & drop, sorting, and copy functionality">
+    <meta name="theme-color" content="#0a0e17">
+    <title>CSV Viewer Pro</title>
+    
+    <!-- PWA Configuration -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='url(%23g)'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:rgb(0,212,170)'/><stop offset='100%25' style='stop-color:rgb(0,150,255)'/></linearGradient></defs></rect><text x='50' y='65' font-size='50' text-anchor='middle' font-family='serif' fill='%230a0e17' font-weight='bold'>Ⅽ</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='url(%23g)'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:rgb(0,212,170)'/><stop offset='100%25' style='stop-color:rgb(0,150,255)'/></linearGradient></defs></rect><text x='50' y='65' font-size='50' text-anchor='middle' font-family='serif' fill='%230a0e17' font-weight='bold'>Ⅽ</text></svg>">
+    
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #151922;
+            --bg-tertiary: #1e2530;
+            --accent-primary: #00d4aa;
+            --accent-secondary: #0096ff;
+            --text-primary: #e8edf4;
+            --text-secondary: #8b96a8;
+            --border-color: #2a3241;
+            --hover-bg: #252d3d;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Instrument Sans', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Animated background gradient */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(0, 212, 170, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(0, 150, 255, 0.06) 0%, transparent 50%);
+            animation: gradientShift 20s ease infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(10%, 10%) rotate(180deg); }
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 1;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'DM Serif Display', serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--bg-primary);
+            box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+        }
+
+        .logo h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 24px;
+            font-weight: 400;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: var(--bg-primary);
+            box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 212, 170, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--hover-bg);
+            border-color: var(--accent-primary);
+        }
+
+        /* Main content area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding: 2rem;
+            gap: 1.5rem;
+        }
+
+        /* Drop zone */
+        .drop-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            background: var(--bg-secondary);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .drop-zone:hover,
+        .drop-zone.drag-over {
+            border-color: var(--accent-primary);
+            background: rgba(0, 212, 170, 0.05);
+            transform: scale(1.02);
+        }
+
+        .drop-zone-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .drop-icon {
+            font-size: 48px;
+            opacity: 0.6;
+        }
+
+        .drop-zone h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 24px;
+            font-weight: 400;
+            color: var(--text-primary);
+        }
+
+        .drop-zone p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Stats bar */
+        .stats-bar {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent-primary);
+        }
+
+        .stat-divider {
+            width: 1px;
+            background: var(--border-color);
+            margin: 0 0.5rem;
+        }
+
+        /* Table container */
+        .table-container {
+            flex: 1;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            display: none;
+            flex-direction: column;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .table-container.visible {
+            display: flex;
+        }
+
+        .table-wrapper {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+        }
+
+        /* Custom scrollbar */
+        .table-wrapper::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 6px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-primary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: var(--bg-tertiary);
+        }
+
+        th {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-weight: 500;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            border-bottom: 2px solid var(--border-color);
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s ease;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        th:hover {
+            background: var(--hover-bg);
+            color: var(--accent-primary);
+        }
+
+        th.sortable::after {
+            content: '⇅';
+            margin-left: 0.5rem;
+            opacity: 0.3;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        th.sorted-asc::after {
+            content: '↑';
+            opacity: 1;
+            color: var(--accent-primary);
+        }
+
+        th.sorted-desc::after {
+            content: '↓';
+            opacity: 1;
+            color: var(--accent-primary);
+        }
+
+        tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: var(--hover-bg);
+        }
+
+        tbody tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        tbody tr:nth-child(even):hover {
+            background: var(--hover-bg);
+        }
+
+        td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+            color: var(--text-primary);
+            font-family: 'IBM Plex Mono', monospace;
+            position: relative;
+        }
+
+        td:hover {
+            background: rgba(0, 212, 170, 0.05);
+            cursor: pointer;
+        }
+
+        /* Copy notification */
+        .copy-notification {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: var(--bg-primary);
+            border-radius: 8px;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0, 212, 170, 0.4);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .copy-notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* File input hidden */
+        #fileInput {
+            display: none;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .table-container.visible {
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .stats-bar {
+            animation: fadeInUp 0.4s ease;
+        }
+
+        /* Empty state */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            gap: 1rem;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .filename-display {
+            padding: 0.5rem 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filename-display::before {
+            content: '📄';
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">Ⅽ</div>
+                <h1>CSV Viewer Pro</h1>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="clearData()">
+                    <span>✕</span> Clear
+                </button>
+                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                    <span>📁</span> Import CSV
+                </button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="empty-state" id="emptyState">
+                <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+                    <div class="drop-zone-content">
+                        <div class="drop-icon">📊</div>
+                        <h2>Drop your CSV file here</h2>
+                        <p>or click to browse</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="fileInfo" class="filename-display" style="display: none;"></div>
+
+            <div id="statsBar" class="stats-bar" style="display: none;">
+                <div class="stat-item">
+                    <span class="stat-label">Rows</span>
+                    <span class="stat-value" id="rowCount">0</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-label">Columns</span>
+                    <span class="stat-value" id="colCount">0</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-label">Size</span>
+                    <span class="stat-value" id="fileSize">0 KB</span>
+                </div>
+            </div>
+
+            <div id="tableContainer" class="table-container">
+                <div class="table-wrapper">
+                    <table id="dataTable">
+                        <thead id="tableHead"></thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="fileInput" accept=".csv" />
+    <div id="copyNotification" class="copy-notification">Copied to clipboard!</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script>
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registered:', registration);
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed:', err);
+                    });
+            });
+        }
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button if not already installed
+            if (!window.matchMedia('(display-mode: standalone)').matches) {
+                showInstallPrompt();
+            }
+        });
+
+        function showInstallPrompt() {
+            const installBtn = document.createElement('button');
+            installBtn.className = 'btn btn-primary install-btn';
+            installBtn.innerHTML = '<span>⬇</span> Install App';
+            installBtn.style.cssText = 'position: fixed; bottom: 2rem; left: 2rem; z-index: 1000; animation: fadeInUp 0.5s ease;';
+            
+            installBtn.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    console.log(`User response to install prompt: ${outcome}`);
+                    deferredPrompt = null;
+                    installBtn.remove();
+                }
+            });
+            
+            document.body.appendChild(installBtn);
+            
+            // Auto-hide after 10 seconds
+            setTimeout(() => {
+                if (installBtn.parentElement) {
+                    installBtn.style.opacity = '0';
+                    setTimeout(() => installBtn.remove(), 300);
+                }
+            }, 10000);
+        }
+
+        let csvData = [];
+        let currentSort = { column: null, direction: null };
+        let currentFileName = '';
+
+        // File input handler
+        document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+
+        // Drag and drop handlers
+        const dropZone = document.getElementById('dropZone');
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.add('drag-over');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.remove('drag-over');
+            }, false);
+        });
+
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        }
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        }
+
+        function handleFile(file) {
+            if (!file.name.endsWith('.csv')) {
+                alert('Please select a CSV file');
+                return;
+            }
+
+            currentFileName = file.name;
+            
+            Papa.parse(file, {
+                complete: function(results) {
+                    csvData = results.data.filter(row => row.some(cell => cell !== ''));
+                    displayData();
+                    updateStats(file.size);
+                },
+                error: function(error) {
+                    alert('Error parsing CSV: ' + error.message);
+                }
+            });
+        }
+
+        function displayData() {
+            if (csvData.length === 0) return;
+
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('statsBar').style.display = 'flex';
+            document.getElementById('tableContainer').classList.add('visible');
+            document.getElementById('fileInfo').style.display = 'flex';
+            document.getElementById('fileInfo').textContent = currentFileName;
+
+            const headers = csvData[0];
+            const rows = csvData.slice(1);
+
+            // Create table header
+            const thead = document.getElementById('tableHead');
+            thead.innerHTML = '';
+            const headerRow = document.createElement('tr');
+            
+            headers.forEach((header, index) => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                th.classList.add('sortable');
+                th.onclick = () => sortColumn(index);
+                headerRow.appendChild(th);
+            });
+            
+            thead.appendChild(headerRow);
+
+            // Create table body
+            displayRows(rows);
+        }
+
+        function displayRows(rows) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            rows.forEach(row => {
+                const tr = document.createElement('tr');
+                row.forEach(cell => {
+                    const td = document.createElement('td');
+                    td.textContent = cell;
+                    td.onclick = () => copyToClipboard(cell);
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+        }
+
+        function sortColumn(columnIndex) {
+            const headers = csvData[0];
+            let rows = csvData.slice(1);
+
+            // Determine sort direction
+            if (currentSort.column === columnIndex) {
+                if (currentSort.direction === 'asc') {
+                    currentSort.direction = 'desc';
+                } else if (currentSort.direction === 'desc') {
+                    currentSort.direction = null;
+                    currentSort.column = null;
+                } else {
+                    currentSort.direction = 'asc';
+                }
+            } else {
+                currentSort.column = columnIndex;
+                currentSort.direction = 'asc';
+            }
+
+            // Update header styling
+            const ths = document.querySelectorAll('th');
+            ths.forEach((th, index) => {
+                th.classList.remove('sorted-asc', 'sorted-desc');
+                if (index === columnIndex) {
+                    if (currentSort.direction === 'asc') {
+                        th.classList.add('sorted-asc');
+                    } else if (currentSort.direction === 'desc') {
+                        th.classList.add('sorted-desc');
+                    }
+                }
+            });
+
+            // Sort rows
+            if (currentSort.direction) {
+                rows.sort((a, b) => {
+                    const aVal = a[columnIndex];
+                    const bVal = b[columnIndex];
+                    
+                    const aNum = parseFloat(aVal);
+                    const bNum = parseFloat(bVal);
+                    
+                    if (!isNaN(aNum) && !isNaN(bNum)) {
+                        return currentSort.direction === 'asc' ? aNum - bNum : bNum - aNum;
+                    } else {
+                        const comparison = aVal.localeCompare(bVal);
+                        return currentSort.direction === 'asc' ? comparison : -comparison;
+                    }
+                });
+            }
+
+            displayRows(rows);
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showCopyNotification();
+            });
+        }
+
+        function showCopyNotification() {
+            const notification = document.getElementById('copyNotification');
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        }
+
+        function updateStats(fileSize) {
+            document.getElementById('rowCount').textContent = csvData.length - 1;
+            document.getElementById('colCount').textContent = csvData[0].length;
+            document.getElementById('fileSize').textContent = (fileSize / 1024).toFixed(2) + ' KB';
+        }
+
+        function clearData() {
+            csvData = [];
+            currentSort = { column: null, direction: null };
+            currentFileName = '';
+            document.getElementById('emptyState').style.display = 'flex';
+            document.getElementById('statsBar').style.display = 'none';
+            document.getElementById('tableContainer').classList.remove('visible');
+            document.getElementById('fileInfo').style.display = 'none';
+            document.getElementById('tableHead').innerHTML = '';
+            document.getElementById('tableBody').innerHTML = '';
+            document.getElementById('fileInput').value = '';
+        }
+    </script>
+</body>
+</html>
