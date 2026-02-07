@@ -2,49 +2,416 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Verben mit Präpositionen Trainer</title>
 <style>
-    body { font-family: Arial; max-width: 700px; margin: 40px auto; }
-    input { padding: 8px; width: 100%; margin-top: 5px; box-sizing: border-box; }
-    button { padding: 10px; margin-top: 10px; width: 100%; cursor: pointer; }
-    #result { margin-top: 20px; font-size: 1.2em; }
-    #score { margin-top: 10px; font-weight: bold; }
-    #leftCount { margin-top: 6px; color: #333; }
-    #history { margin-top: 30px; border-top: 1px solid #ccc; padding-top: 20px; }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align:center; }
-    .trainer-container { border: 1px solid #ccc; padding: 20px; border-radius: 8px; background: #f9f9f9; }
-    .toggle-container { margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body { 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    h2 {
+        text-align: center;
+        color: white;
+        font-size: 2.2em;
+        margin-bottom: 30px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        animation: fadeInDown 0.6s ease;
+    }
+
+    .trainer-container {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        animation: fadeInUp 0.6s ease;
+    }
+
+    .toggle-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 30px;
+        padding: 15px;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .toggle-container:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    #modeToggle {
+        width: 50px;
+        height: 26px;
+        appearance: none;
+        background: #ccc;
+        border-radius: 13px;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    #modeToggle:checked {
+        background: #667eea;
+    }
+
+    #modeToggle::before {
+        content: '';
+        position: absolute;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: white;
+        top: 2px;
+        left: 2px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    #modeToggle:checked::before {
+        left: 26px;
+    }
+
+    .toggle-container label {
+        font-weight: 600;
+        color: #333;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    #verbDisplay {
+        font-size: 2em;
+        font-weight: bold;
+        color: #667eea;
+        text-align: center;
+        margin: 30px 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border-radius: 15px;
+        border-left: 6px solid #667eea;
+        animation: slideIn 0.5s ease;
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .input-group {
+        margin-bottom: 15px;
+    }
+
+    input {
+        padding: 15px 20px;
+        width: 100%;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        font-size: 1.1em;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    input::placeholder {
+        color: #999;
+    }
+
+    .button-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-top: 25px;
+    }
+
+    button {
+        padding: 15px 30px;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    button:first-child {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    button:first-child:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    button:first-child:active {
+        transform: translateY(0);
+    }
+
+    button:last-child {
+        background: white;
+        color: #667eea;
+        border: 2px solid #667eea;
+    }
+
+    button:last-child:hover {
+        background: #667eea;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    #result {
+        margin-top: 25px;
+        padding: 20px;
+        border-radius: 12px;
+        font-size: 1.2em;
+        font-weight: 600;
+        text-align: center;
+        min-height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 0.5s ease;
+    }
+
+    .stats-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-top: 25px;
+    }
+
+    #score {
+        padding: 15px;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 1.1em;
+        text-align: center;
+        color: #333;
+    }
+
+    #leftCount {
+        padding: 15px;
+        background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+        border-radius: 12px;
+        font-weight: 600;
+        text-align: center;
+        color: #2d3436;
+        font-size: 0.95em;
+    }
+
+    #history {
+        margin-top: 40px;
+        animation: fadeIn 0.6s ease;
+    }
+
+    #history h3 {
+        color: white;
+        font-size: 1.8em;
+        margin-bottom: 20px;
+        text-align: center;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    #history button {
+        margin-bottom: 20px;
+        grid-column: span 2;
+    }
+
+    table {
+        width: 100%;
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+
+    th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.9em;
+        letter-spacing: 0.5px;
+    }
+
+    td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #f0f0f0;
+        color: #333;
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+
+    tr:hover {
+        background: #f8f9fa;
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    .correct-answer {
+        background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        color: white;
+        animation: pulse 0.5s ease;
+    }
+
+    .wrong-answer {
+        background: linear-gradient(135deg, #ff7675 0%, #d63031 100%);
+        color: white;
+        animation: shake 0.5s ease;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        75% { transform: translateX(10px); }
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+        h2 {
+            font-size: 1.6em;
+        }
+
+        .trainer-container {
+            padding: 25px;
+        }
+
+        #verbDisplay {
+            font-size: 1.5em;
+        }
+
+        .button-group {
+            grid-template-columns: 1fr;
+        }
+
+        .stats-container {
+            grid-template-columns: 1fr;
+        }
+
+        th, td {
+            padding: 8px;
+            font-size: 0.85em;
+        }
+    }
 </style>
 </head>
 <body>
 
-<h2>Verben mit Präpositionen – Trainer</h2>
+<div class="container">
+    <h2>🇩🇪 Verben mit Präpositionen – Trainer</h2>
 
-<div class="trainer-container">
-    <div class="toggle-container">
-        <input type="checkbox" id="modeToggle" onchange="toggleMode()">
-        <label for="modeToggle"><strong>Include Case (Dativ/Akkusativ)</strong></label>
+    <div class="trainer-container">
+        <div class="toggle-container">
+            <input type="checkbox" id="modeToggle" onchange="toggleMode()">
+            <label for="modeToggle"><strong>Include Case (Dativ/Akkusativ)</strong></label>
+        </div>
+
+        <div id="verbDisplay">Lade...</div>
+
+        <div class="input-group">
+            <input id="prepInput" placeholder="Präposition (z. B. auf)" autocomplete="off">
+        </div>
+
+        <div class="input-group">
+            <input id="caseInput" placeholder="Kasus (akk / dat)" style="display:none;" autocomplete="off">
+        </div>
+
+        <div class="button-group">
+            <button onclick="checkAnswer()">Überprüfen</button>
+            <button onclick="showHistory()">Ergebnisse anzeigen</button>
+        </div>
+
+        <div id="result"></div>
+
+        <div class="stats-container">
+            <div id="score">Score: ✅ 0 | ❌ 0</div>
+            <div id="leftCount">Verbleibende Artikel: 0</div>
+        </div>
     </div>
 
-    <p id="verbDisplay"></p>
-
-    <input id="prepInput" placeholder="Präposition (z. B. auf)">
-    <input id="caseInput" placeholder="Kasus (akk / dat)" style="display:none;">
-
-    <button onclick="checkAnswer()">Überprüfen</button>
-    <button onclick="showHistory()">Show Results</button>
-
-    <div id="result"></div>
-    <div id="score"></div>
-    <div id="leftCount"></div>
+    <div id="history"></div>
 </div>
-
-<div id="history"></div>
 
 <script>
 // ------------------- Database -----------------------
-const verbs = { "abhängen": [ { prep: "von", case: "dat" } ], "achten": [ { prep: "auf", case: "akk" } ], "anfangen": [ { prep: "mit", case: "dat" } ], "anrufen": [ { prep: "bei", case: "dat" } ], "antworten": [ { prep: "auf", case: "akk" } ], "arbeiten": [ { prep: "als", case: "nom" }, { prep: "bei", case: "dat" }, { prep: "an", case: "dat" } ], "sich ärgern": [ { prep: "über", case: "akk" } ], "aufhören": [ { prep: "mit", case: "dat" } ], "bedeuten": [ { prep: "für", case: "akk" } ], "sich beeilen": [ { prep: "mit", case: "dat" } ], "beginnen": [ { prep: "mit", case: "dat" } ], "berichten": [ { prep: "über", case: "akk" }, { prep: "von", case: "dat" } ], "beschweren": [ { prep: "bei", case: "dat" }, { prep: "über", case: "akk" } ], "bestehen": [ { prep: "aus", case: "dat" } ], "bitten": [ { prep: "um", case: "akk" } ], "danken": [ { prep: "für", case: "akk" } ], "demonstrieren": [ { prep: "für", case: "akk" } ], "denken": [ { prep: "an", case: "akk" } ], "diskutieren": [ { prep: "über", case: "akk" }, { prep: "mit", case: "dat" } ], "sich einigen": [ { prep: "auf", case: "akk" }, { prep: "mit", case: "dat" } ], "einladen": [ { prep: "zu", case: "dat" } ], "sich engagieren": [ { prep: "für", case: "akk" } ], "sich entscheiden": [ { prep: "für", case: "akk" }, { prep: "gegen", case: "akk" } ], "sich entschuldigen": [ { prep: "für", case: "akk" }, { prep: "bei", case: "dat" } ], "entstehen": [ { prep: "aus", case: "dat" } ], "sich erholen": [ { prep: "von", case: "dat" } ], "sich erinnern": [ { prep: "an", case: "akk" } ], "erwarten": [ { prep: "von", case: "dat" } ], "erzählen": [ { prep: "von", case: "dat" } ], "sich freuen": [ { prep: "auf", case: "akk" }, { prep: "über", case: "akk" } ], "fragen": [ { prep: "nach", case: "dat" } ], "es geht": [ { prep: "um", case: "akk" } ], "gehören": [ { prep: "zu", case: "dat" } ], "gelten": [ { prep: "als", case: "akk" } ], "sich gewöhnen": [ { prep: "an", case: "akk" } ], "glauben": [ { prep: "an", case: "akk" } ], "gratulieren": [ { prep: "zu", case: "dat" } ], "handeln": [ { prep: "von", case: "dat" }, { prep: "mit", case: "dat" } ], "helfen": [ { prep: "bei", case: "dat" }, { prep: "mit", case: "dat" } ], "teilnehmen": [ { prep: "an", case: "dat" } ], "sprechen": [ { prep: "über", case: "akk" }, { prep: "mit", case: "dat" }, { prep: "von", case: "dat" } ], "sich informieren": [ { prep: "über", case: "akk" } ], "sich interessieren": [ { prep: "für", case: "akk" } ], "kämpfen": [ { prep: "für", case: "akk" }, { prep: "gegen", case: "akk" }, { prep: "mit", case: "dat" }, { prep: "um", case: "akk" } ], "sich konzentrieren": [ { prep: "auf", case: "akk" } ], "sich kümmern": [ { prep: "um", case: "akk" } ], "lachen": [ { prep: "über", case: "akk" } ], "leiden": [ { prep: "an", case: "dat" }, { prep: "unter", case: "dat" } ], "lesen": [ { prep: "von", case: "dat" }, { prep: "über", case: "akk" } ], "passen": [ { prep: "zu", case: "dat" } ], "protestieren": [ { prep: "gegen", case: "akk" } ], "reagieren": [ { prep: "auf", case: "akk" } ], "riechen": [ { prep: "nach", case: "dat" } ], "schicken": [ { prep: "an", case: "akk" } ], "schimpfen": [ { prep: "über", case: "akk" }, { prep: "mit", case: "dat" } ], "sich spezialisieren": [ { prep: "auf", case: "akk" } ], "sterben": [ { prep: "an", case: "dat" } ], "steigen": [ { prep: "auf", case: "akk" } ], "sich streiten": [ { prep: "mit", case: "dat" }, { prep: "über", case: "akk" } ], "suchen": [ { prep: "nach", case: "dat" } ], "tauschen": [ { prep: "gegen", case: "akk" } ], "telefonieren": [ { prep: "mit", case: "dat" } ], "träumen": [ { prep: "von", case: "dat" } ], "sich treffen": [ { prep: "mit", case: "dat" } ], "übersetzen": [ { prep: "in", case: "akk" }, { prep: "aus", case: "dat" } ], "überzeugen": [ { prep: "von", case: "dat" } ], "sich unterhalten": [ { prep: "über", case: "akk" }, { prep: "mit", case: "dat" } ], "sich verabreden": [ { prep: "mit", case: "dat" } ], "sich verlieben": [ { prep: "in", case: "akk" } ], "verzichten": [ { prep: "auf", case: "akk" } ], "sich vorbereiten": [ { prep: "auf", case: "akk" } ], "warnen": [ { prep: "vor", case: "dat" } ], "warten": [ { prep: "auf", case: "akk" } ], "sich wundern": [ { prep: "über", case: "akk" } ], "zweifeln": [ { prep: "an", case: "dat" } ] };
+const verbs = { "abhängen": [ { prep: "von", case: "dat" } ], "achten": [ { prep: "auf", case: "akk" } ], "anfangen": [ { prep: "mit", case: "dat" } ], "anrufen": [ { prep: "bei", case: "dat" } ], "antworten": [ { prep: "auf", case: "akk" } ], "arbeiten": [ { prep: "als", case: "nom" }, { prep: "bei", case: "dat" }, { prep: "an", case: "dat" } ], "sich ärgern": [ { prep: "über", case: "akk" } ], "aufhören": [ { prep: "mit", case: "dat" } ], "bedeuten": [ { prep: "für", case: "akk" } ], "sich beeilen": [ { prep: "mit", case: "dat" } ], "beginnen": [ { prep: "mit", case: "dat" } ], "berichten": [ { prep: "über", case: "akk" }, { prep: "von", case: "dat" } ], "beschweren": [ { prep: "bei", case: "dat" }, { prep: "über", case: "akk" } ], "bestehen": [ { prep: "aus", case: "dat" } ], "bitten": [ { prep: "um", case: "akk" } ], "danken": [ { prep: "für", case: "akk" } ], "demonstrieren": [ { prep: "für", case: "akk" }, { prep: "gegen", case: "akk"} ], "denken": [ { prep: "an", case: "akk" } ], "diskutieren": [ { prep: "über", case: "akk" }, { prep: "mit", case: "dat" } ], "sich einigen": [ { prep: "auf", case: "akk" }, { prep: "mit", case: "dat" } ], "einladen": [ { prep: "zu", case: "dat" } ], "sich engagieren": [ { prep: "für", case: "akk" } ], "sich entscheiden": [ { prep: "für", case: "akk" }, { prep: "gegen", case: "akk" } ], "sich entschuldigen": [ { prep: "für", case: "akk" }, { prep: "bei", case: "dat" } ], "entstehen": [ { prep: "aus", case: "dat" } ], "sich erholen": [ { prep: "von", case: "dat" } ], "sich erinnern": [ { prep: "an", case: "akk" } ], "erwarten": [ { prep: "von", case: "dat" } ], "erzählen": [ { prep: "von", case: "dat" } ], "sich freuen": [ { prep: "auf", case: "akk" }, { prep: "über", case: "akk" } ], "fragen": [ { prep: "nach", case: "dat" } ], "es geht": [ { prep: "um", case: "akk" } ], "gehören": [ { prep: "zu", case: "dat" } ], "gelten": [ { prep: "als", case: "akk" } ], "sich gewöhnen": [ { prep: "an", case: "akk" } ], "glauben": [ { prep: "an", case: "akk" } ], "gratulieren": [ { prep: "zu", case: "dat" } ], "handeln": [ { prep: "von", case: "dat" }, { prep: "mit", case: "dat" } ], "helfen": [ { prep: "bei", case: "dat" }, { prep: "mit", case: "dat" } ], "teilnehmen": [ { prep: "an", case: "dat" } ], "sprechen": [ { prep: "über", case: "akk" }, { prep: "mit", case: "dat" }, { prep: "von", case: "dat" } ], "sich informieren": [ { prep: "über", case: "akk" } ], "sich interessieren": [ { prep: "für", case: "akk" } ], "kämpfen": [ { prep: "für", case: "akk" }, { prep: "gegen", case: "akk" }, { prep: "mit", case: "dat" }, { prep: "um", case: "akk" } ], "sich konzentrieren": [ { prep: "auf", case: "akk" } ], "sich kümmern": [ { prep: "um", case: "akk" } ], "lachen": [ { prep: "über", case: "akk" } ], "leiden": [ { prep: "an", case: "dat" }, { prep: "unter", case: "dat" } ], "lesen": [ { prep: "von", case: "dat" }, { prep: "über", case: "akk" } ], "passen": [ { prep: "zu", case: "dat" } ], "protestieren": [ { prep: "gegen", case: "akk" } ], "reagieren": [ { prep: "auf", case: "akk" } ], "riechen": [ { prep: "nach", case: "dat" } ], "schicken": [ { prep: "an", case: "akk" } ], "schimpfen": [ { prep: "über", case: "akk" }, { prep: "mit", case: "dat" } ], "sich spezialisieren": [ { prep: "auf", case: "akk" } ], "sterben": [ { prep: "an", case: "dat" } ], "steigen": [ { prep: "auf", case: "akk" } ], "sich streiten": [ { prep: "mit", case: "dat" }, { prep: "über", case: "akk" } ], "suchen": [ { prep: "nach", case: "dat" } ], "tauschen": [ { prep: "gegen", case: "akk" } ], "telefonieren": [ { prep: "mit", case: "dat" } ], "träumen": [ { prep: "von", case: "dat" } ], "sich treffen": [ { prep: "mit", case: "dat" } ], "übersetzen": [ { prep: "in", case: "akk" }, { prep: "aus", case: "dat" } ], "überzeugen": [ { prep: "von", case: "dat" } ], "sich unterhalten": [ { prep: "über", case: "akk" }, { prep: "mit", case: "dat" } ], "sich verabreden": [ { prep: "mit", case: "dat" } ], "sich verlieben": [ { prep: "in", case: "akk" } ], "verzichten": [ { prep: "auf", case: "akk" } ], "sich vorbereiten": [ { prep: "auf", case: "akk" } ], "warnen": [ { prep: "vor", case: "dat" } ], "warten": [ { prep: "auf", case: "akk" } ], "sich wundern": [ { prep: "über", case: "akk" } ], "zweifeln": [ { prep: "an", case: "dat" } ] };
 
 // ------------------- Helper -----------------------
 function normalize(text) {
@@ -90,14 +457,16 @@ function buildLists() {
 // ------------------- Helper: update counter -----------------------
 function updateLeftCount() {
   const left = Math.max(0, currentList.length - currentIndex);
-  document.getElementById("leftCount").textContent = `Verbleibende Artikel: ${left} (in dieser Runde)`;
+  document.getElementById("leftCount").textContent = `Verbleibende Artikel: ${left}`;
 }
 
 // ------------------- Mode toggle -----------------------
 function toggleMode() {
   includeCase = document.getElementById("modeToggle").checked;
   document.getElementById("caseInput").style.display = includeCase ? "block" : "none";
-  document.getElementById("result").textContent = "";
+  const resultEl = document.getElementById("result");
+  resultEl.textContent = "";
+  resultEl.className = "";
 }
 
 // ------------------- Start next round -----------------------
@@ -124,10 +493,12 @@ function newRound() {
   }
 
   currentItem = currentList[currentIndex];
-  document.getElementById("verbDisplay").textContent = `Verb: ${currentItem.verb}`;
+  document.getElementById("verbDisplay").textContent = `${currentItem.verb}`;
   document.getElementById("prepInput").value = "";
   document.getElementById("caseInput").value = "";
-  document.getElementById("result").textContent = "";
+  const resultEl = document.getElementById("result");
+  resultEl.textContent = "";
+  resultEl.className = "";
   updateScore();
   updateLeftCount();
 }
@@ -165,13 +536,17 @@ function checkAnswer() {
     timestamp: new Date().toISOString()
   });
 
+  const resultEl = document.getElementById("result");
+
   if (isCorrect) {
     correct++;
-    document.getElementById("result").textContent = "✅ Richtig!";
+    resultEl.textContent = "✅ Richtig! Perfekt!";
+    resultEl.className = "correct-answer";
   } else {
     wrong++;
-    document.getElementById("result").textContent =
+    resultEl.textContent =
       `❌ Falsch! Richtig: "${options.map(o => o.prep + (includeCase ? ' + ' + o.case : '')).join(' / ')}"`;
+    resultEl.className = "wrong-answer";
 
     // add to repeat list (avoid duplicates)
     const exists = repeatList.some(it =>
@@ -183,19 +558,19 @@ function checkAnswer() {
   updateScore();
 
   currentIndex++;
-  setTimeout(newRound, 900);
+  setTimeout(newRound, 1200);
 }
 
 // ------------------- Show history + CSV export -----------------------
 function showHistory() {
-  let html = "<h3>Ergebnisse</h3>";
-  html += `<button onclick="exportCSV()">Export CSV</button><br><br>`;
+  let html = "<h3>📊 Ergebnisse</h3>";
+  html += `<div style="text-align: center; margin-bottom: 20px;"><button onclick="exportCSV()" style="background: linear-gradient(135deg, #00b894 0%, #00cec9 100%); color: white; border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; font-weight: 600;">📥 Export CSV</button></div>`;
   html += "<table>";
   html += "<tr><th>Verb</th><th>Your Prep</th><th>Your Case</th><th>Correct Prep</th><th>Correct Case</th><th>Mode</th><th>Result</th></tr>";
 
   history.forEach(item => {
     html += `<tr>
-      <td>${item.verb}</td>
+      <td><strong>${item.verb}</strong></td>
       <td>${item.yourPrep}</td>
       <td>${item.yourCase}</td>
       <td>${item.correctPrep}</td>
