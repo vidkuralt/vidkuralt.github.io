@@ -1,0 +1,3 @@
+User-agent: Googlebot-Image
+Disallow: /images/vk.jpg
+Disallow: /images/vk_sq.jpg
