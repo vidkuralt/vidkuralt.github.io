@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artikel Trainer — die · der · das</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --die: #e63946;
+      --der: #457b9d;
+      --das: #2d6a4f;
+      --bg: #f4f1eb;
+      --surface: #fefefe;
+      --ink: #1a1a1a;
+      --muted: #888;
+      --border: #d9d5cc;
+      --radius: 4px;
+      --correct: #2d6a4f;
+      --wrong: #e63946;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2rem;
+      border-bottom: 2px solid var(--ink);
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      display: flex;
+      gap: 0.35rem;
+    }
+    .logo span:nth-child(1) { color: var(--die); }
+    .logo span:nth-child(2) { color: var(--der); }
+    .logo span:nth-child(3) { color: var(--das); }
+    .logo span:nth-child(4) { color: var(--ink); font-weight: 400; font-size: 0.85rem; align-self: flex-end; padding-bottom: 1px; }
+
+    .nav-tabs {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .tab-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.45rem 1rem;
+      border: 2px solid var(--ink);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: var(--ink);
+    }
+    .tab-btn:hover { background: var(--ink); color: var(--bg); }
+    .tab-btn.active { background: var(--ink); color: var(--bg); }
+
+    /* SCORE BAR */
+    .score-bar {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0.6rem 2rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+    }
+    .score-item { display: flex; align-items: center; gap: 0.4rem; }
+    .score-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+    }
+    .score-dot.correct { background: var(--correct); }
+    .score-dot.wrong { background: var(--wrong); }
+    .score-item span { color: var(--muted); }
+    .score-item strong { color: var(--ink); }
+
+    /* MAIN */
+    main { flex: 1; }
+
+    .view { display: none; padding: 2.5rem 2rem; max-width: 680px; margin: 0 auto; width: 100%; }
+    .view.active { display: block; }
+
+    /* TRAINER VIEW */
+    .word-count-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      margin-bottom: 2rem;
+    }
+
+    .card-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .word-card {
+      width: 100%;
+      background: var(--surface);
+      border: 2px solid var(--ink);
+      padding: 3.5rem 2rem;
+      text-align: center;
+      position: relative;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .word-card.shake {
+      animation: shake 0.35s ease;
+    }
+    .word-card.correct-flash {
+      border-color: var(--correct);
+      box-shadow: 0 0 0 4px rgba(45,106,79,0.12);
+    }
+    .word-card.wrong-flash {
+      border-color: var(--wrong);
+      box-shadow: 0 0 0 4px rgba(230,57,70,0.12);
+    }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
+
+    .article-hint {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .word-display {
+      font-size: clamp(2.4rem, 8vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .word-english {
+      margin-top: 0.75rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .feedback-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      min-height: 1.2em;
+      transition: color 0.2s;
+    }
+    .feedback-label.correct { color: var(--correct); }
+    .feedback-label.wrong { color: var(--wrong); }
+
+    /* ANSWER BUTTONS */
+    .answer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .answer-btn {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      padding: 1.2rem;
+      border: 2px solid var(--ink);
+      background: var(--surface);
+      cursor: pointer;
+      transition: all 0.12s;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .answer-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: currentColor;
+      opacity: 0;
+      transition: opacity 0.12s;
+    }
+    .answer-btn:hover::after { opacity: 0.06; }
+
+    .answer-btn[data-article="die"] { border-bottom: 4px solid var(--die); }
+    .answer-btn[data-article="der"] { border-bottom: 4px solid var(--der); }
+    .answer-btn[data-article="das"] { border-bottom: 4px solid var(--das); }
+
+    .answer-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .answer-btn:active { transform: translateY(0); }
+    .answer-btn.selected-correct { background: var(--correct); color: #fff; border-color: var(--correct); }
+    .answer-btn.selected-wrong { background: var(--wrong); color: #fff; border-color: var(--wrong); }
+    .answer-btn.reveal-correct { background: var(--correct); color: #fff; border-color: var(--correct); }
+    .answer-btn:disabled { cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .sub-label {
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      opacity: 0.65;
+      margin-top: 0.2rem;
+    }
+
+    /* NEXT / SKIP */
+    .action-row {
+      display: flex;
+      gap: 0.75rem;
+      width: 100%;
+    }
+
+    .btn-next {
+      flex: 1;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      padding: 0.85rem 1.5rem;
+      border: 2px solid var(--ink);
+      background: var(--ink);
+      color: var(--bg);
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .btn-next:hover { background: #333; }
+
+    .btn-skip {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      padding: 0.85rem 1.2rem;
+      border: 2px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .btn-skip:hover { border-color: var(--ink); color: var(--ink); }
+
+    /* PROGRESS BAR */
+    .progress-track {
+      width: 100%;
+      height: 3px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--ink);
+      transition: width 0.4s ease;
+      border-radius: 2px;
+    }
+
+    /* WORD LIST VIEW */
+    .view-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 1.75rem;
+    }
+    .view-title {
+      font-weight: 800;
+      font-size: 1.6rem;
+      letter-spacing: -0.03em;
+    }
+    .count-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      background: var(--border);
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+    }
+
+    /* ADD FORM */
+    .add-form {
+      background: var(--surface);
+      border: 2px solid var(--ink);
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+    }
+    .add-form h3 {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.01em;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 0.75rem;
+      align-items: end;
+    }
+
+    .form-field { display: flex; flex-direction: column; gap: 0.3rem; }
+    .form-field label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .form-field input, .form-field select {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.55rem 0.75rem;
+      border: 2px solid var(--border);
+      background: var(--bg);
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.15s;
+      border-radius: var(--radius);
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .form-field input:focus, .form-field select:focus { border-color: var(--ink); }
+
+    .select-wrapper { position: relative; }
+    .select-wrapper select { width: 100%; cursor: pointer; }
+    .select-wrapper::after {
+      content: '▾';
+      position: absolute;
+      right: 0.6rem;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .btn-add {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      padding: 0.6rem 1.25rem;
+      border: 2px solid var(--ink);
+      background: var(--ink);
+      color: var(--bg);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.12s;
+      height: 40px;
+    }
+    .btn-add:hover { background: #333; }
+
+    .form-success {
+      margin-top: 0.75rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--correct);
+      letter-spacing: 0.04em;
+      min-height: 1.2em;
+    }
+    .form-error {
+      margin-top: 0.75rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--wrong);
+      letter-spacing: 0.04em;
+      min-height: 1.2em;
+    }
+
+    /* WORD TABLE */
+    .word-table { width: 100%; border-collapse: collapse; }
+    .word-table thead {
+      border-bottom: 2px solid var(--ink);
+    }
+    .word-table th {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0.6rem 0.75rem;
+      text-align: left;
+      font-weight: 400;
+    }
+    .word-table td {
+      padding: 0.7rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .article-pill {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 0.15rem 0.5rem;
+      border-radius: 20px;
+      color: white;
+    }
+    .article-pill.die { background: var(--die); }
+    .article-pill.der { background: var(--der); }
+    .article-pill.das { background: var(--das); }
+
+    .word-col { font-weight: 700; }
+    .english-col { color: var(--muted); font-size: 0.82rem; }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0 0.25rem;
+      transition: color 0.12s;
+      line-height: 1;
+    }
+    .delete-btn:hover { color: var(--wrong); }
+
+    .custom-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem;
+      color: var(--muted);
+      background: var(--border);
+      padding: 0.1rem 0.4rem;
+      border-radius: 10px;
+      margin-left: 0.4rem;
+      vertical-align: middle;
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--muted);
+    }
+    .empty-state .big { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .empty-state p { font-size: 0.85rem; }
+
+    /* FILTER ROW */
+    .filter-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .filter-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border: 2px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: 20px;
+      transition: all 0.12s;
+    }
+    .filter-btn:hover, .filter-btn.active { border-color: var(--ink); color: var(--ink); background: var(--ink); color: var(--bg); }
+    .filter-btn.die.active { border-color: var(--die); background: var(--die); color: #fff; }
+    .filter-btn.der.active { border-color: var(--der); background: var(--der); color: #fff; }
+    .filter-btn.das.active { border-color: var(--das); background: var(--das); color: #fff; }
+
+    /* KEYBOARD HINT */
+    .keyboard-hint {
+      text-align: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-top: 0.5rem;
+    }
+    kbd {
+      display: inline-block;
+      padding: 0.1rem 0.4rem;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: var(--surface);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 520px) {
+      nav { padding: 1rem; }
+      .view { padding: 1.5rem 1rem; }
+      .form-grid { grid-template-columns: 1fr 1fr; }
+      .btn-add { grid-column: 1 / -1; width: 100%; }
+      .word-table th:last-child, .word-table td:last-child { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <span>die</span>
+    <span>der</span>
+    <span>das</span>
+    <span>Artikel Trainer</span>
+  </div>
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('train')">Üben</button>
+    <button class="tab-btn" onclick="switchTab('words')">Wörter</button>
+  </div>
+</nav>
+
+<div class="score-bar">
+  <div class="score-item">
+    <div class="score-dot correct"></div>
+    <span>Richtig:</span>
+    <strong id="score-correct">0</strong>
+  </div>
+  <div class="score-item">
+    <div class="score-dot wrong"></div>
+    <span>Falsch:</span>
+    <strong id="score-wrong">0</strong>
+  </div>
+  <div class="score-item">
+    <span>Genauigkeit:</span>
+    <strong id="score-acc">—</strong>
+  </div>
+  <div style="margin-left:auto">
+    <button class="btn-skip" onclick="resetScore()" style="font-size:0.62rem;padding:0.3rem 0.6rem">Reset</button>
+  </div>
+</div>
+
+<!-- TRAIN VIEW -->
+<div id="view-train" class="view active">
+  <div class="word-count-badge" id="word-count-label">Lade Wörter…</div>
+
+  <div class="card-area">
+    <div class="progress-track" style="width:100%">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+
+    <div class="word-card" id="word-card">
+      <div class="article-hint">Welcher Artikel?</div>
+      <div class="word-display" id="word-display">—</div>
+      <div class="word-english" id="word-english"></div>
+    </div>
+
+    <div class="feedback-label" id="feedback-label"></div>
+
+    <div class="answer-grid">
+      <button class="answer-btn" data-article="die" onclick="checkAnswer('die')">
+        die
+        <span class="sub-label">feminine · 1</span>
+      </button>
+      <button class="answer-btn" data-article="der" onclick="checkAnswer('der')">
+        der
+        <span class="sub-label">masculine · 2</span>
+      </button>
+      <button class="answer-btn" data-article="das" onclick="checkAnswer('das')">
+        das
+        <span class="sub-label">neuter · 3</span>
+      </button>
+    </div>
+
+    <div class="action-row">
+      <button class="btn-next" onclick="nextWord()">Weiter →</button>
+      <button class="btn-skip" onclick="skipWord()">Überspringen</button>
+    </div>
+
+    <div class="keyboard-hint">
+      Tastatur: <kbd>1</kbd> die &nbsp; <kbd>2</kbd> der &nbsp; <kbd>3</kbd> das &nbsp; <kbd>Space</kbd> weiter
+    </div>
+  </div>
+</div>
+
+<!-- WORDS VIEW -->
+<div id="view-words" class="view">
+  <div class="view-header">
+    <h2 class="view-title">Wörterliste</h2>
+    <span class="count-badge" id="word-list-count">0 Wörter</span>
+  </div>
+
+  <div class="add-form">
+    <h3>+ Neues Wort hinzufügen</h3>
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Artikel</label>
+        <div class="select-wrapper">
+          <select id="new-article">
+            <option value="die">die (fem.)</option>
+            <option value="der">der (masc.)</option>
+            <option value="das">das (neut.)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-field">
+        <label>Deutsches Wort</label>
+        <input type="text" id="new-word" placeholder="z.B. Hund" />
+      </div>
+      <div class="form-field">
+        <label>Englisch (optional)</label>
+        <input type="text" id="new-english" placeholder="z.B. dog" />
+      </div>
+      <button class="btn-add" onclick="addWord()">Hinzufügen</button>
+    </div>
+    <div id="form-msg" class="form-success"></div>
+  </div>
+
+  <div class="filter-row">
+    <button class="filter-btn active" data-filter="all" onclick="setFilter('all', this)">Alle</button>
+    <button class="filter-btn die" data-filter="die" onclick="setFilter('die', this)">die</button>
+    <button class="filter-btn der" data-filter="der" onclick="setFilter('der', this)">der</button>
+    <button class="filter-btn das" data-filter="das" onclick="setFilter('das', this)">das</button>
+  </div>
+
+  <div id="word-table-wrapper"></div>
+</div>
+
+<script>
+// ─── DEFAULT WORD LIST ────────────────────────────────────────────────────────
+const DEFAULT_WORDS = [
+  { article:'die', word:'Sonne', en:'sun' },
+  { article:'der', word:'Mond', en:'moon' },
+  { article:'das', word:'Wasser', en:'water' },
+  { article:'die', word:'Blume', en:'flower' },
+  { article:'der', word:'Baum', en:'tree' },
+  { article:'das', word:'Haus', en:'house' },
+  { article:'die', word:'Katze', en:'cat' },
+  { article:'der', word:'Hund', en:'dog' },
+  { article:'das', word:'Kind', en:'child' },
+  { article:'die', word:'Schule', en:'school' },
+  { article:'der', word:'Lehrer', en:'teacher' },
+  { article:'das', word:'Buch', en:'book' },
+  { article:'die', word:'Stadt', en:'city' },
+  { article:'der', word:'Wagen', en:'car' },
+  { article:'das', word:'Fenster', en:'window' },
+  { article:'die', word:'Frau', en:'woman' },
+  { article:'der', word:'Mann', en:'man' },
+  { article:'das', word:'Mädchen', en:'girl' },
+  { article:'die', word:'Küche', en:'kitchen' },
+  { article:'der', word:'Stuhl', en:'chair' },
+  { article:'das', word:'Geld', en:'money' },
+  { article:'die', word:'Tür', en:'door' },
+  { article:'der', word:'Tisch', en:'table' },
+  { article:'das', word:'Bett', en:'bed' },
+  { article:'die', word:'Musik', en:'music' },
+  { article:'der', word:'Brief', en:'letter' },
+  { article:'das', word:'Handy', en:'mobile phone' },
+  { article:'die', word:'Zeitung', en:'newspaper' },
+  { article:'der', word:'Apfel', en:'apple' },
+  { article:'das', word:'Brot', en:'bread' },
+];
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'artikel_trainer_words_v1';
+const SCORE_KEY   = 'artikel_trainer_score_v1';
+
+function loadWords() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return DEFAULT_WORDS.map((w, i) => ({ ...w, id: i, custom: false }));
+}
+
+function saveWords(words) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(words)); } catch(e) {}
+}
+
+function loadScore() {
+  try {
+    const raw = localStorage.getItem(SCORE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return { correct: 0, wrong: 0 };
+}
+
+function saveScore(score) {
+  try { localStorage.setItem(SCORE_KEY, JSON.stringify(score)); } catch(e) {}
+}
+
+let words   = loadWords();
+let score   = loadScore();
+let queue   = [];
+let current = null;
+let answered = false;
+let filter  = 'all';
+let nextId  = words.reduce((max, w) => Math.max(max, w.id || 0), 0) + 1;
+
+// ─── TRAINER ──────────────────────────────────────────────────────────────────
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildQueue() {
+  queue = shuffle([...words]);
+  if (queue.length === 0) queue = [];
+}
+
+function nextWord() {
+  if (queue.length === 0) buildQueue();
+  if (words.length === 0) {
+    document.getElementById('word-display').textContent = '—';
+    document.getElementById('word-english').textContent = '';
+    document.getElementById('word-count-label').textContent = 'Keine Wörter. Füge welche hinzu!';
+    return;
+  }
+  current = queue.pop();
+  answered = false;
+
+  document.getElementById('word-display').textContent = current.word;
+  document.getElementById('word-english').textContent = current.en ? `"${current.en}"` : '';
+  document.getElementById('feedback-label').textContent = '';
+  document.getElementById('feedback-label').className = 'feedback-label';
+
+  const card = document.getElementById('word-card');
+  card.className = 'word-card';
+
+  document.querySelectorAll('.answer-btn').forEach(btn => {
+    btn.disabled = false;
+    btn.className = `answer-btn`;
+  });
+
+  updateProgress();
+  updateWordCount();
+}
+
+function updateProgress() {
+  const total = words.length;
+  const done  = total - queue.length;
+  const pct   = total === 0 ? 0 : (done / total) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+function updateWordCount() {
+  const label = document.getElementById('word-count-label');
+  label.textContent = `${words.length} Wörter · Runde ${queue.length === 0 ? '—' : words.length - queue.length + 1} von ${words.length}`;
+}
+
+function checkAnswer(chosen) {
+  if (answered || !current) return;
+  answered = true;
+
+  const correct = current.article === chosen;
+  const card = document.getElementById('word-card');
+  const feedbackEl = document.getElementById('feedback-label');
+
+  document.querySelectorAll('.answer-btn').forEach(btn => {
+    btn.disabled = true;
+    if (btn.dataset.article === current.article) {
+      btn.classList.add('reveal-correct');
+    }
+  });
+
+  if (correct) {
+    card.classList.add('correct-flash');
+    feedbackEl.textContent = '✓ Richtig!';
+    feedbackEl.className = 'feedback-label correct';
+    score.correct++;
+  } else {
+    card.classList.add('wrong-flash', 'shake');
+    feedbackEl.textContent = `✗ Falsch — es ist "${current.article} ${current.word}"`;
+    feedbackEl.className = 'feedback-label wrong';
+    document.querySelector(`.answer-btn[data-article="${chosen}"]`).classList.add('selected-wrong');
+    score.wrong++;
+  }
+
+  saveScore(score);
+  renderScore();
+}
+
+function skipWord() {
+  nextWord();
+}
+
+function renderScore() {
+  document.getElementById('score-correct').textContent = score.correct;
+  document.getElementById('score-wrong').textContent   = score.wrong;
+  const total = score.correct + score.wrong;
+  document.getElementById('score-acc').textContent =
+    total === 0 ? '—' : Math.round((score.correct / total) * 100) + '%';
+}
+
+function resetScore() {
+  score = { correct: 0, wrong: 0 };
+  saveScore(score);
+  renderScore();
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+  if (e.key === '1') checkAnswer('die');
+  if (e.key === '2') checkAnswer('der');
+  if (e.key === '3') checkAnswer('das');
+  if (e.key === ' ') { e.preventDefault(); nextWord(); }
+});
+
+// ─── WORD MANAGEMENT ──────────────────────────────────────────────────────────
+function addWord() {
+  const article = document.getElementById('new-article').value;
+  const word    = document.getElementById('new-word').value.trim();
+  const en      = document.getElementById('new-english').value.trim();
+  const msgEl   = document.getElementById('form-msg');
+
+  if (!word) {
+    msgEl.textContent = '⚠ Bitte ein deutsches Wort eingeben.';
+    msgEl.className = 'form-error';
+    return;
+  }
+
+  // Check duplicate
+  const exists = words.some(w => w.word.toLowerCase() === word.toLowerCase());
+  if (exists) {
+    msgEl.textContent = `⚠ "${word}" ist bereits in der Liste.`;
+    msgEl.className = 'form-error';
+    return;
+  }
+
+  const newWord = { id: nextId++, article, word, en, custom: true };
+  words.unshift(newWord);
+  saveWords(words);
+
+  // Add to queue too so it appears soon
+  queue.unshift(newWord);
+
+  document.getElementById('new-word').value = '';
+  document.getElementById('new-english').value = '';
+
+  msgEl.textContent = `✓ "${article} ${word}" hinzugefügt!`;
+  msgEl.className = 'form-success';
+  setTimeout(() => { msgEl.textContent = ''; }, 3000);
+
+  renderWordTable();
+  updateWordCount();
+  document.getElementById('word-list-count').textContent = `${words.length} Wörter`;
+}
+
+function deleteWord(id) {
+  words = words.filter(w => w.id !== id);
+  queue = queue.filter(w => w.id !== id);
+  if (current && current.id === id) nextWord();
+  saveWords(words);
+  renderWordTable();
+  updateWordCount();
+  document.getElementById('word-list-count').textContent = `${words.length} Wörter`;
+}
+
+function setFilter(f, btn) {
+  filter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderWordTable();
+}
+
+function renderWordTable() {
+  const wrapper = document.getElementById('word-table-wrapper');
+  const filtered = filter === 'all' ? words : words.filter(w => w.article === filter);
+
+  if (filtered.length === 0) {
+    wrapper.innerHTML = `<div class="empty-state"><div class="big">🔍</div><p>Keine Wörter gefunden.</p></div>`;
+    return;
+  }
+
+  const rows = filtered.map(w => `
+    <tr>
+      <td><span class="article-pill ${w.article}">${w.article}</span></td>
+      <td class="word-col">${w.word}${w.custom ? '<span class="custom-badge">neu</span>' : ''}</td>
+      <td class="english-col">${w.en || '—'}</td>
+      <td><button class="delete-btn" onclick="deleteWord(${w.id})" title="Löschen">×</button></td>
+    </tr>
+  `).join('');
+
+  wrapper.innerHTML = `
+    <table class="word-table">
+      <thead>
+        <tr>
+          <th>Artikel</th>
+          <th>Wort</th>
+          <th>Englisch</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
+// ─── TAB SWITCHING ────────────────────────────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-' + tab).classList.add('active');
+  event.currentTarget.classList.add('active');
+
+  if (tab === 'words') {
+    renderWordTable();
+    document.getElementById('word-list-count').textContent = `${words.length} Wörter`;
+  }
+}
+
+// Enter key in form
+document.getElementById('new-word').addEventListener('keydown', e => {
+  if (e.key === 'Enter') addWord();
+});
+document.getElementById('new-english').addEventListener('keydown', e => {
+  if (e.key === 'Enter') addWord();
+});
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+buildQueue();
+nextWord();
+renderScore();
+</script>
+</body>
+</html>
