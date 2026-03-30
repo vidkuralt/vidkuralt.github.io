@@ -436,14 +436,14 @@
         /* Frozen column OFF */
         .no-frozen-col th:first-child,
         .no-frozen-col td:first-child {
-            position: static !important;
+            position: relative !important;
             left: auto !important;
-            z-index: auto !important;
+            z-index: 0 !important;
             border-right: none !important;
         }
 
         .no-frozen-col td:first-child {
-            background: inherit !important;
+            background: transparent !important;
         }
 
         .no-frozen-col thead th:first-child {
