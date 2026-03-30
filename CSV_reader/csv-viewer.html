@@ -7,7 +7,6 @@
     <meta name="theme-color" content="#0a0e17">
     <title>CSV Viewer Pro</title>
     
-    <!-- PWA Configuration -->
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='url(%23g)'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:rgb(0,212,170)'/><stop offset='100%25' style='stop-color:rgb(0,150,255)'/></linearGradient></defs></rect><text x='50' y='65' font-size='50' text-anchor='middle' font-family='serif' fill='%230a0e17' font-weight='bold'>Ⅽ</text></svg>">
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='url(%23g)'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:rgb(0,212,170)'/><stop offset='100%25' style='stop-color:rgb(0,150,255)'/></linearGradient></defs></rect><text x='50' y='65' font-size='50' text-anchor='middle' font-family='serif' fill='%230a0e17' font-weight='bold'>Ⅽ</text></svg>">
@@ -26,6 +25,8 @@
             --hover-bg: #252d3d;
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
             --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --frozen-col-bg: #161d28;
+            --frozen-col-hover: #1e2a3a;
         }
 
         * {
@@ -43,7 +44,6 @@
             position: relative;
         }
 
-        /* Animated background gradient */
         body::before {
             content: '';
             position: fixed;
@@ -71,7 +71,6 @@
             flex-direction: column;
         }
 
-        /* Header */
         header {
             background: var(--bg-secondary);
             border-bottom: 1px solid var(--border-color);
@@ -155,7 +154,6 @@
             border-color: var(--accent-primary);
         }
 
-        /* Main content area */
         .main-content {
             flex: 1;
             display: flex;
@@ -165,7 +163,6 @@
             gap: 1.5rem;
         }
 
-        /* Drop zone */
         .drop-zone {
             border: 2px dashed var(--border-color);
             border-radius: 16px;
@@ -207,7 +204,6 @@
             font-size: 14px;
         }
 
-        /* Stats bar */
         .stats-bar {
             display: flex;
             gap: 1rem;
@@ -243,7 +239,6 @@
             margin: 0 0.5rem;
         }
 
-        /* Table container */
         .table-container {
             flex: 1;
             background: var(--bg-secondary);
@@ -265,23 +260,37 @@
             position: relative;
         }
 
-        /* Custom scrollbar */
+        /* ── Scrollbars ── */
         .table-wrapper::-webkit-scrollbar {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
         }
 
         .table-wrapper::-webkit-scrollbar-track {
             background: var(--bg-tertiary);
+            border-radius: 8px;
         }
 
         .table-wrapper::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 6px;
+            background: rgba(0, 212, 170, 0.45);
+            border-radius: 8px;
+            border: 2px solid var(--bg-tertiary);
+            transition: background 0.2s ease, box-shadow 0.2s ease;
         }
 
         .table-wrapper::-webkit-scrollbar-thumb:hover {
             background: var(--accent-primary);
+            box-shadow: 0 0 10px rgba(0, 212, 170, 0.7), 0 0 20px rgba(0, 212, 170, 0.35);
+        }
+
+        .table-wrapper::-webkit-scrollbar-corner {
+            background: var(--bg-tertiary);
+        }
+
+        /* Firefox scrollbar */
+        .table-wrapper {
+            scrollbar-width: auto;
+            scrollbar-color: rgba(0, 212, 170, 0.45) var(--bg-tertiary);
         }
 
         table {
@@ -293,7 +302,7 @@
         thead {
             position: sticky;
             top: 0;
-            z-index: 10;
+            z-index: 20;
             background: var(--bg-tertiary);
         }
 
@@ -337,6 +346,64 @@
             color: var(--accent-primary);
         }
 
+        /* ── Frozen first column ── */
+        th:first-child,
+        td:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 10;
+        }
+
+        thead th:first-child {
+            z-index: 30; /* above both sticky header and sticky column */
+            background: var(--bg-tertiary);
+        }
+
+        td:first-child {
+            background: var(--frozen-col-bg);
+        }
+
+        /* Right-edge shadow to visually separate frozen column */
+        th:first-child::after,
+        td:first-child::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -8px;
+            width: 8px;
+            height: 100%;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.4), transparent);
+            pointer-events: none;
+        }
+
+        /* Remove the sort arrow pseudo-element conflict on first th */
+        thead th:first-child.sortable::after,
+        thead th:first-child.sorted-asc::after,
+        thead th:first-child.sorted-desc::after {
+            /* Override the shadow — we need both, so nest them */
+            background: none;
+            width: auto;
+            height: auto;
+            top: auto;
+            right: auto;
+            position: static;
+            display: inline;
+        }
+
+        /* Frozen column hover */
+        tbody tr:hover td:first-child {
+            background: var(--frozen-col-hover);
+        }
+
+        /* Accent stripe on frozen column */
+        td:first-child {
+            border-right: 1px solid rgba(0, 212, 170, 0.2);
+        }
+
+        thead th:first-child {
+            border-right: 1px solid rgba(0, 212, 170, 0.2);
+        }
+
         tbody tr {
             transition: all 0.2s ease;
         }
@@ -367,7 +434,6 @@
             cursor: pointer;
         }
 
-        /* Copy notification */
         .copy-notification {
             position: fixed;
             bottom: 2rem;
@@ -390,21 +456,13 @@
             transform: translateY(0);
         }
 
-        /* File input hidden */
         #fileInput {
             display: none;
         }
 
-        /* Animations */
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         .table-container.visible {
@@ -415,7 +473,6 @@
             animation: fadeInUp 0.4s ease;
         }
 
-        /* Empty state */
         .empty-state {
             display: flex;
             flex-direction: column;
@@ -441,6 +498,119 @@
         .filename-display::before {
             content: '📄';
         }
+
+        /* ── Sticky toggle overrides ── */
+        /* When sticky header is OFF */
+        .no-sticky-header thead {
+            position: static;
+        }
+        .no-sticky-header thead th:first-child {
+            position: static;
+            z-index: auto;
+        }
+
+        /* When frozen column is OFF */
+        .no-frozen-col th:first-child,
+        .no-frozen-col td:first-child {
+            position: static;
+            z-index: auto;
+            background: inherit;
+            border-right: none;
+        }
+        .no-frozen-col th:first-child::after,
+        .no-frozen-col td:first-child::after {
+            display: none;
+        }
+        .no-frozen-col .frozen-badge {
+            display: none;
+        }
+
+        /* ── Toggle pill group ── */
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.75rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        .toggle-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .toggle-item + .toggle-item {
+            padding-left: 0.5rem;
+            border-left: 1px solid var(--border-color);
+        }
+
+        /* Custom toggle switch */
+        .toggle-switch {
+            position: relative;
+            width: 32px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+
+        .toggle-track {
+            position: absolute;
+            inset: 0;
+            background: var(--border-color);
+            border-radius: 9px;
+            transition: background 0.25s ease;
+            cursor: pointer;
+        }
+
+        .toggle-track::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--text-secondary);
+            transition: transform 0.25s ease, background 0.25s ease;
+        }
+
+        .toggle-switch input:checked + .toggle-track {
+            background: rgba(0, 212, 170, 0.3);
+        }
+
+        .toggle-switch input:checked + .toggle-track::after {
+            transform: translateX(14px);
+            background: var(--accent-primary);
+        }
+
+        /* Frozen column label badge */
+        .frozen-badge {
+            display: inline-block;
+            margin-left: 6px;
+            padding: 1px 5px;
+            background: rgba(0, 212, 170, 0.15);
+            color: var(--accent-primary);
+            border-radius: 3px;
+            font-size: 9px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            vertical-align: middle;
+            font-family: 'IBM Plex Mono', monospace;
+        }
     </style>
 </head>
 <body>
@@ -451,6 +621,22 @@
                 <h1>CSV Viewer Pro</h1>
             </div>
             <div class="header-actions">
+                <div class="toggle-group">
+                    <label class="toggle-item" title="Freeze the header row while scrolling vertically">
+                        <span class="toggle-switch">
+                            <input type="checkbox" id="toggleHeader" checked onchange="applyToggles()">
+                            <span class="toggle-track"></span>
+                        </span>
+                        Sticky header
+                    </label>
+                    <label class="toggle-item" title="Freeze the first column while scrolling horizontally">
+                        <span class="toggle-switch">
+                            <input type="checkbox" id="toggleColumn" checked onchange="applyToggles()">
+                            <span class="toggle-track"></span>
+                        </span>
+                        Frozen column
+                    </label>
+                </div>
                 <button class="btn btn-secondary" onclick="clearData()">
                     <span>✕</span> Clear
                 </button>
@@ -506,27 +692,18 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <script>
-        // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('service-worker.js')
-                    .then(registration => {
-                        console.log('ServiceWorker registered:', registration);
-                    })
-                    .catch(err => {
-                        console.log('ServiceWorker registration failed:', err);
-                    });
+                    .then(r => console.log('ServiceWorker registered:', r))
+                    .catch(e => console.log('ServiceWorker registration failed:', e));
             });
         }
 
-        // PWA Install Prompt
         let deferredPrompt;
-        
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            
-            // Show install button if not already installed
             if (!window.matchMedia('(display-mode: standalone)').matches) {
                 showInstallPrompt();
             }
@@ -537,20 +714,15 @@
             installBtn.className = 'btn btn-primary install-btn';
             installBtn.innerHTML = '<span>⬇</span> Install App';
             installBtn.style.cssText = 'position: fixed; bottom: 2rem; left: 2rem; z-index: 1000; animation: fadeInUp 0.5s ease;';
-            
             installBtn.addEventListener('click', async () => {
                 if (deferredPrompt) {
                     deferredPrompt.prompt();
                     const { outcome } = await deferredPrompt.userChoice;
-                    console.log(`User response to install prompt: ${outcome}`);
                     deferredPrompt = null;
                     installBtn.remove();
                 }
             });
-            
             document.body.appendChild(installBtn);
-            
-            // Auto-hide after 10 seconds
             setTimeout(() => {
                 if (installBtn.parentElement) {
                     installBtn.style.opacity = '0';
@@ -563,15 +735,12 @@
         let currentSort = { column: null, direction: null };
         let currentFileName = '';
 
-        // File input handler
         document.getElementById('fileInput').addEventListener('change', handleFileSelect);
 
-        // Drag and drop handlers
         const dropZone = document.getElementById('dropZone');
-        
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, preventDefaults, false);
-            document.body.addEventListener(eventName, preventDefaults, false);
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => {
+            dropZone.addEventListener(ev, preventDefaults, false);
+            document.body.addEventListener(ev, preventDefaults, false);
         });
 
         function preventDefaults(e) {
@@ -579,34 +748,21 @@
             e.stopPropagation();
         }
 
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropZone.addEventListener(eventName, () => {
-                dropZone.classList.add('drag-over');
-            }, false);
+        ['dragenter', 'dragover'].forEach(ev => {
+            dropZone.addEventListener(ev, () => dropZone.classList.add('drag-over'), false);
+        });
+        ['dragleave', 'drop'].forEach(ev => {
+            dropZone.addEventListener(ev, () => dropZone.classList.remove('drag-over'), false);
         });
 
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, () => {
-                dropZone.classList.remove('drag-over');
-            }, false);
-        });
-
-        dropZone.addEventListener('drop', handleDrop, false);
-
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            
-            if (files.length > 0) {
-                handleFile(files[0]);
-            }
-        }
+        dropZone.addEventListener('drop', (e) => {
+            const files = e.dataTransfer.files;
+            if (files.length > 0) handleFile(files[0]);
+        }, false);
 
         function handleFileSelect(e) {
             const file = e.target.files[0];
-            if (file) {
-                handleFile(file);
-            }
+            if (file) handleFile(file);
         }
 
         function handleFile(file) {
@@ -614,9 +770,7 @@
                 alert('Please select a CSV file');
                 return;
             }
-
             currentFileName = file.name;
-            
             Papa.parse(file, {
                 complete: function(results) {
                     csvData = results.data.filter(row => row.some(cell => cell !== ''));
@@ -641,29 +795,32 @@
             const headers = csvData[0];
             const rows = csvData.slice(1);
 
-            // Create table header
             const thead = document.getElementById('tableHead');
             thead.innerHTML = '';
             const headerRow = document.createElement('tr');
-            
+
             headers.forEach((header, index) => {
                 const th = document.createElement('th');
-                th.textContent = header;
                 th.classList.add('sortable');
                 th.onclick = () => sortColumn(index);
+
+                if (index === 0) {
+                    // First column: add frozen badge
+                    th.innerHTML = header + '<span class="frozen-badge">pinned</span>';
+                } else {
+                    th.textContent = header;
+                }
+
                 headerRow.appendChild(th);
             });
-            
-            thead.appendChild(headerRow);
 
-            // Create table body
+            thead.appendChild(headerRow);
             displayRows(rows);
         }
 
         function displayRows(rows) {
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
-
             rows.forEach(row => {
                 const tr = document.createElement('tr');
                 row.forEach(cell => {
@@ -677,52 +834,35 @@
         }
 
         function sortColumn(columnIndex) {
-            const headers = csvData[0];
             let rows = csvData.slice(1);
 
-            // Determine sort direction
             if (currentSort.column === columnIndex) {
-                if (currentSort.direction === 'asc') {
-                    currentSort.direction = 'desc';
-                } else if (currentSort.direction === 'desc') {
-                    currentSort.direction = null;
-                    currentSort.column = null;
-                } else {
-                    currentSort.direction = 'asc';
-                }
+                if (currentSort.direction === 'asc') currentSort.direction = 'desc';
+                else if (currentSort.direction === 'desc') { currentSort.direction = null; currentSort.column = null; }
+                else currentSort.direction = 'asc';
             } else {
                 currentSort.column = columnIndex;
                 currentSort.direction = 'asc';
             }
 
-            // Update header styling
             const ths = document.querySelectorAll('th');
             ths.forEach((th, index) => {
                 th.classList.remove('sorted-asc', 'sorted-desc');
                 if (index === columnIndex) {
-                    if (currentSort.direction === 'asc') {
-                        th.classList.add('sorted-asc');
-                    } else if (currentSort.direction === 'desc') {
-                        th.classList.add('sorted-desc');
-                    }
+                    if (currentSort.direction === 'asc') th.classList.add('sorted-asc');
+                    else if (currentSort.direction === 'desc') th.classList.add('sorted-desc');
                 }
             });
 
-            // Sort rows
             if (currentSort.direction) {
                 rows.sort((a, b) => {
-                    const aVal = a[columnIndex];
-                    const bVal = b[columnIndex];
-                    
-                    const aNum = parseFloat(aVal);
-                    const bNum = parseFloat(bVal);
-                    
+                    const aVal = a[columnIndex], bVal = b[columnIndex];
+                    const aNum = parseFloat(aVal), bNum = parseFloat(bVal);
                     if (!isNaN(aNum) && !isNaN(bNum)) {
                         return currentSort.direction === 'asc' ? aNum - bNum : bNum - aNum;
-                    } else {
-                        const comparison = aVal.localeCompare(bVal);
-                        return currentSort.direction === 'asc' ? comparison : -comparison;
                     }
+                    const cmp = aVal.localeCompare(bVal);
+                    return currentSort.direction === 'asc' ? cmp : -cmp;
                 });
             }
 
@@ -730,23 +870,27 @@
         }
 
         function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showCopyNotification();
-            });
+            navigator.clipboard.writeText(text).then(showCopyNotification);
         }
 
         function showCopyNotification() {
-            const notification = document.getElementById('copyNotification');
-            notification.classList.add('show');
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 2000);
+            const n = document.getElementById('copyNotification');
+            n.classList.add('show');
+            setTimeout(() => n.classList.remove('show'), 2000);
         }
 
         function updateStats(fileSize) {
             document.getElementById('rowCount').textContent = csvData.length - 1;
             document.getElementById('colCount').textContent = csvData[0].length;
             document.getElementById('fileSize').textContent = (fileSize / 1024).toFixed(2) + ' KB';
+        }
+
+        function applyToggles() {
+            const wrapper = document.querySelector('.table-wrapper');
+            const stickyHeader = document.getElementById('toggleHeader').checked;
+            const frozenCol = document.getElementById('toggleColumn').checked;
+            wrapper.classList.toggle('no-sticky-header', !stickyHeader);
+            wrapper.classList.toggle('no-frozen-col', !frozenCol);
         }
 
         function clearData() {
