@@ -6,11 +6,6 @@
     <meta name="description" content="Beautiful CSV viewer with drag & drop, sorting, and copy functionality">
     <meta name="theme-color" content="#0a0e17">
     <title>CSV Viewer Pro</title>
-    
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='url(%23g)'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:rgb(0,212,170)'/><stop offset='100%25' style='stop-color:rgb(0,150,255)'/></linearGradient></defs></rect><text x='50' y='65' font-size='50' text-anchor='middle' font-family='serif' fill='%230a0e17' font-weight='bold'>Ⅽ</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='url(%23g)'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:rgb(0,212,170)'/><stop offset='100%25' style='stop-color:rgb(0,150,255)'/></linearGradient></defs></rect><text x='50' y='65' font-size='50' text-anchor='middle' font-family='serif' fill='%230a0e17' font-weight='bold'>Ⅽ</text></svg>">
-    
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -23,17 +18,13 @@
             --text-secondary: #8b96a8;
             --border-color: #2a3241;
             --hover-bg: #252d3d;
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
             --frozen-col-bg: #161d28;
             --frozen-col-hover: #1e2a3a;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Instrument Sans', -apple-system, sans-serif;
@@ -41,26 +32,23 @@
             color: var(--text-primary);
             overflow: hidden;
             height: 100vh;
-            position: relative;
         }
 
         body::before {
             content: '';
             position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 50%, rgba(0, 212, 170, 0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 50%, rgba(0, 150, 255, 0.06) 0%, transparent 50%);
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(0,212,170,0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(0,150,255,0.06) 0%, transparent 50%);
             animation: gradientShift 20s ease infinite;
             pointer-events: none;
             z-index: 0;
         }
 
         @keyframes gradientShift {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            50% { transform: translate(10%, 10%) rotate(180deg); }
+            0%, 100% { transform: translate(0,0) rotate(0deg); }
+            50%       { transform: translate(10%,10%) rotate(180deg); }
         }
 
         .app-container {
@@ -71,42 +59,35 @@
             flex-direction: column;
         }
 
+        /* ── Header ── */
         header {
             background: var(--bg-secondary);
             border-bottom: 1px solid var(--border-color);
-            padding: 1.5rem 2rem;
+            padding: 1.2rem 2rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            backdrop-filter: blur(10px);
+            gap: 1rem;
             box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
+        .logo { display: flex; align-items: center; gap: 1rem; }
 
         .logo-icon {
-            width: 36px;
-            height: 36px;
+            width: 36px; height: 36px;
             background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             font-family: 'DM Serif Display', serif;
-            font-size: 20px;
-            font-weight: bold;
+            font-size: 20px; font-weight: bold;
             color: var(--bg-primary);
-            box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+            box-shadow: 0 4px 12px rgba(0,212,170,0.3);
         }
 
         .logo h1 {
             font-family: 'DM Serif Display', serif;
-            font-size: 24px;
-            font-weight: 400;
+            font-size: 24px; font-weight: 400;
             background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -115,32 +96,99 @@
 
         .header-actions {
             display: flex;
-            gap: 1rem;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
         }
 
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            font-family: 'Instrument Sans', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        /* ── Toggle group ── */
+        .toggle-group {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .toggle-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.5rem 0.9rem;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+
+        .toggle-item:hover { background: var(--hover-bg); }
+
+        .toggle-item + .toggle-item {
+            border-left: 1px solid var(--border-color);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 34px; height: 20px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+            opacity: 0; width: 0; height: 0; position: absolute;
+        }
+
+        .toggle-track {
+            position: absolute;
+            inset: 0;
+            background: var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.25s;
+        }
+
+        .toggle-track::after {
+            content: '';
+            position: absolute;
+            top: 4px; left: 4px;
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: var(--text-secondary);
+            transition: transform 0.25s, background 0.25s;
+        }
+
+        .toggle-switch input:checked + .toggle-track {
+            background: rgba(0,212,170,0.35);
+        }
+
+        .toggle-switch input:checked + .toggle-track::after {
+            transform: translateX(14px);
+            background: var(--accent-primary);
+        }
+
+        /* ── Buttons ── */
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none; border-radius: 8px;
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 14px; font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex; align-items: center; gap: 0.4rem;
+            white-space: nowrap;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             color: var(--bg-primary);
-            box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+            box-shadow: 0 4px 12px rgba(0,212,170,0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 212, 170, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0,212,170,0.45);
         }
 
         .btn-secondary {
@@ -154,13 +202,15 @@
             border-color: var(--accent-primary);
         }
 
+        /* ── Main content ── */
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            padding: 2rem;
-            gap: 1.5rem;
+            padding: 1.5rem 2rem;
+            gap: 1rem;
+            min-height: 0;
         }
 
         .drop-zone {
@@ -169,130 +219,104 @@
             padding: 3rem;
             text-align: center;
             background: var(--bg-secondary);
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             cursor: pointer;
         }
 
-        .drop-zone:hover,
-        .drop-zone.drag-over {
+        .drop-zone:hover, .drop-zone.drag-over {
             border-color: var(--accent-primary);
-            background: rgba(0, 212, 170, 0.05);
-            transform: scale(1.02);
+            background: rgba(0,212,170,0.05);
+            transform: scale(1.01);
         }
 
-        .drop-zone-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .drop-icon {
-            font-size: 48px;
-            opacity: 0.6;
-        }
+        .drop-zone-content { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+        .drop-icon { font-size: 48px; opacity: 0.6; }
 
         .drop-zone h2 {
             font-family: 'DM Serif Display', serif;
-            font-size: 24px;
-            font-weight: 400;
-            color: var(--text-primary);
+            font-size: 24px; font-weight: 400;
         }
 
-        .drop-zone p {
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
+        .drop-zone p { color: var(--text-secondary); font-size: 14px; }
 
         .stats-bar {
             display: flex;
             gap: 1rem;
-            padding: 1rem 1.5rem;
+            padding: 0.75rem 1.5rem;
             background: var(--bg-secondary);
-            border-radius: 12px;
+            border-radius: 10px;
             border: 1px solid var(--border-color);
+            flex-shrink: 0;
         }
 
-        .stat-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
+        .stat-item { display: flex; flex-direction: column; gap: 0.2rem; }
 
         .stat-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-secondary);
+            font-size: 11px; text-transform: uppercase;
+            letter-spacing: 0.5px; color: var(--text-secondary);
             font-family: 'IBM Plex Mono', monospace;
         }
 
-        .stat-value {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--accent-primary);
-        }
+        .stat-value { font-size: 18px; font-weight: 600; color: var(--accent-primary); }
+        .stat-divider { width: 1px; background: var(--border-color); margin: 0 0.25rem; }
 
-        .stat-divider {
-            width: 1px;
-            background: var(--border-color);
-            margin: 0 0.5rem;
-        }
-
+        /* ── Table container ── */
         .table-container {
             flex: 1;
             background: var(--bg-secondary);
             border-radius: 12px;
-            overflow: hidden;
             border: 1px solid var(--border-color);
             display: none;
             flex-direction: column;
             box-shadow: var(--shadow-lg);
+            min-height: 0;
+            overflow: hidden;
         }
 
         .table-container.visible {
             display: flex;
+            animation: fadeInUp 0.4s ease;
         }
 
+        /* ── Table wrapper & scrollbars ── */
         .table-wrapper {
             flex: 1;
             overflow: auto;
-            position: relative;
+            min-height: 0;
         }
 
-        /* ── Scrollbars ── */
+        /* Green scrollbar — always visible, glows on hover */
         .table-wrapper::-webkit-scrollbar {
             width: 14px;
             height: 14px;
         }
 
         .table-wrapper::-webkit-scrollbar-track {
-            background: var(--bg-tertiary);
-            border-radius: 8px;
-        }
-
-        .table-wrapper::-webkit-scrollbar-thumb {
-            background: rgba(0, 212, 170, 0.45);
-            border-radius: 8px;
-            border: 2px solid var(--bg-tertiary);
-            transition: background 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .table-wrapper::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-primary);
-            box-shadow: 0 0 10px rgba(0, 212, 170, 0.7), 0 0 20px rgba(0, 212, 170, 0.35);
+            background: #0d1119;
         }
 
         .table-wrapper::-webkit-scrollbar-corner {
-            background: var(--bg-tertiary);
+            background: #0d1119;
         }
 
-        /* Firefox scrollbar */
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: #00855e;
+            border-radius: 7px;
+            border: 3px solid #0d1119;
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #00d4aa;
+            box-shadow: 0 0 8px #00d4aa, 0 0 18px rgba(0,212,170,0.5);
+        }
+
+        /* Firefox */
         .table-wrapper {
-            scrollbar-width: auto;
-            scrollbar-color: rgba(0, 212, 170, 0.45) var(--bg-tertiary);
+            scrollbar-width: thick;
+            scrollbar-color: #00855e #0d1119;
         }
 
+        /* ── Table ── */
         table {
             width: 100%;
             border-collapse: separate;
@@ -303,306 +327,90 @@
             position: sticky;
             top: 0;
             z-index: 20;
-            background: var(--bg-tertiary);
         }
 
         th {
-            padding: 1rem 1.5rem;
+            padding: 0.9rem 1.5rem;
             text-align: left;
             font-weight: 500;
-            font-size: 13px;
+            font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: var(--text-secondary);
+            background: var(--bg-tertiary);
             border-bottom: 2px solid var(--border-color);
             cursor: pointer;
             user-select: none;
-            transition: all 0.2s ease;
-            position: relative;
             white-space: nowrap;
+            transition: background 0.15s, color 0.15s;
+            position: relative;
         }
 
-        th:hover {
-            background: var(--hover-bg);
-            color: var(--accent-primary);
-        }
+        th:hover { background: var(--hover-bg); color: var(--accent-primary); }
 
-        th.sortable::after {
-            content: '⇅';
-            margin-left: 0.5rem;
-            opacity: 0.3;
-            font-family: 'IBM Plex Mono', monospace;
-        }
-
-        th.sorted-asc::after {
-            content: '↑';
-            opacity: 1;
-            color: var(--accent-primary);
-        }
-
-        th.sorted-desc::after {
-            content: '↓';
-            opacity: 1;
-            color: var(--accent-primary);
-        }
+        th.sortable::after    { content: ' ⇅'; opacity: 0.35; }
+        th.sorted-asc::after  { content: ' ↑'; opacity: 1; color: var(--accent-primary); }
+        th.sorted-desc::after { content: ' ↓'; opacity: 1; color: var(--accent-primary); }
 
         /* ── Frozen first column ── */
         th:first-child,
         td:first-child {
             position: sticky;
             left: 0;
-            z-index: 10;
+            z-index: 5;
         }
 
         thead th:first-child {
-            z-index: 30; /* above both sticky header and sticky column */
+            z-index: 25;
             background: var(--bg-tertiary);
         }
 
         td:first-child {
             background: var(--frozen-col-bg);
-        }
-
-        /* Right-edge shadow to visually separate frozen column */
-        th:first-child::after,
-        td:first-child::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -8px;
-            width: 8px;
-            height: 100%;
-            background: linear-gradient(to right, rgba(0, 0, 0, 0.4), transparent);
-            pointer-events: none;
-        }
-
-        /* Remove the sort arrow pseudo-element conflict on first th */
-        thead th:first-child.sortable::after,
-        thead th:first-child.sorted-asc::after,
-        thead th:first-child.sorted-desc::after {
-            /* Override the shadow — we need both, so nest them */
-            background: none;
-            width: auto;
-            height: auto;
-            top: auto;
-            right: auto;
-            position: static;
-            display: inline;
-        }
-
-        /* Frozen column hover */
-        tbody tr:hover td:first-child {
-            background: var(--frozen-col-hover);
-        }
-
-        /* Accent stripe on frozen column */
-        td:first-child {
-            border-right: 1px solid rgba(0, 212, 170, 0.2);
+            border-right: 1px solid rgba(0,212,170,0.25);
         }
 
         thead th:first-child {
-            border-right: 1px solid rgba(0, 212, 170, 0.2);
+            border-right: 1px solid rgba(0,212,170,0.25);
         }
 
-        tbody tr {
-            transition: all 0.2s ease;
-        }
-
-        tbody tr:hover {
-            background: var(--hover-bg);
-        }
-
-        tbody tr:nth-child(even) {
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        tbody tr:nth-child(even):hover {
-            background: var(--hover-bg);
-        }
-
-        td {
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 14px;
-            color: var(--text-primary);
-            font-family: 'IBM Plex Mono', monospace;
-            position: relative;
-        }
-
-        td:hover {
-            background: rgba(0, 212, 170, 0.05);
-            cursor: pointer;
-        }
-
-        .copy-notification {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            padding: 1rem 1.5rem;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            color: var(--bg-primary);
-            border-radius: 8px;
-            font-weight: 500;
-            box-shadow: 0 8px 24px rgba(0, 212, 170, 0.4);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-            pointer-events: none;
-            z-index: 1000;
-        }
-
-        .copy-notification.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        #fileInput {
-            display: none;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        .table-container.visible {
-            animation: fadeInUp 0.5s ease;
-        }
-
-        .stats-bar {
-            animation: fadeInUp 0.4s ease;
-        }
-
-        .empty-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            flex: 1;
-            gap: 1rem;
-            animation: fadeInUp 0.6s ease;
-        }
-
-        .filename-display {
-            padding: 0.5rem 1rem;
-            background: var(--bg-tertiary);
-            border-radius: 6px;
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 12px;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .filename-display::before {
-            content: '📄';
-        }
-
-        /* ── Sticky toggle overrides ── */
-        /* When sticky header is OFF */
-        .no-sticky-header thead {
-            position: static;
-        }
-        .no-sticky-header thead th:first-child {
-            position: static;
-            z-index: auto;
-        }
-
-        /* When frozen column is OFF */
-        .no-frozen-col th:first-child,
-        .no-frozen-col td:first-child {
-            position: static;
-            z-index: auto;
-            background: inherit;
-            border-right: none;
-        }
-        .no-frozen-col th:first-child::after,
-        .no-frozen-col td:first-child::after {
-            display: none;
-        }
-        .no-frozen-col .frozen-badge {
-            display: none;
-        }
-
-        /* ── Toggle pill group ── */
-        .toggle-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.4rem 0.75rem;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-        }
-
-        .toggle-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 13px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            user-select: none;
-            white-space: nowrap;
-        }
-
-        .toggle-item + .toggle-item {
-            padding-left: 0.5rem;
-            border-left: 1px solid var(--border-color);
-        }
-
-        /* Custom toggle switch */
-        .toggle-switch {
-            position: relative;
-            width: 32px;
-            height: 18px;
-            flex-shrink: 0;
-        }
-
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-            position: absolute;
-        }
-
-        .toggle-track {
-            position: absolute;
-            inset: 0;
-            background: var(--border-color);
-            border-radius: 9px;
-            transition: background 0.25s ease;
-            cursor: pointer;
-        }
-
-        .toggle-track::after {
+        td:first-child::after,
+        thead th:first-child::after {
             content: '';
             position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--text-secondary);
-            transition: transform 0.25s ease, background 0.25s ease;
+            top: 0; right: -6px;
+            width: 6px; height: 100%;
+            background: linear-gradient(to right, rgba(0,0,0,0.35), transparent);
+            pointer-events: none;
+            z-index: 1;
         }
 
-        .toggle-switch input:checked + .toggle-track {
-            background: rgba(0, 212, 170, 0.3);
+        tbody tr:hover td:first-child { background: var(--frozen-col-hover); }
+
+        /* ── Rows ── */
+        tbody tr { transition: background 0.15s; }
+        tbody tr:hover { background: var(--hover-bg); }
+        tbody tr:nth-child(even) { background: rgba(255,255,255,0.015); }
+        tbody tr:nth-child(even):hover { background: var(--hover-bg); }
+
+        td {
+            padding: 0.85rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--text-primary);
+            font-family: 'IBM Plex Mono', monospace;
+            white-space: nowrap;
+            position: relative;
         }
 
-        .toggle-switch input:checked + .toggle-track::after {
-            transform: translateX(14px);
-            background: var(--accent-primary);
-        }
+        td:hover { background: rgba(0,212,170,0.06); cursor: pointer; }
 
-        /* Frozen column label badge */
+        /* ── Pinned badge ── */
         .frozen-badge {
             display: inline-block;
             margin-left: 6px;
             padding: 1px 5px;
-            background: rgba(0, 212, 170, 0.15);
+            background: rgba(0,212,170,0.15);
             color: var(--accent-primary);
             border-radius: 3px;
             font-size: 9px;
@@ -611,300 +419,328 @@
             vertical-align: middle;
             font-family: 'IBM Plex Mono', monospace;
         }
+
+        /* ── Toggle overrides ── */
+
+        /* Sticky header OFF */
+        .no-sticky-header thead {
+            position: relative !important;
+            top: auto !important;
+            z-index: 1 !important;
+        }
+
+        .no-sticky-header thead th:first-child {
+            z-index: 5 !important;
+        }
+
+        /* Frozen column OFF */
+        .no-frozen-col th:first-child,
+        .no-frozen-col td:first-child {
+            position: static !important;
+            left: auto !important;
+            z-index: auto !important;
+            border-right: none !important;
+        }
+
+        .no-frozen-col td:first-child {
+            background: inherit !important;
+        }
+
+        .no-frozen-col thead th:first-child {
+            background: var(--bg-tertiary) !important;
+        }
+
+        .no-frozen-col td:first-child::after,
+        .no-frozen-col thead th:first-child::after {
+            display: none !important;
+        }
+
+        .no-frozen-col .frozen-badge {
+            display: none !important;
+        }
+
+        /* ── Misc ── */
+        .copy-notification {
+            position: fixed;
+            bottom: 2rem; right: 2rem;
+            padding: 0.9rem 1.4rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: var(--bg-primary);
+            border-radius: 8px;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0,212,170,0.4);
+            opacity: 0;
+            transform: translateY(16px);
+            transition: all 0.3s;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 14px;
+        }
+
+        .copy-notification.show { opacity: 1; transform: translateY(0); }
+
+        #fileInput { display: none; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .filename-display {
+            padding: 0.4rem 0.9rem;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex; align-items: center; gap: 0.5rem;
+            flex-shrink: 0;
+        }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <header>
-            <div class="logo">
-                <div class="logo-icon">Ⅽ</div>
-                <h1>CSV Viewer Pro</h1>
-            </div>
-            <div class="header-actions">
-                <div class="toggle-group">
-                    <label class="toggle-item" title="Freeze the header row while scrolling vertically">
-                        <span class="toggle-switch">
-                            <input type="checkbox" id="toggleHeader" checked onchange="applyToggles()">
-                            <span class="toggle-track"></span>
-                        </span>
-                        Sticky header
-                    </label>
-                    <label class="toggle-item" title="Freeze the first column while scrolling horizontally">
-                        <span class="toggle-switch">
-                            <input type="checkbox" id="toggleColumn" checked onchange="applyToggles()">
-                            <span class="toggle-track"></span>
-                        </span>
-                        Frozen column
-                    </label>
-                </div>
-                <button class="btn btn-secondary" onclick="clearData()">
-                    <span>✕</span> Clear
-                </button>
-                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
-                    <span>📁</span> Import CSV
-                </button>
-            </div>
-        </header>
+<div class="app-container">
+    <header>
+        <div class="logo">
+            <div class="logo-icon">Ⅽ</div>
+            <h1>CSV Viewer Pro</h1>
+        </div>
+        <div class="header-actions">
 
-        <div class="main-content">
-            <div class="empty-state" id="emptyState">
-                <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
-                    <div class="drop-zone-content">
-                        <div class="drop-icon">📊</div>
-                        <h2>Drop your CSV file here</h2>
-                        <p>or click to browse</p>
-                    </div>
-                </div>
+            <div class="toggle-group">
+                <label class="toggle-item" title="Freeze header row when scrolling down">
+                    <span class="toggle-switch">
+                        <input type="checkbox" id="toggleHeader" checked onchange="applyToggles()">
+                        <span class="toggle-track"></span>
+                    </span>
+                    Sticky header
+                </label>
+                <label class="toggle-item" title="Freeze first column when scrolling right">
+                    <span class="toggle-switch">
+                        <input type="checkbox" id="toggleColumn" checked onchange="applyToggles()">
+                        <span class="toggle-track"></span>
+                    </span>
+                    Frozen column
+                </label>
             </div>
 
-            <div id="fileInfo" class="filename-display" style="display: none;"></div>
+            <button class="btn btn-secondary" onclick="clearData()">✕ Clear</button>
+            <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">📁 Import CSV</button>
+        </div>
+    </header>
 
-            <div id="statsBar" class="stats-bar" style="display: none;">
-                <div class="stat-item">
-                    <span class="stat-label">Rows</span>
-                    <span class="stat-value" id="rowCount">0</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <span class="stat-label">Columns</span>
-                    <span class="stat-value" id="colCount">0</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <span class="stat-label">Size</span>
-                    <span class="stat-value" id="fileSize">0 KB</span>
-                </div>
-            </div>
-
-            <div id="tableContainer" class="table-container">
-                <div class="table-wrapper">
-                    <table id="dataTable">
-                        <thead id="tableHead"></thead>
-                        <tbody id="tableBody"></tbody>
-                    </table>
+    <div class="main-content">
+        <div class="empty-state" id="emptyState">
+            <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+                <div class="drop-zone-content">
+                    <div class="drop-icon">📊</div>
+                    <h2>Drop your CSV file here</h2>
+                    <p>or click to browse</p>
                 </div>
             </div>
         </div>
+
+        <div id="fileInfo" class="filename-display" style="display:none;"></div>
+
+        <div id="statsBar" class="stats-bar" style="display:none;">
+            <div class="stat-item">
+                <span class="stat-label">Rows</span>
+                <span class="stat-value" id="rowCount">0</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-label">Columns</span>
+                <span class="stat-value" id="colCount">0</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-label">Size</span>
+                <span class="stat-value" id="fileSize">0 KB</span>
+            </div>
+        </div>
+
+        <div id="tableContainer" class="table-container">
+            <div class="table-wrapper" id="tableWrapper">
+                <table id="dataTable">
+                    <thead id="tableHead"></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
     </div>
+</div>
 
-    <input type="file" id="fileInput" accept=".csv" />
-    <div id="copyNotification" class="copy-notification">Copied to clipboard!</div>
+<input type="file" id="fileInput" accept=".csv">
+<div id="copyNotification" class="copy-notification">✓ Copied to clipboard</div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js')
-                    .then(r => console.log('ServiceWorker registered:', r))
-                    .catch(e => console.log('ServiceWorker registration failed:', e));
-            });
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script>
+    let csvData = [];
+    let currentSort = { column: null, direction: null };
+    let currentFileName = '';
+
+    document.getElementById('fileInput').addEventListener('change', e => {
+        if (e.target.files[0]) handleFile(e.target.files[0]);
+    });
+
+    const dropZone = document.getElementById('dropZone');
+
+    ['dragenter','dragover','dragleave','drop'].forEach(ev => {
+        dropZone.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); });
+        document.body.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); });
+    });
+
+    ['dragenter','dragover'].forEach(ev =>
+        dropZone.addEventListener(ev, () => dropZone.classList.add('drag-over')));
+    ['dragleave','drop'].forEach(ev =>
+        dropZone.addEventListener(ev, () => dropZone.classList.remove('drag-over')));
+
+    dropZone.addEventListener('drop', e => {
+        const f = e.dataTransfer.files[0];
+        if (f) handleFile(f);
+    });
+
+    function handleFile(file) {
+        if (!file.name.toLowerCase().endsWith('.csv')) {
+            alert('Please select a CSV file.');
+            return;
         }
-
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            if (!window.matchMedia('(display-mode: standalone)').matches) {
-                showInstallPrompt();
-            }
+        currentFileName = file.name;
+        Papa.parse(file, {
+            complete(results) {
+                csvData = results.data.filter(row => row.some(c => c !== ''));
+                displayData();
+                updateStats(file.size);
+            },
+            error(err) { alert('Error parsing CSV: ' + err.message); }
         });
+    }
 
-        function showInstallPrompt() {
-            const installBtn = document.createElement('button');
-            installBtn.className = 'btn btn-primary install-btn';
-            installBtn.innerHTML = '<span>⬇</span> Install App';
-            installBtn.style.cssText = 'position: fixed; bottom: 2rem; left: 2rem; z-index: 1000; animation: fadeInUp 0.5s ease;';
-            installBtn.addEventListener('click', async () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    deferredPrompt = null;
-                    installBtn.remove();
-                }
-            });
-            document.body.appendChild(installBtn);
-            setTimeout(() => {
-                if (installBtn.parentElement) {
-                    installBtn.style.opacity = '0';
-                    setTimeout(() => installBtn.remove(), 300);
-                }
-            }, 10000);
-        }
+    function displayData() {
+        if (!csvData.length) return;
 
-        let csvData = [];
-        let currentSort = { column: null, direction: null };
-        let currentFileName = '';
+        document.getElementById('emptyState').style.display = 'none';
+        document.getElementById('statsBar').style.display = 'flex';
+        document.getElementById('fileInfo').style.display = 'flex';
+        document.getElementById('fileInfo').textContent = '📄 ' + currentFileName;
+        document.getElementById('tableContainer').classList.add('visible');
 
-        document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+        const headers = csvData[0];
+        const thead = document.getElementById('tableHead');
+        thead.innerHTML = '';
+        const headerRow = document.createElement('tr');
 
-        const dropZone = document.getElementById('dropZone');
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => {
-            dropZone.addEventListener(ev, preventDefaults, false);
-            document.body.addEventListener(ev, preventDefaults, false);
-        });
-
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        ['dragenter', 'dragover'].forEach(ev => {
-            dropZone.addEventListener(ev, () => dropZone.classList.add('drag-over'), false);
-        });
-        ['dragleave', 'drop'].forEach(ev => {
-            dropZone.addEventListener(ev, () => dropZone.classList.remove('drag-over'), false);
-        });
-
-        dropZone.addEventListener('drop', (e) => {
-            const files = e.dataTransfer.files;
-            if (files.length > 0) handleFile(files[0]);
-        }, false);
-
-        function handleFileSelect(e) {
-            const file = e.target.files[0];
-            if (file) handleFile(file);
-        }
-
-        function handleFile(file) {
-            if (!file.name.endsWith('.csv')) {
-                alert('Please select a CSV file');
-                return;
-            }
-            currentFileName = file.name;
-            Papa.parse(file, {
-                complete: function(results) {
-                    csvData = results.data.filter(row => row.some(cell => cell !== ''));
-                    displayData();
-                    updateStats(file.size);
-                },
-                error: function(error) {
-                    alert('Error parsing CSV: ' + error.message);
-                }
-            });
-        }
-
-        function displayData() {
-            if (csvData.length === 0) return;
-
-            document.getElementById('emptyState').style.display = 'none';
-            document.getElementById('statsBar').style.display = 'flex';
-            document.getElementById('tableContainer').classList.add('visible');
-            document.getElementById('fileInfo').style.display = 'flex';
-            document.getElementById('fileInfo').textContent = currentFileName;
-
-            const headers = csvData[0];
-            const rows = csvData.slice(1);
-
-            const thead = document.getElementById('tableHead');
-            thead.innerHTML = '';
-            const headerRow = document.createElement('tr');
-
-            headers.forEach((header, index) => {
-                const th = document.createElement('th');
-                th.classList.add('sortable');
-                th.onclick = () => sortColumn(index);
-
-                if (index === 0) {
-                    // First column: add frozen badge
-                    th.innerHTML = header + '<span class="frozen-badge">pinned</span>';
-                } else {
-                    th.textContent = header;
-                }
-
-                headerRow.appendChild(th);
-            });
-
-            thead.appendChild(headerRow);
-            displayRows(rows);
-        }
-
-        function displayRows(rows) {
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = '';
-            rows.forEach(row => {
-                const tr = document.createElement('tr');
-                row.forEach(cell => {
-                    const td = document.createElement('td');
-                    td.textContent = cell;
-                    td.onclick = () => copyToClipboard(cell);
-                    tr.appendChild(td);
-                });
-                tbody.appendChild(tr);
-            });
-        }
-
-        function sortColumn(columnIndex) {
-            let rows = csvData.slice(1);
-
-            if (currentSort.column === columnIndex) {
-                if (currentSort.direction === 'asc') currentSort.direction = 'desc';
-                else if (currentSort.direction === 'desc') { currentSort.direction = null; currentSort.column = null; }
-                else currentSort.direction = 'asc';
+        headers.forEach((h, i) => {
+            const th = document.createElement('th');
+            th.classList.add('sortable');
+            th.onclick = () => sortColumn(i);
+            if (i === 0) {
+                th.innerHTML = escapeHTML(h) + '<span class="frozen-badge">pinned</span>';
             } else {
-                currentSort.column = columnIndex;
-                currentSort.direction = 'asc';
+                th.textContent = h;
             }
+            headerRow.appendChild(th);
+        });
 
-            const ths = document.querySelectorAll('th');
-            ths.forEach((th, index) => {
-                th.classList.remove('sorted-asc', 'sorted-desc');
-                if (index === columnIndex) {
-                    if (currentSort.direction === 'asc') th.classList.add('sorted-asc');
-                    else if (currentSort.direction === 'desc') th.classList.add('sorted-desc');
-                }
+        thead.appendChild(headerRow);
+        renderRows(csvData.slice(1));
+        applyToggles();
+    }
+
+    function renderRows(rows) {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+        const frag = document.createDocumentFragment();
+        rows.forEach(row => {
+            const tr = document.createElement('tr');
+            row.forEach(cell => {
+                const td = document.createElement('td');
+                td.textContent = cell;
+                td.onclick = () => copyCell(cell);
+                tr.appendChild(td);
             });
+            frag.appendChild(tr);
+        });
+        tbody.appendChild(frag);
+    }
 
-            if (currentSort.direction) {
-                rows.sort((a, b) => {
-                    const aVal = a[columnIndex], bVal = b[columnIndex];
-                    const aNum = parseFloat(aVal), bNum = parseFloat(bVal);
-                    if (!isNaN(aNum) && !isNaN(bNum)) {
-                        return currentSort.direction === 'asc' ? aNum - bNum : bNum - aNum;
-                    }
-                    const cmp = aVal.localeCompare(bVal);
-                    return currentSort.direction === 'asc' ? cmp : -cmp;
-                });
+    function sortColumn(idx) {
+        if (currentSort.column === idx) {
+            if      (currentSort.direction === 'asc')  currentSort.direction = 'desc';
+            else if (currentSort.direction === 'desc') { currentSort.direction = null; currentSort.column = null; }
+            else                                        currentSort.direction = 'asc';
+        } else {
+            currentSort.column = idx;
+            currentSort.direction = 'asc';
+        }
+
+        document.querySelectorAll('th').forEach((th, i) => {
+            th.classList.remove('sorted-asc', 'sorted-desc');
+            if (i === idx) {
+                if (currentSort.direction === 'asc')  th.classList.add('sorted-asc');
+                if (currentSort.direction === 'desc') th.classList.add('sorted-desc');
             }
+        });
 
-            displayRows(rows);
+        let rows = csvData.slice(1);
+        if (currentSort.direction) {
+            rows = [...rows].sort((a, b) => {
+                const av = a[idx], bv = b[idx];
+                const an = parseFloat(av), bn = parseFloat(bv);
+                if (!isNaN(an) && !isNaN(bn)) return currentSort.direction === 'asc' ? an - bn : bn - an;
+                const c = av.localeCompare(bv);
+                return currentSort.direction === 'asc' ? c : -c;
+            });
         }
+        renderRows(rows);
+    }
 
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(showCopyNotification);
-        }
-
-        function showCopyNotification() {
+    function copyCell(text) {
+        navigator.clipboard.writeText(text).then(() => {
             const n = document.getElementById('copyNotification');
             n.classList.add('show');
             setTimeout(() => n.classList.remove('show'), 2000);
-        }
+        });
+    }
 
-        function updateStats(fileSize) {
-            document.getElementById('rowCount').textContent = csvData.length - 1;
-            document.getElementById('colCount').textContent = csvData[0].length;
-            document.getElementById('fileSize').textContent = (fileSize / 1024).toFixed(2) + ' KB';
-        }
+    function updateStats(size) {
+        document.getElementById('rowCount').textContent = (csvData.length - 1).toLocaleString();
+        document.getElementById('colCount').textContent = csvData[0].length;
+        document.getElementById('fileSize').textContent = (size / 1024).toFixed(1) + ' KB';
+    }
 
-        function applyToggles() {
-            const wrapper = document.querySelector('.table-wrapper');
-            const stickyHeader = document.getElementById('toggleHeader').checked;
-            const frozenCol = document.getElementById('toggleColumn').checked;
-            wrapper.classList.toggle('no-sticky-header', !stickyHeader);
-            wrapper.classList.toggle('no-frozen-col', !frozenCol);
-        }
+    function applyToggles() {
+        const wrapper = document.getElementById('tableWrapper');
+        const stickyOn = document.getElementById('toggleHeader').checked;
+        const frozenOn = document.getElementById('toggleColumn').checked;
+        wrapper.classList.toggle('no-sticky-header', !stickyOn);
+        wrapper.classList.toggle('no-frozen-col',    !frozenOn);
+    }
 
-        function clearData() {
-            csvData = [];
-            currentSort = { column: null, direction: null };
-            currentFileName = '';
-            document.getElementById('emptyState').style.display = 'flex';
-            document.getElementById('statsBar').style.display = 'none';
-            document.getElementById('tableContainer').classList.remove('visible');
-            document.getElementById('fileInfo').style.display = 'none';
-            document.getElementById('tableHead').innerHTML = '';
-            document.getElementById('tableBody').innerHTML = '';
-            document.getElementById('fileInput').value = '';
-        }
-    </script>
+    function clearData() {
+        csvData = [];
+        currentSort = { column: null, direction: null };
+        currentFileName = '';
+        document.getElementById('emptyState').style.display = 'flex';
+        document.getElementById('statsBar').style.display = 'none';
+        document.getElementById('tableContainer').classList.remove('visible');
+        document.getElementById('fileInfo').style.display = 'none';
+        document.getElementById('tableHead').innerHTML = '';
+        document.getElementById('tableBody').innerHTML = '';
+        document.getElementById('fileInput').value = '';
+    }
+
+    function escapeHTML(str) {
+        return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+</script>
 </body>
 </html>
