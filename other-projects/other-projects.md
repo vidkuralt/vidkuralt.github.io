@@ -12,7 +12,8 @@ title: "Other Projects"
 
 | Title            | Year   | Language | Description                                                 |
 | --------         | ------ | ---------|------------------------------------------------------------ |
-| [Miluji tě](https://jstrieb.github.io/link-lock/#eyJ2IjoiMC4wLjEiLCJlIjoiWnZnOGg2RjhId1h5NzBMaDNWbjl1SWtxT0ZkN3ZCN2NXUkRSYUsxVjVCYmhoREhETHZLRkg2c3pSSUJXamU4PSIsImgiOiJPTkEiLCJzIjoicGhpbmdlcnVUa1lLTE01cjNlYzloUT09IiwiaSI6ImxkSzdUck1sNWdMM0s1MUwifQ==)    | 2025   | ENG | Romantic Memoir.             |
+| [Ślimak](https://jstrieb.github.io/link-lock/#eyJ2IjoiMC4wLjEiLCJlIjoiWnZnOGg2RjhId1h5NzBMaDNWbjl1SWtxT0ZkN3ZCN2NXUkRSYUsxVjVCYmhoREhETHZLRkg2c3pSSUJXamU4PSIsImgiOiJPTkEiLCJzIjoicGhpbmdlcnVUa1lLTE01cjNlYzloUT09IiwiaSI6ImxkSzdUck1sNWdMM0s1MUwifQ==)    | 2026   | ENG | Romantic Memoir Vol. 2
+| [Miluji tě](https://jstrieb.github.io/link-lock/#eyJ2IjoiMC4wLjEiLCJlIjoiWnZnOGg2RjhId1h5NzBMaDNWbjl1SWtxT0ZkN3ZCN2NXUkRSYUsxVjVCYmhoREhETHZLRkg2c3pSSUJXamU4PSIsImgiOiJPTkEiLCJzIjoicGhpbmdlcnVUa1lLTE01cjNlYzloUT09IiwiaSI6ImxkSzdUck1sNWdMM0s1MUwifQ==)    | 2025   | ENG | Romantic Memoir Vol. 1          |
 | [Temačne misli](/files/)    | NaN | SLO | Zbirka krajših kriminalk.  |
 | [Čarovniki na Škotskem](/files/)     | NaN   | SLO| Fantastično zgodovinski roman o čarovnikih v Združenem Kraljestvu v času širjenja rimskega imperija.  |
 
