@@ -1,1 +1,172 @@
-<h1>Hello World</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pharmacognosy Trainer — Advanced</title>
+<style>
+:root{
+ --paper:#EAE6DA;--card:#FBF9F3;--card-line:#F1EDDF;--ink:#211E19;--ink-soft:#5C5646;
+ --ink-faint:#9C9481;--line:#D8D2BF;--line-strong:#B7AE94;--navy:#2C3B52;--navy-soft:#44577A;
+ --on-navy:#F3F1E7;--stamp:#3B5A45;--stampbg:#E3EBDF;--caution:#8B6420;--cautionbg:#F1E5C6;
+ --danger:#8B2E2E;--dangerbg:#F4E1DD;--serif:Georgia,'Times New Roman',serif;--mono:ui-monospace,SFMono-Regular,Consolas,monospace
+}
+*{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.55}
+.container{max-width:1000px;margin:42px auto;padding:20px}.mast{text-align:center;padding-bottom:24px;margin-bottom:26px;border-bottom:1px solid var(--line)}
+h1{margin:0 0 8px;font-style:italic;font-size:clamp(30px,6vw,43px)} .sub{margin:0;color:var(--ink-soft);font:12px var(--mono)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:7px;padding:25px;margin-bottom:19px;box-shadow:0 1px 2px rgba(33,30,25,.05)}
+h2{margin:0 0 18px;padding-bottom:11px;border-bottom:1px solid var(--line);font:600 13px var(--mono);color:var(--ink-soft);letter-spacing:.04em}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.filter{display:grid;grid-template-columns:1fr 1fr;gap:12px}.wide{grid-column:1/-1}
+label{display:block;margin-bottom:7px;color:var(--ink-soft);font:600 12px var(--mono)}
+select,input,textarea{width:100%;padding:12px 13px;border:1px solid var(--line-strong);border-radius:4px;background:var(--card);color:var(--ink);font:inherit}
+textarea{min-height:130px;resize:vertical}.btn{padding:12px 20px;border:1px solid var(--navy);background:var(--navy);color:var(--on-navy);border-radius:4px;cursor:pointer;font:600 13px var(--mono)}
+.btn:hover{background:var(--navy-soft)}.btn.ghost{background:transparent;color:var(--ink-soft);border-color:var(--line-strong)}
+.btn.primary{background:var(--stamp);border-color:var(--stamp)}.btn:disabled{opacity:.45;cursor:not-allowed}
+.upload{display:block;border:1.5px dashed var(--line-strong);background:var(--card-line);padding:17px;text-align:center;border-radius:4px;cursor:pointer;color:var(--ink-soft)}
+#csvFile{display:none}.hint,.status{color:var(--ink-faint);font-size:12.5px}.hint{font-style:italic;margin-top:7px}.status{text-align:center;font:11px var(--mono);margin-top:8px}
+.modes{display:flex;gap:2px;overflow:auto;border-bottom:1px solid var(--line)}.mode{min-width:135px;flex:1;padding:12px;background:transparent;border:0;border-bottom:3px solid transparent;text-align:left;cursor:pointer}
+.mode:hover{background:var(--card-line)}.mode.active{background:var(--card-line);border-bottom-color:var(--navy)}
+.mode b{display:block;font-style:italic}.mode small{display:block;color:var(--ink-soft);font:10px var(--mono)}
+.practice{border-top:3px solid var(--navy)}.question{text-align:center}.label{color:var(--ink-soft);font-style:italic;font-size:14px}
+.mainword{font:700 clamp(27px,6vw,45px) var(--mono);color:var(--navy);margin:7px 0 15px;letter-spacing:-1px}
+.question-text{max-width:70ch;margin:auto;font-size:18px}.answer{max-width:720px;margin:18px auto 0}
+.actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:15px}.result{max-width:780px;margin:17px auto 0;padding:15px 17px;border-left:3px solid;border-radius:3px}
+.correct{background:var(--stampbg);color:var(--stamp);border-color:var(--stamp)}.partial{background:var(--cautionbg);color:var(--caution);border-color:var(--caution)}.wrong{background:var(--dangerbg);color:var(--danger);border-color:var(--danger)}
+.details{color:var(--ink);font-size:15px;margin-top:8px}.profile{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.item{background:var(--card-line);border:1px solid var(--line);padding:12px;border-radius:4px}.key{font:10px var(--mono);color:var(--ink-faint);text-transform:uppercase;margin-bottom:4px}.val{font-size:15px}
+.progress{text-align:center;color:var(--ink-faint);font:11px var(--mono);margin-top:14px}
+.flash{perspective:1000px;max-width:720px;margin:auto}.inner{position:relative;min-height:245px;transform-style:preserve-3d;transition:transform .45s}.flash.flipped .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;background:var(--card-line);border:1px solid var(--line);border-radius:6px;padding:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.back{transform:rotateY(180deg);align-items:stretch;text-align:left;overflow:auto}.flashword{font:700 28px var(--mono);color:var(--navy);margin-top:8px}
+.case{max-width:790px;margin:auto}.vignette{background:var(--card-line);border-left:3px solid var(--navy);padding:17px 19px}.options{display:grid;gap:8px;margin-top:14px}
+.option{padding:12px 14px;background:var(--card);border:1px solid var(--line-strong);border-radius:4px;text-align:left;cursor:pointer}.option.correct{background:var(--stampbg);border-color:var(--stamp)}.option.wrong{background:var(--dangerbg);border-color:var(--danger)}
+.stats{display:flex;justify-content:center;gap:35px;flex-wrap:wrap;text-align:center;font:12px var(--mono);color:var(--ink-soft)}.stats b{display:block;color:var(--ink);font-size:21px}
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:15px}.statbox{background:var(--card-line);border:1px solid var(--line);padding:10px;text-align:center}.statbox small{font:9px var(--mono);color:var(--ink-faint);text-transform:uppercase}.statbox b{display:block;font:19px var(--mono);margin-top:3px}
+.hidden{display:none!important}@media(max-width:760px){.grid,.filter,.profile,.statgrid{grid-template-columns:1fr}.container{margin:14px auto;padding:13px}.card{padding:19px}.modes{flex-direction:column}.mode{border-bottom:1px solid var(--line)}.btn{width:100%}.actions{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="container">
+<header class="mast">
+<h1>Pharmacognosy Trainer</h1>
+<p class="sub">Advanced crude drugs, botanical sources, microscopy, phytochemistry, identification and applied pharmacognosy.</p>
+</header>
+
+<div class="card">
+<h2>1 · DATABASE</h2>
+<div class="grid">
+<div><label>Choose database</label><select id="db"></select><div class="hint">Built-in starter databases are included. Uploaded CSVs are saved locally in this browser.</div></div>
+<div><label for="csvFile">Upload your own CSV</label><label class="upload" for="csvFile">Click to upload pharmacognosy CSV<br><small>Required: drug_name, botanical_source, family, part_used, origin, macroscopy, microscopy, constituents, marker_compound, pharmacological_action, uses, adverse_effects, contraindications, identification, adulterants, storage, preparation, notes</small></label><input id="csvFile" type="file" accept=".csv"><div class="status" id="status">No database loaded.</div></div>
+</div>
+</div>
+
+<div class="card">
+<h2>2 · FILTERS</h2>
+<div class="filter">
+<div><label>Family</label><select id="family"><option value="">All families</option></select></div>
+<div><label>Phytochemical / therapeutic group</label><select id="group"><option value="">All groups</option></select></div>
+<div class="wide"><label>Search</label><input id="search" placeholder="Search drug, botanical source, family, constituents, uses..."></div>
+</div>
+<div class="actions"><button class="btn ghost" id="clear">Clear filters</button></div><div class="status" id="filterStatus"></div>
+</div>
+
+<div class="card">
+<h2>3 · PRACTICE MODE</h2>
+<div class="modes">
+<button class="mode active" data-mode="study"><b>Study</b><small>Complete monograph.</small></button>
+<button class="mode" data-mode="identify"><b>Identify</b><small>Clues → crude drug.</small></button>
+<button class="mode" data-mode="source"><b>Botanical source</b><small>Drug → source.</small></button>
+<button class="mode" data-mode="family"><b>Family</b><small>Drug → family.</small></button>
+<button class="mode" data-mode="constituents"><b>Constituents</b><small>Drug → chemistry.</small></button>
+<button class="mode" data-mode="uses"><b>Uses</b><small>Drug → uses.</small></button>
+<button class="mode" data-mode="flash"><b>Flashcards</b><small>Flip & recall.</small></button>
+<button class="mode" data-mode="cases"><b>Cases</b><small>Applied reasoning.</small></button>
+</div>
+</div>
+
+<section id="study" class="card practice"><h2>STUDY</h2><div class="question"><div class="mainword" id="sName">—</div><div class="question-text" id="sIntro">Load a database to begin.</div></div><div class="profile" id="sProfile"></div><div class="actions"><button class="btn primary" id="sNext">Next question →</button></div><div class="progress" id="sProg"></div></section>
+
+<section id="identify" class="card practice hidden"><h2>IDENTIFY THE CRUDE DRUG</h2><div class="question"><div class="label">Which crude drug is described by these clues?</div><div class="question-text" id="iQ">—</div></div><div class="answer"><input id="iA" placeholder="Enter the crude drug name"></div><div class="actions" id="iActions"><button class="btn" id="iCheck">Check answer</button><button class="btn ghost" id="iSkip">Skip</button></div><div id="iR"></div><div class="actions hidden" id="iNextA"><button class="btn primary" id="iNext">Next question →</button></div><div class="progress" id="iProg"></div></section>
+
+<section id="source" class="card practice hidden"><h2>BOTANICAL SOURCE</h2><div class="question"><div class="label">What is the botanical source of:</div><div class="mainword" id="srcName">—</div></div><div class="answer"><textarea id="srcA" placeholder="Give the accepted botanical name and, where relevant, plant part."></textarea></div><div class="actions" id="srcActions"><button class="btn" id="srcCheck">Check answer</button><button class="btn ghost" id="srcSkip">Skip</button></div><div id="srcR"></div><div class="actions hidden" id="srcNextA"><button class="btn primary" id="srcNext">Next question →</button></div><div class="progress" id="srcProg"></div></section>
+
+<section id="family" class="card practice hidden"><h2>FAMILY</h2><div class="question"><div class="label">Which botanical family does this crude drug belong to?</div><div class="mainword" id="famName">—</div></div><div class="answer"><input id="famA" placeholder="e.g. Lamiaceae"></div><div class="actions" id="famActions"><button class="btn" id="famCheck">Check answer</button><button class="btn ghost" id="famSkip">Skip</button></div><div id="famR"></div><div class="actions hidden" id="famNextA"><button class="btn primary" id="famNext">Next question →</button></div><div class="progress" id="famProg"></div></section>
+
+<section id="constituents" class="card practice hidden"><h2>CONSTITUENTS</h2><div class="question"><div class="label">What are the important constituents / marker compounds of:</div><div class="mainword" id="cName">—</div></div><div class="answer"><textarea id="cA" placeholder="List the major constituent classes and important marker compounds."></textarea></div><div class="actions" id="cActions"><button class="btn" id="cCheck">Check answer</button><button class="btn ghost" id="cSkip">Skip</button></div><div id="cR"></div><div class="actions hidden" id="cNextA"><button class="btn primary" id="cNext">Next question →</button></div><div class="progress" id="cProg"></div></section>
+
+<section id="uses" class="card practice hidden"><h2>USES</h2><div class="question"><div class="label">What are the main pharmacological uses of:</div><div class="mainword" id="uName">—</div></div><div class="answer"><textarea id="uA" placeholder="State the principal traditional/pharmacological uses."></textarea></div><div class="actions" id="uActions"><button class="btn" id="uCheck">Check answer</button><button class="btn ghost" id="uSkip">Skip</button></div><div id="uR"></div><div class="actions hidden" id="uNextA"><button class="btn primary" id="uNext">Next question →</button></div><div class="progress" id="uProg"></div></section>
+
+<section id="flash" class="card practice hidden"><h2>FLASHCARDS</h2><div class="flash" id="flashcard"><div class="inner"><div class="face"><div class="label">Crude drug</div><div class="flashword" id="fFront">—</div><div class="hint">Flip to reveal the monograph.</div></div><div class="face back"><div class="label">Profile</div><div id="fBack">—</div></div></div></div><div class="actions"><button class="btn" id="flip">Flip card</button><button class="btn primary" id="fNext">Next card →</button></div><div class="progress" id="fProg"></div></section>
+
+<section id="cases" class="card practice hidden"><h2>APPLIED CASES</h2><div class="case"><div class="vignette" id="caseQ">—</div><div class="options" id="caseOptions"></div><div id="caseR"></div><div class="actions"><button class="btn primary hidden" id="caseNext">Next case →</button></div></div><div class="progress" id="caseProg"></div></section>
+
+<div class="card">
+<h2>4 · STATISTICS</h2>
+<div class="stats"><div>Current mode<b id="total">0</b>attempts</div><div>Correct<b id="correct">0</b></div><div>Accuracy<b id="accuracy">0%</b></div></div>
+<div class="statgrid" id="statgrid"></div>
+<div class="actions"><button class="btn danger" id="resetStats">Reset statistics</button></div>
+</div>
+</div>
+
+<script>
+const REQUIRED=["drug_name","botanical_source","family","part_used","origin","macroscopy","microscopy","constituents","marker_compound","pharmacological_action","uses","adverse_effects","contraindications","identification","adulterants","storage","preparation","notes"];
+const BUILTIN={
+ "Starter — Core crude drugs":[
+ {drug_name:"Peppermint leaf",botanical_source:"Mentha × piperita L.",family:"Lamiaceae",part_used:"Leaves",origin:"Cultivated; Europe and other temperate regions",macroscopy:"Green to dark-green leaves, characteristic aromatic odour, serrate margin.",microscopy:"Dorsiventral leaf; glandular trichomes with multicellular heads and characteristic stomata.",constituents:"Volatile oil, flavonoids, phenolic acids.",marker_compound:"Menthol; menthone",pharmacological_action:"Carminative, antispasmodic; peppermint oil also has local cooling effects.",uses:"Dyspeptic complaints, flatulence and mild gastrointestinal spasms.",adverse_effects:"May cause reflux or gastrointestinal irritation; concentrated oil may irritate mucosa.",contraindications:"Use of concentrated preparations requires caution in young children and in conditions where reflux is problematic.",identification:"Aromatic odour and characteristic glandular trichomes; volatile oil rich in menthol.",adulterants:"Other Mentha species or exhausted/adulterated leaves.",storage:"Protect from light, moisture and excessive heat.",preparation:"Infusion or standardized preparations; essential oil in suitable formulations.",notes:"Educational starter entry."},
+ {drug_name:"Chamomile flower",botanical_source:"Matricaria chamomilla L. (syn. M. recutita L.)",family:"Asteraceae",part_used:"Flower heads",origin:"Europe and western Asia; widely cultivated",macroscopy:"Small capitula with white ray florets and yellow tubular disc florets; strong aromatic odour.",microscopy:"Secretory structures and characteristic pollen; Asteraceae capitulum anatomy.",constituents:"Volatile oil, flavonoids, phenolic compounds.",marker_compound:"Apigenin derivatives; chamazulene in the volatile oil.",pharmacological_action:"Anti-inflammatory, antispasmodic and mild sedative actions.",uses:"Mild gastrointestinal complaints; topical use for minor inflammation and irritation.",adverse_effects:"Allergic reactions can occur, especially in people sensitive to Asteraceae plants.",contraindications:"Hypersensitivity to Asteraceae constituents.",identification:"Characteristic capitulum with white ligulate and yellow tubular florets plus aromatic volatile oil.",adulterants:"Other Matricaria/Chamomilla species or visually similar Asteraceae flowers.",storage:"Protect from moisture and light.",preparation:"Infusion, extracts and topical preparations.",notes:"Botanical nomenclature may vary by pharmacopoeial source."},
+ {drug_name:"Senna leaf",botanical_source:"Senna alexandrina Mill. (senna leaflets)",family:"Fabaceae",part_used:"Leaflets",origin:"North Africa and cultivated regions",macroscopy:"Thin, greenish leaflets with characteristic shape and venation.",microscopy:"Dorsiventral leaflet with characteristic epidermal and stomatal features.",constituents:"Hydroxyanthracene derivatives and flavonoids.",marker_compound:"Sennosides A and B",pharmacological_action:"Stimulant laxative after colonic metabolism of sennosides.",uses:"Short-term treatment of occasional constipation.",adverse_effects:"Abdominal cramps, diarrhoea and electrolyte disturbances with excessive or prolonged use.",contraindications:"Intestinal obstruction, acute inflammatory abdominal conditions and unexplained abdominal pain.",identification:"Characteristic leaflets and detection of hydroxyanthracene derivatives.",adulterants:"Other Senna species or non-official leaflets.",storage:"Dry and protected from light.",preparation:"Standardized oral preparations according to pharmacopoeial requirements.",notes:"Long-term unsupervised use is inappropriate."},
+ {drug_name:"Liquorice root",botanical_source:"Glycyrrhiza glabra L.",family:"Fabaceae",part_used:"Roots and stolons",origin:"Mediterranean and western Asia; cultivated elsewhere",macroscopy:"Yellowish-brown exterior with yellow interior and characteristic sweet taste.",microscopy:"Cork, secondary phloem, medullary rays and calcium oxalate features.",constituents:"Triterpenoid saponins, flavonoids and polysaccharides.",marker_compound:"Glycyrrhizin (glycyrrhizic acid)",pharmacological_action:"Demulcent and expectorant properties; glycyrrhizin has mineralocorticoid-like effects at high exposure.",uses:"Symptomatic relief in cough and dyspeptic complaints in appropriate preparations.",adverse_effects:"Excessive/prolonged intake may cause sodium retention, hypokalaemia and hypertension.",contraindications:"Severe hypertension, hypokalaemia and conditions aggravated by sodium retention.",identification:"Yellow root with characteristic sweet taste and glycyrrhizin content.",adulterants:"Other Glycyrrhiza species or exhausted material.",storage:"Dry and protected from moisture.",preparation:"Decoctions, extracts and standardized preparations.",notes:"Duration and dose matter because of mineralocorticoid-like adverse effects."}
+ ],
+ "Starter — Phytochemistry":[
+ {drug_name:"Clove",botanical_source:"Syzygium aromaticum (L.) Merr. & L.M.Perry",family:"Myrtaceae",part_used:"Dried flower buds",origin:"Originally Moluccas; cultivated in tropical regions",macroscopy:"Dark reddish-brown nail-shaped flower buds with a strong aromatic odour.",microscopy:"Oil glands and characteristic secretory structures in the floral tissues.",constituents:"Volatile oil, phenolic compounds and tannins.",marker_compound:"Eugenol",pharmacological_action:"Antimicrobial and local analgesic actions; aromatic carminative.",uses:"Dental preparations, aromatic digestive preparations and flavouring.",adverse_effects:"Concentrated oil may irritate tissues; excessive exposure can be toxic.",contraindications:"Avoid inappropriate concentrated topical or oral exposure.",identification:"Characteristic nail-shaped buds and eugenol-rich volatile oil.",adulterants:"Spent cloves or other plant material.",storage:"Well closed, dry and protected from light.",preparation:"Whole drug, powdered drug, essential oil and extracts.",notes:"A classic volatile-oil-containing crude drug."},
+ {drug_name:"Valerian root",botanical_source:"Valeriana officinalis L.",family:"Caprifoliaceae",part_used:"Rhizome and roots",origin:"Europe and parts of Asia; cultivated",macroscopy:"Yellowish-brown rhizome with numerous roots and characteristic odour.",microscopy:"Parenchymatous tissues with secretory structures and characteristic root anatomy.",constituents:"Valerenic acids, volatile oil and iridoids/valepotriates.",marker_compound:"Valerenic acid",pharmacological_action:"Sedative and anxiolytic effects associated with several constituents.",uses:"Traditional use for mild nervous tension and sleep disturbances.",adverse_effects:"Gastrointestinal discomfort, headache or drowsiness may occur.",contraindications:"Use with caution with other sedatives; avoid inappropriate combination with CNS depressants.",identification:"Characteristic odour and detection of valerenic acids.",adulterants:"Other Valeriana species or exhausted roots.",storage:"Dry, protected from light and moisture.",preparation:"Infusions and standardized extracts.",notes:"Constituent profile varies with processing."}
+ ]};
+let dbs={...BUILTIN}, data=[], current=null, mode="study", attempts=0, right=0;
+const $=id=>document.getElementById(id), modes=["study","identify","source","family","constituents","uses","flash","cases"];
+const keys={study:["Study"],identify:["Identify"],source:["Botanical source"],family:["Family"],constituents:["Constituents"],uses:["Uses"],flash:["Flashcards"],cases:["Cases"]};
+
+function guessGroup(x){const c=norm(x.constituents); if(c.includes("alkaloid")) return "Alkaloids"; if(c.includes("saponin")) return "Saponins"; if(c.includes("flavonoid")) return "Flavonoids"; if(c.includes("tannin")) return "Tannins"; if(c.includes("volatile oil")||c.includes("essential oil")) return "Volatile oils"; if(c.includes("hydroxyanthracene")||c.includes("anthraquin")) return "Anthraquinone derivatives"; return "Other phytochemicals"}
+function norm(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim()}
+function similarity(a,b){a=norm(a);b=norm(b);if(!a||!b)return 0;if(a===b)return 1;if(a.includes(b)||b.includes(a))return .82;let A=new Set(a.split(" ")),B=new Set(b.split(" ")),inter=[...A].filter(x=>B.has(x)).length;return inter/Math.max(A.size,B.size)}
+function filtered(){let f=$("family").value,g=$("group").value,q=norm($("search").value);return data.filter(x=>(!f||x.family===f)&&(!g||x._group===g)&&(!q||Object.values(x).some(v=>norm(v).includes(q))))}
+function pick(){let a=filtered();if(!a.length)return null;let x=a[Math.floor(Math.random()*a.length)];return x}
+function setDBOptions(){let names=Object.keys(dbs);$("db").innerHTML=names.map(n=>`<option>${esc(n)}</option>`).join("");loadDB(names[0])}
+function loadDB(name){data=(dbs[name]||[]).map(x=>({...x, _group:x._group||guessGroup(x)}));data.forEach(x=>x._group=x._group||"Unclassified");$("status").textContent=`Loaded ${data.length} records.`;populateFilters();newQuestion()}
+function populateFilters(){let fs=[...new Set(data.map(x=>x.family).filter(Boolean))].sort(), gs=[...new Set(data.map(x=>x._group).filter(Boolean))].sort();$("family").innerHTML='<option value="">All families</option>'+fs.map(x=>`<option>${esc(x)}</option>`).join("");$("group").innerHTML='<option value="">All groups</option>'+gs.map(x=>`<option>${esc(x)}</option>`).join("");updateFilterStatus()}
+function updateFilterStatus(){let n=filtered().length;$("filterStatus").textContent=`${n} record${n===1?"":"s"} match the current filters.`}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function profile(x){let fields=[["Botanical source",x.botanical_source],["Family",x.family],["Part used",x.part_used],["Origin",x.origin],["Macroscopy",x.macroscopy],["Microscopy",x.microscopy],["Constituents",x.constituents],["Marker compound",x.marker_compound],["Pharmacological action",x.pharmacological_action],["Uses",x.uses],["Adverse effects",x.adverse_effects],["Contraindications",x.contraindications],["Identification",x.identification],["Adulterants",x.adulterants],["Storage",x.storage],["Preparation",x.preparation],["Notes",x.notes]];return fields.map(([k,v])=>`<div class="item"><div class="key">${esc(k)}</div><div class="val">${esc(v||"—")}</div></div>`).join("")}
+function newQuestion(){current=pick(); if(!current){$("status").textContent="No records match the filters.";return} resetModeUI(); renderMode(); updateStats()}
+function resetModeUI(){document.querySelectorAll(".result").forEach(e=>e.innerHTML="");document.querySelectorAll(".actions").forEach(e=>{});["iNextA","srcNextA","famNextA","cNextA","uNextA","caseNext"].forEach(id=>$(id)?.classList.add("hidden"));["iActions","srcActions","famActions","cActions","uActions"].forEach(id=>$(id)?.classList.remove("hidden"));document.querySelectorAll("textarea,input").forEach(e=>{if(e.id!=="search")e.value=""});$("flashcard").classList.remove("flipped")}
+function renderMode(){let x=current; if(!x)return;$("sName").textContent=x.drug_name;$("sIntro").textContent=`${x.botanical_source} · ${x.family} · ${x.part_used}`;$("sProfile").innerHTML=profile(x);$("sProg").textContent=`${filtered().length} available · ${keys[mode]?.[0]||"Study"} mode`;
+ $("iQ").textContent=`${x.part_used}; ${x.macroscopy}; ${x.identification}; major constituents: ${x.constituents}.`;$("srcName").textContent=x.drug_name;$("famName").textContent=x.drug_name;$("cName").textContent=x.drug_name;$("uName").textContent=x.drug_name;
+ $("fFront").textContent=x.drug_name;$("fBack").innerHTML=profile(x);$("fProg").textContent=`${filtered().length} available`;
+ $("caseQ").textContent=caseText(x);$("caseProg").textContent=`${filtered().length} available`; if(mode==="cases") buildCaseOptions(x);
+}
+function caseText(x){return `A student is given a crude drug described as ${x.macroscopy.toLowerCase()} The material is associated with ${x.constituents.toLowerCase()}. Its principal marker is ${x.marker_compound}. Which statement is most appropriate for this crude drug?`}
+function check(field,inputId,resultId,actionsId,nextId,modeName){let x=current,a=$(inputId).value,answer=x[field]||"",sim=similarity(a,answer),keywords=norm(answer).split(" ").filter(w=>w.length>3),hits=keywords.filter(k=>norm(a).includes(k)).length,score=Math.max(sim,keywords.length?hits/Math.min(5,keywords.length):0);let ok=score>=.72,partial=score>=.38;attempts++;if(ok)right++;saveStats(modeName,ok);$(actionsId).classList.add("hidden");$(nextId).classList.remove("hidden");$(resultId).innerHTML=`<div class="result ${ok?"correct":partial?"partial":"wrong"}"><b>${ok?"CORRECT":partial?"PARTIAL":"NOT QUITE"}</b><div class="details"><b>Expected:</b> ${esc(answer)}</div>${a?`<div class="details"><b>Your answer:</b> ${esc(a)}</div>`:""}</div>`;updateStats()}
+function saveStats(m,ok){let s=JSON.parse(localStorage.getItem("pharmacoStats")||"{}");s[m]=s[m]||{a:0,c:0};s[m].a++;if(ok)s[m].c++;localStorage.setItem("pharmacoStats",JSON.stringify(s))}
+function updateStats(){let s=JSON.parse(localStorage.getItem("pharmacoStats")||"{}"),v=s[mode]||{a:0,c:0};$("total").textContent=v.a;$("correct").textContent=v.c;$("accuracy").textContent=v.a?Math.round(v.c/v.a*100)+"%":"0%";$("statgrid").innerHTML=modes.map(m=>{let z=s[m]||{a:0,c:0};return `<div class="statbox"><small>${keys[m][0]}</small><b>${z.a?Math.round(z.c/z.a*100):0}%</b><small>${z.c}/${z.a}</small></div>`}).join("")}
+function skip(m){attempts++;saveStats(m,false);newQuestion()}
+function buildCaseOptions(x){let pool=filtered().filter(z=>z!==x).sort(()=>Math.random()-.5).slice(0,3);let opts=[x,...pool].sort(()=>Math.random()-.5);$("caseOptions").innerHTML=opts.map((z,i)=>`<button class="option" data-name="${esc(z.drug_name)}">${esc(z.drug_name)} — ${esc(z.marker_compound)}</button>`).join("");document.querySelectorAll(".option").forEach(b=>b.onclick=()=>{let ok=b.dataset.name===x.drug_name;attempts++;if(ok)right++;saveStats("cases",ok);document.querySelectorAll(".option").forEach(o=>o.disabled=true);b.classList.add(ok?"correct":"wrong");$("caseR").innerHTML=`<div class="result ${ok?"correct":"wrong"}"><b>${ok?"CORRECT":"INCORRECT"}</b><div class="details">${esc(x.drug_name)}: ${esc(x.pharmacological_action)} Main uses: ${esc(x.uses)}</div></div>`;$("caseNext").classList.remove("hidden");updateStats()})}
+function activate(m){mode=m;document.querySelectorAll(".mode").forEach(b=>b.classList.toggle("active",b.dataset.mode===m));modes.forEach(z=>$(z).classList.toggle("hidden",z!==m));if(!current)current=pick();renderMode();updateStats()}
+document.querySelectorAll(".mode").forEach(b=>b.onclick=()=>activate(b.dataset.mode));
+$("db").onchange=()=>loadDB($("db").value);["family","group","search"].forEach(id=>$(id).addEventListener("input",()=>{updateFilterStatus();newQuestion()}));
+$("clear").onclick=()=>{$("family").value="";$("group").value="";$("search").value="";updateFilterStatus();newQuestion()};
+$("sNext").onclick=newQuestion;$("iNext").onclick=newQuestion;$("srcNext").onclick=newQuestion;$("famNext").onclick=newQuestion;$("cNext").onclick=newQuestion;$("uNext").onclick=newQuestion;$("fNext").onclick=newQuestion;$("caseNext").onclick=newQuestion;
+$("iCheck").onclick=()=>check("drug_name","iA","iR","iActions","iNextA","identify");$("iSkip").onclick=()=>skip("identify");
+$("srcCheck").onclick=()=>check("botanical_source","srcA","srcR","srcActions","srcNextA","source");$("srcSkip").onclick=()=>skip("source");
+$("famCheck").onclick=()=>check("family","famA","famR","famActions","famNextA","family");$("famSkip").onclick=()=>skip("family");
+$("cCheck").onclick=()=>check("constituents","cA","cR","cActions","cNextA","constituents");$("cSkip").onclick=()=>skip("constituents");
+$("uCheck").onclick=()=>check("uses","uA","uR","uActions","uNextA","uses");$("uSkip").onclick=()=>skip("uses");
+$("flip").onclick=()=>$("flashcard").classList.toggle("flipped");
+$("resetStats").onclick=()=>{if(confirm("Reset all Pharmacognosy Trainer statistics?")){localStorage.removeItem("pharmacoStats");updateStats()}};
+$("csvFile").onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let rows=parseCSV(r.result);let missing=REQUIRED.filter(k=>!(k in rows[0]));if(missing.length)throw new Error("Missing columns: "+missing.join(", "));let name=f.name.replace(/\.csv$/i,"");dbs[name]=rows;setDBOptions();$("db").value=name;loadDB(name);localStorage.setItem("pharmacoUploaded",JSON.stringify(dbs));}catch(err){$("status").textContent=err.message}};r.readAsText(f)};
+function parseCSV(t){let lines=[],row=[],cell="",q=false;for(let i=0;i<t.length;i++){let c=t[i],n=t[i+1];if(c==='"'&&q&&n==='"'){cell+='"';i++;continue}if(c==='"'){q=!q;continue}if(c===','&&!q){row.push(cell);cell="";continue}if((c==='\n'||c==='\r')&&!q){if(c==='\r'&&n==='\n')i++;row.push(cell);if(row.some(v=>v.trim()))lines.push(row);row=[];cell="";continue}cell+=c}if(cell.length||row.length){row.push(cell);lines.push(row)}let h=lines.shift().map(x=>x.trim());return lines.map(a=>Object.fromEntries(h.map((k,i)=>[k,(a[i]||"").trim()])));}
+try{let saved=JSON.parse(localStorage.getItem("pharmacoUploaded")||"{}");dbs={...dbs,...saved}}catch(e){}
+setDBOptions();activate("study");
+buildCaseOptions(current);
+buildCaseOptions(current);
+</script>
+</body>
+</html>
