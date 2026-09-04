@@ -51,7 +51,16 @@ title: "Other Projects"
 | [DEUTSCHE GRAMMATIK FÜR GYMNASIEN](/files/DEUTSCHE_GRAMMATIK_FÜR_GYMNASIEN.pdf)  | 2020     | DEU        |       Zapiski z Gimnazije Kranj.       |
 | [ENGLISH GRAMMAR FOR GRAMMAR SCHOOLS](/files/ENGLISH_GRAMMAR_FOR_GRAMMAR_SCHOOLS.pdf)  | 2019      | ENG        |    Zapiski z Gimnazije Kranj.          |
 
-## Tools
+## Learning Tools
+
+| Entry   | Year   | Language |     Description                                     |
+| --------| ------ | ---------| --------------------------------------------------- |
+| [Medication](https://vidkuralt.github.io/medication/medication.html)  | 2023      | ENG, SLO |   /  |
+| [Pharmacognosy](https://vidkuralt.github.io/pharmacognosy/pharmacognosy.html)  | 2022     | ENG, SLO          |   /     |
+| [Microbes](https://vidkuralt.github.io/microbes/microbes.html)  | 2021     | ENG, SLO      |    /      |
+| [History practicer](https://vidkuralt.github.io/history_practicer/history_practicer.html)  | 2020     | ENG, SLO      |      /     |
+
+## Other Tools
 
 | Entry   | Year   | Language |     Description                                     |
 | --------| ------ | ---------| --------------------------------------------------- |
