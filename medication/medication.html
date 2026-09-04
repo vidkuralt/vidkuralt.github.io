@@ -1,1 +1,542 @@
-<h1>Hello World</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drug Trainer — Advanced</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500;600;700&display=swap');
+:root{
+  --paper:#EAE6DA;--card:#FBF9F3;--card-line:#F1EDDF;--ink:#211E19;
+  --ink-soft:#5C5646;--ink-faint:#9C9481;--line:#D8D2BF;--line-strong:#B7AE94;
+  --navy:#2C3B52;--navy-soft:#44577A;--on-navy:#F3F1E7;
+  --stamp:#3B5A45;--stampbg:#E3EBDF;--caution:#8B6420;--cautionbg:#F1E5C6;
+  --danger:#8B2E2E;--dangerbg:#F4E1DD;--radius-sm:4px;--radius-md:7px;
+  --font-serif:'Libre Caslon Text',Georgia,'Times New Roman',serif;
+  --font-mono:'IBM Plex Mono','SFMono-Regular',Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box} html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-serif);font-size:17px;line-height:1.55}
+.container{max-width:980px;margin:44px auto;padding:20px}
+.masthead{text-align:center;padding-bottom:24px;margin-bottom:28px;border-bottom:1px solid var(--line)}
+h1{margin:0 0 8px;font-family:var(--font-serif);font-style:italic;font-weight:700;font-size:clamp(30px,6vw,42px)}
+.subtitle{margin:0;font-family:var(--font-mono);font-size:12.5px;letter-spacing:.03em;color:var(--ink-soft)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-md);padding:26px 26px 24px;margin-bottom:20px;box-shadow:0 1px 2px rgba(33,30,25,.05)}
+h2{display:flex;align-items:center;gap:10px;margin:0 0 20px;padding-bottom:12px;border-bottom:1px solid var(--line);font-family:var(--font-mono);font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--ink-soft)}
+h2 .step{display:inline-flex;align-items:center;justify-content:center;width:21px;height:21px;flex:0 0 auto;border:1px solid var(--line-strong);border-radius:3px;font-family:var(--font-mono);font-size:11px;background:var(--card-line)}
+h2 .mode-title{color:var(--ink);font-family:var(--font-serif);font-style:italic;font-size:17px;font-weight:700;letter-spacing:0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.modes{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:-2px -2px 0;overflow:auto}
+.mode{flex:1;min-width:130px;background:transparent;border:0;border-bottom:3px solid transparent;padding:13px 12px 11px;cursor:pointer;text-align:left}
+.mode:hover{background:var(--card-line)} .mode b{display:block;font-family:var(--font-serif);font-style:italic;font-weight:700;font-size:15px;color:var(--ink);margin-bottom:3px}
+.mode small{display:block;font-family:var(--font-mono);font-size:10.5px;color:var(--ink-soft)}
+.mode.active{background:var(--card-line);border-bottom-color:var(--navy)} .mode.active b{color:var(--navy)}
+.btn{font-family:var(--font-mono);font-size:13.5px;font-weight:600;border:1px solid var(--navy);background:var(--navy);color:var(--on-navy);border-radius:var(--radius-sm);padding:13px 22px;min-height:46px;cursor:pointer}
+.btn:hover{background:var(--navy-soft)} .btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink-soft);border-color:var(--line-strong);font-weight:500}
+.btn.ghost:hover{background:var(--card-line);color:var(--ink)}
+.btn.primary{background:var(--stamp);border-color:var(--stamp)} .btn.primary:hover{background:#2E4636}
+.btn.danger{background:var(--danger);border-color:var(--danger)}
+select,input,textarea{width:100%;padding:12px 13px;border:1px solid var(--line-strong);border-radius:var(--radius-sm);font:inherit;font-size:16px;background:var(--card);color:var(--ink)}
+select:focus,input:focus,textarea:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(44,59,82,.12)}
+label{display:block;font-family:var(--font-mono);font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:8px}
+.upload{display:block;border:1.5px dashed var(--line-strong);background:var(--card-line);padding:18px;border-radius:var(--radius-sm);text-align:center;cursor:pointer;color:var(--ink-soft)}
+.upload small{font-family:var(--font-mono);font-size:11px} #csvFile{display:none}
+.status{text-align:center;color:var(--ink-soft);font-family:var(--font-mono);font-size:12px;margin-top:10px}
+.hint{font-family:var(--font-serif);font-style:italic;font-size:13.5px;color:var(--ink-faint);margin-top:8px}
+.practice-card{border-top:3px solid var(--navy)} .question{text-align:center}
+.prompt-label{font-style:italic;color:var(--ink-soft);font-size:15px;margin-bottom:2px}
+.drug-name{font-family:var(--font-mono);font-weight:700;font-size:clamp(30px,7vw,48px);letter-spacing:-1px;color:var(--navy);margin:6px 0 18px}
+.question-text{font-size:19px;line-height:1.65;max-width:64ch;margin:0 auto}
+.answer{max-width:700px;margin:0 auto}.answer textarea{min-height:130px;resize:vertical}.answer input{text-align:center;font-size:19px}
+.answer textarea[readonly],.answer input[readonly]{background:var(--card-line);color:var(--ink-soft)}
+.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px}
+.continue-hint{text-align:center;font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);margin-top:8px}
+.result{margin:20px auto 0;padding:16px 18px;border-radius:var(--radius-sm);max-width:760px;line-height:1.6;border-left:3px solid transparent;font-size:16px}
+.result.correct{background:var(--stampbg);color:var(--stamp);border-left-color:var(--stamp)}
+.result.partial{background:var(--cautionbg);color:var(--caution);border-left-color:var(--caution)}
+.result.incorrect{background:var(--dangerbg);color:var(--danger);border-left-color:var(--danger)}
+.verdict{display:inline-block;font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border:1.5px solid currentColor;border-radius:3px;margin-right:10px}
+.details{margin-top:9px;color:var(--ink);font-size:15px}.details b{color:inherit}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.chip{background:var(--card-line);border:1px solid var(--line-strong);color:var(--ink-soft);padding:3px 9px;border-radius:3px;font-family:var(--font-mono);font-size:11px}
+.profile{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px;text-align:left}
+.profile-item{border:1px solid var(--line);background:var(--card-line);padding:12px;border-radius:4px}
+.profile-item .key{font-family:var(--font-mono);font-size:10.5px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:5px}
+.profile-item .val{font-size:15px}
+.progress{text-align:center;font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);margin-top:16px}
+.stats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;font-family:var(--font-mono);font-size:13px;color:var(--ink-soft)}
+.stats b{display:block;font-size:22px;color:var(--ink);margin-top:4px;font-weight:600}
+.hidden{display:none!important}:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+@media(max-width:760px){.container{margin:16px auto;padding:14px}.card{padding:20px 18px}.grid,.profile{grid-template-columns:1fr}.question-text{font-size:18px}}
+@media(max-width:520px){.modes{flex-direction:column;border-bottom:none;gap:6px}.mode{border-bottom:1px solid var(--line)}.stats{gap:20px 26px}.btn{width:100%}.actions{flex-direction:column}}
+
+/* ---------- Advanced trainer ---------- */
+.filter-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.filter-row .wide{grid-column:1/-1}
+.smiles-box{font-family:var(--font-mono);font-size:12px;word-break:break-all;background:var(--card-line);border:1px solid var(--line);padding:12px;border-radius:4px;text-align:left}
+.flashcard{perspective:1000px;max-width:680px;margin:0 auto}
+.flash-inner{position:relative;min-height:220px;transform-style:preserve-3d;transition:transform .45s}
+.flashcard.flipped .flash-inner{transform:rotateY(180deg)}
+.flash-face{position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--line);border-radius:7px;background:var(--card-line);padding:28px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.flash-back{transform:rotateY(180deg);align-items:stretch;text-align:left;overflow:auto}
+.flash-label{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.05em}
+.flash-main{font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--navy);margin-top:10px}
+.case{max-width:760px;margin:0 auto}
+.case-vignette{background:var(--card-line);border-left:3px solid var(--navy);padding:18px 20px;font-size:17px}
+.case-options{display:grid;gap:9px;margin-top:16px}
+.case-option{border:1px solid var(--line-strong);background:var(--card);padding:13px 15px;border-radius:4px;text-align:left;cursor:pointer;font-family:var(--font-serif);font-size:16px}
+.case-option:hover{background:var(--card-line);border-color:var(--navy)}
+.case-option.correct{background:var(--stampbg);border-color:var(--stamp)}
+.case-option.wrong{background:var(--dangerbg);border-color:var(--danger)}
+.case-explanation{margin-top:15px;padding:14px 16px;background:var(--card);border:1px solid var(--line);font-size:15px}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.stat-box{background:var(--card-line);border:1px solid var(--line);padding:12px;text-align:center;border-radius:4px}
+.stat-box small{display:block;font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);text-transform:uppercase}
+.stat-box b{display:block;font-family:var(--font-mono);font-size:20px;margin-top:3px}
+.tag{display:inline-block;font-family:var(--font-mono);font-size:10px;border:1px solid var(--line-strong);padding:3px 7px;border-radius:3px;margin:2px;color:var(--ink-soft)}
+@media(max-width:760px){.filter-row,.stat-grid{grid-template-columns:1fr}.flash-inner{min-height:260px}}
+
+</style>
+</head>
+<body>
+<div class="container">
+<header class="masthead">
+<h1>Drug Trainer</h1>
+<p class="subtitle">Advanced pharmacy, medicine & veterinary learning — structure, pharmacology, clinical reasoning and recall.</p>
+</header>
+
+<div class="card">
+<h2><span class="step">1</span>Database</h2>
+<div class="grid">
+<div>
+<label for="databaseSelect">Choose database</label>
+<select id="databaseSelect"></select>
+<div class="hint">Built-in CSV files live next to index.html. Uploaded CSVs are saved locally in this browser.</div>
+</div>
+<div>
+<label for="csvFile">Upload your own CSV</label>
+<label class="upload" for="csvFile">Click to upload CSV<br><small>Required columns: smiles, inn, uporaba, farmakokinetika, farmakodinamika, terapevtski_razred, ATC_klasifikacija, indikacija, neželeni_učinki, opombe, kontraindikacije, brand</small></label>
+<input id="csvFile" type="file" accept=".csv">
+<div class="status" id="status">No database loaded.</div>
+</div>
+</div>
+</div>
+
+
+<div class="card">
+<h2><span class="step">2</span>Filters</h2>
+<div class="filter-row">
+<div>
+<label for="classFilter">Therapeutic class</label>
+<select id="classFilter"><option value="">All classes</option></select>
+</div>
+<div>
+<label for="atcFilter">ATC classification</label>
+<select id="atcFilter"><option value="">All ATC groups</option></select>
+</div>
+<div class="wide">
+<label for="searchFilter">Search database</label>
+<input id="searchFilter" placeholder="Search INN, brand, indication, class or ATC...">
+</div>
+</div>
+<div class="actions"><button class="btn ghost" id="clearFilters">Clear filters</button></div>
+<div class="status" id="filterStatus"></div>
+</div>
+
+<div class="card">
+<h2><span class="step">2</span>Practice mode</h2>
+<div class="modes">
+<button class="mode active" data-mode="study"><b>Study</b><small>Full drug profile.</small></button>
+<button class="mode" data-mode="identify"><b>Identify</b><small>Clues → INN.</small></button>
+<button class="mode" data-mode="hard"><b>Hard</b><small>INN → key facts.</small></button>
+<button class="mode" data-mode="mechanism"><b>Mechanism</b><small>INN → PD.</small></button>
+<button class="mode" data-mode="indication"><b>Indication</b><small>INN → uses.</small></button>
+<button class="mode" data-mode="atc"><b>ATC</b><small>INN → ATC.</small></button>
+<button class="mode" data-mode="flashcards"><b>Flashcards</b><small>Flip & recall.</small></button>
+<button class="mode" data-mode="cases"><b>Clinical cases</b><small>Apply knowledge.</small></button>
+</div>
+</div>
+
+<div class="card practice-card" id="studyMode">
+<h2><span class="step">3</span><span class="mode-title">Study</span></h2>
+<div class="question"><div class="drug-name" id="studyName">—</div><div class="question-text" id="studySummary">Load a database to begin.</div></div>
+<div id="studyProfile" class="profile"></div>
+<div class="actions"><button class="btn primary" id="studyNext">Next question →</button></div>
+<div class="progress" id="studyProgress"></div>
+</div>
+
+<div class="card practice-card hidden" id="identifyMode">
+<h2><span class="step">3</span><span class="mode-title">Identify the drug</span></h2>
+<div class="question"><div class="prompt-label">Which INN is described by these clues?</div><div class="question-text" id="identifyQuestion">—</div></div>
+<div class="answer"><input id="identifyAnswer" placeholder="Enter the INN"></div>
+<div class="hint">Use the generic/INN name, not the brand name.</div>
+<div class="actions" id="identifyAnswerActions"><button class="btn" id="checkIdentify">Check answer</button><button class="btn ghost" id="identifySkip">Skip</button></div>
+<div id="identifyResult"></div>
+<div class="actions hidden" id="identifyNextActions"><button class="btn primary" id="identifyNext">Next question →</button></div>
+<div class="continue-hint hidden" id="identifyContinueHint">Press Enter to continue</div>
+<div class="progress" id="identifyProgress"></div>
+</div>
+
+<div class="card practice-card hidden" id="hardMode">
+<h2><span class="step">3</span><span class="mode-title">Hard mode</span></h2>
+<div class="question"><div class="prompt-label">Reconstruct the key pharmacological profile of:</div><div class="drug-name" id="hardName">—</div></div>
+<div class="answer"><textarea id="hardAnswer" placeholder="Describe mechanism, main indications, therapeutic class and important adverse effects..."></textarea></div>
+<div class="hint">Don't reproduce the CSV sentence. State the essential facts in your own words. (Ctrl+Enter to check)</div>
+<div class="actions" id="hardAnswerActions"><button class="btn" id="checkHard">Check answer</button><button class="btn ghost" id="hardSkip">Skip</button></div>
+<div id="hardResult"></div>
+<div class="actions hidden" id="hardNextActions"><button class="btn primary" id="hardNext">Next question →</button></div>
+<div class="continue-hint hidden" id="hardContinueHint">Press Enter to continue</div>
+<div class="progress" id="hardProgress"></div>
+</div>
+
+<div class="card practice-card hidden" id="mechanismMode">
+<h2><span class="step">3</span><span class="mode-title">Mechanism mode</span></h2>
+<div class="question"><div class="prompt-label">What is the pharmacodynamic mechanism of:</div><div class="drug-name" id="mechanismName">—</div></div>
+<div class="answer"><textarea id="mechanismAnswer" placeholder="Describe the main target(s), action and relevant physiological effect..."></textarea></div>
+<div class="actions" id="mechanismAnswerActions"><button class="btn" id="checkMechanism">Check answer</button><button class="btn ghost" id="mechanismSkip">Skip</button></div>
+<div id="mechanismResult"></div>
+<div class="actions hidden" id="mechanismNextActions"><button class="btn primary" id="mechanismNext">Next question →</button></div>
+<div class="continue-hint hidden" id="mechanismContinueHint">Press Enter to continue</div>
+<div class="progress" id="mechanismProgress"></div>
+</div>
+
+<div class="card practice-card hidden" id="indicationMode">
+<h2><span class="step">3</span><span class="mode-title">Indication mode</span></h2>
+<div class="question"><div class="prompt-label">What is the main indication of:</div><div class="drug-name" id="indicationName">—</div></div>
+<div class="answer"><textarea id="indicationAnswer" placeholder="State the main indication(s)..."></textarea></div>
+<div class="actions" id="indicationAnswerActions"><button class="btn" id="checkIndication">Check answer</button><button class="btn ghost" id="indicationSkip">Skip</button></div>
+<div id="indicationResult"></div>
+<div class="actions hidden" id="indicationNextActions"><button class="btn primary" id="indicationNext">Next question →</button></div>
+<div class="continue-hint hidden" id="indicationContinueHint">Press Enter to continue</div>
+<div class="progress" id="indicationProgress"></div>
+</div>
+
+<div class="card practice-card hidden" id="atcMode">
+<h2><span class="step">3</span><span class="mode-title">ATC mode</span></h2>
+<div class="question"><div class="prompt-label">What is the ATC classification of:</div><div class="drug-name" id="atcName">—</div></div>
+<div class="answer"><input id="atcAnswer" placeholder="e.g. N02BE01"></div>
+<div class="hint">You may enter the ATC code or the corresponding classification.</div>
+<div class="actions" id="atcAnswerActions"><button class="btn" id="checkAtc">Check answer</button><button class="btn ghost" id="atcSkip">Skip</button></div>
+<div id="atcResult"></div>
+<div class="actions hidden" id="atcNextActions"><button class="btn primary" id="atcNext">Next question →</button></div>
+<div class="continue-hint hidden" id="atcContinueHint">Press Enter to continue</div>
+<div class="progress" id="atcProgress"></div>
+</div>
+
+
+<div class="card practice-card hidden" id="flashcardsMode">
+<h2><span class="step">3</span><span class="mode-title">Flashcards</span></h2>
+<div class="flashcard" id="flashcard">
+<div class="flash-inner">
+<div class="flash-face">
+<div class="flash-label">Drug</div>
+<div class="flash-main" id="flashFront">—</div>
+<div class="hint">Click “Flip card” to reveal the answer.</div>
+</div>
+<div class="flash-face flash-back">
+<div class="flash-label">Profile</div>
+<div id="flashBack">—</div>
+</div>
+</div>
+</div>
+<div class="actions"><button class="btn" id="flipCard">Flip card</button><button class="btn primary" id="flashNext">Next card →</button></div>
+<div class="progress" id="flashProgress"></div>
+</div>
+
+<div class="card practice-card hidden" id="casesMode">
+<h2><span class="step">3</span><span class="mode-title">Clinical case mode</span></h2>
+<div class="case">
+<div class="case-vignette" id="caseVignette">Load a database to begin.</div>
+<div class="case-options" id="caseOptions"></div>
+<div id="caseExplanation"></div>
+</div>
+<div class="actions"><button class="btn primary hidden" id="caseNext">Next case →</button></div>
+<div class="progress" id="caseProgress"></div>
+</div>
+
+<div class="card">
+<h2><span class="step">4</span>Statistics</h2>
+<div class="stats"><span>Total correct<b id="correctCount">0</b></span><span>Total wrong<b id="wrongCount">0</b></span><span>Overall score<b id="scorePercent">0%</b></span></div>
+<div class="stat-grid" id="modeStats"></div>
+<div class="actions"><button class="btn ghost" id="resetStats">Reset statistics</button><button class="btn danger" id="deleteUploads">Delete saved uploaded databases</button></div>
+</div>
+</div>
+
+<script>
+const BUILTIN_CSVS=[
+ {name:"Sample Drugs",file:"sample_drugs.csv"},
+ {name:"Antibiotics",file:"antibiotics.csv"},
+ {name:"Cardiovascular",file:"cardiovascular.csv"},
+ {name:"CNS",file:"cns.csv"},
+ {name:"Veterinary",file:"veterinary.csv"}
+];
+const REQUIRED=["smiles","inn","uporaba","farmakokinetika","farmakodinamika","terapevtski_razred","atc_klasifikacija","indikacija","neželeni_učinki","opombe","kontraindikacije","brand"];
+const STORAGE_KEY="drugTrainerUploadedDatabases_v1";
+const STATS_KEY="drugTrainerStats_v1";
+let databases={},database=[],filteredDatabase=[],current=null,mode="study",questionNo=0;
+const MODES=["study","identify","hard","mechanism","indication","atc","flashcards","cases"];
+let stats=JSON.parse(localStorage.getItem(STATS_KEY)||'{"correct":0,"wrong":0,"byMode":{}}');
+MODES.forEach(m=>{if(!stats.byMode[m])stats.byMode[m]={correct:0,wrong:0}});
+let filters={class:"",atc:"",search:""};
+const $=id=>document.getElementById(id);
+function escapeHTML(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
+
+function parseCSV(text){
+ const rows=[];let row=[],cell="",quoted=false;
+ text=text.replace(/^\uFEFF/,"");
+ for(let i=0;i<text.length;i++){
+  const c=text[i],n=text[i+1];
+  if(c==='"'&&quoted&&n==='"'){cell+='"';i++}
+  else if(c==='"'){quoted=!quoted}
+  else if(c===','&&!quoted){row.push(cell);cell=""}
+  else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&n==='\n')i++;row.push(cell);if(row.some(x=>x.trim()!==""))rows.push(row);row=[];cell=""}
+  else cell+=c;
+ }
+ row.push(cell);if(row.some(x=>x.trim()!==""))rows.push(row);return rows;
+}
+function rowsToDatabase(text){
+ const rows=parseCSV(text);if(rows.length<2)throw new Error("CSV is empty.");
+ const headers=rows[0].map(x=>x.trim().toLowerCase());
+ const missing=REQUIRED.filter(h=>!headers.includes(h));
+ if(missing.length)throw new Error("CSV is missing required columns: "+missing.join(", "));
+ const out=[];
+ for(let i=1;i<rows.length;i++){
+  const obj={};headers.forEach((h,j)=>obj[h]=(rows[i][j]||"").trim());
+  if(obj.inn)out.push(obj);
+ }
+ if(!out.length)throw new Error("No valid drug rows found.");return out;
+}
+function loadDatabaseOptions(){
+ const select=$("databaseSelect");select.innerHTML="";
+ BUILTIN_CSVS.forEach((d,i)=>{const o=document.createElement("option");o.value="builtin:"+i;o.textContent="Built-in: "+d.name;select.appendChild(o)});
+ const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}");
+ Object.keys(saved).forEach(name=>{const o=document.createElement("option");o.value="upload:"+name;o.textContent="My upload: "+name;select.appendChild(o)});
+}
+async function loadSelectedDatabase(){
+ const value=$("databaseSelect").value;
+ try{
+  if(value.startsWith("builtin:")){
+   const d=BUILTIN_CSVS[Number(value.split(":")[1])];
+   const response=await fetch(d.file+"?v="+Date.now());if(!response.ok)throw new Error("File not found: "+d.file);
+   database=rowsToDatabase(await response.text());setDatabaseLoadedStatus();
+  }else{
+   const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}");database=saved[value.slice(7)]||[];
+   setDatabaseLoadedStatus();
+  }
+  questionNo=0;nextQuestion();
+ }catch(e){database=[];$("status").textContent="Could not load database: "+e.message;alert("Could not load the selected database.\n\n"+e.message)}
+}
+$("csvFile").addEventListener("change",e=>{
+ const file=e.target.files[0];if(!file)return;const reader=new FileReader();
+ reader.onload=()=>{try{
+  const parsed=rowsToDatabase(reader.result),saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}");
+  saved[file.name]=parsed;localStorage.setItem(STORAGE_KEY,JSON.stringify(saved));loadDatabaseOptions();
+  $("databaseSelect").value="upload:"+file.name;database=parsed;
+  setDatabaseLoadedStatus();questionNo=0;nextQuestion();
+ }catch(err){alert(err.message)}};
+ reader.readAsText(file);
+});
+$("databaseSelect").addEventListener("change",loadSelectedDatabase);
+$("deleteUploads").onclick=()=>{if(confirm("Delete all uploaded databases saved in this browser?")){localStorage.removeItem(STORAGE_KEY);loadDatabaseOptions();loadSelectedDatabase()}};
+
+document.querySelectorAll(".mode").forEach(btn=>btn.onclick=()=>{
+ document.querySelectorAll(".mode").forEach(x=>x.classList.remove("active"));btn.classList.add("active");mode=btn.dataset.mode;
+ ["studyMode","identifyMode","hardMode","mechanismMode","indicationMode","atcMode","flashcardsMode","casesMode"].forEach(x=>$(x).classList.add("hidden"));
+ $(mode+"Mode").classList.remove("hidden");nextQuestion();
+});
+function setAnsweringState(prefix,isAnswering){
+ $(prefix+"AnswerActions").classList.toggle("hidden",!isAnswering);
+ $(prefix+"NextActions").classList.toggle("hidden",isAnswering);
+ $(prefix+"ContinueHint").classList.toggle("hidden",isAnswering);
+}
+const profileFields=[
+ ["smiles","SMILES"],["uporaba","Use"],["farmakokinetika","Pharmacokinetics"],["farmakodinamika","Pharmacodynamics"],
+ ["terapevtski_razred","Therapeutic class"],["atc_klasifikacija","ATC"],["indikacija","Indications"],
+ ["neželeni_učinki","Adverse effects"],["kontraindikacije","Contraindications"],["brand","Brand"],["opombe","Notes"]
+];
+function renderProfile(d){
+ $("studyProfile").innerHTML=profileFields.map(([k,label])=>`<div class="profile-item"><div class="key">${label}</div><div class="val">${escapeHTML(d[k]||"—")}</div></div>`).join("");
+}
+
+function applyFilters(){
+ const q=normalize(filters.search);
+ filteredDatabase=database.filter(d=>{
+  const classOK=!filters.class||d.terapevtski_razred===filters.class;
+  const atcOK=!filters.atc||d.atc_klasifikacija===filters.atc;
+  const text=normalize([d.inn,d.brand,d.indikacija,d.uporaba,d.terapevtski_razred,d.atc_klasifikacija].join(" "));
+  return classOK&&atcOK&&(!q||text.includes(q));
+ });
+ $("filterStatus").textContent=`${filteredDatabase.length} of ${database.length} drugs match the filters.`;
+}
+function populateFilters(){
+ const classes=[...new Set(database.map(d=>d.terapevtski_razred).filter(Boolean))].sort();
+ const atcs=[...new Set(database.map(d=>d.atc_klasifikacija).filter(Boolean))].sort();
+ $("classFilter").innerHTML='<option value="">All classes</option>'+classes.map(x=>`<option>${escapeHTML(x)}</option>`).join("");
+ $("atcFilter").innerHTML='<option value="">All ATC groups</option>'+atcs.map(x=>`<option>${escapeHTML(x)}</option>`).join("");
+ $("classFilter").value=filters.class;$("atcFilter").value=filters.atc;
+ applyFilters();
+}
+function setDatabaseLoadedStatus(){
+ $("status").textContent=`${database.length} drugs loaded`;
+ populateFilters();
+}
+function randomChoice(arr){return arr[Math.floor(Math.random()*arr.length)]}
+function makeCase(d){
+ const templates=[
+  {
+   vignette:`A patient presents with a clinical problem for which <b>${escapeHTML(d.indikacija)}</b> is an appropriate indication. Which drug from the options below best matches the described profile?`,
+   answer:d.inn,
+   explanation:`The key indication in the database is: ${d.indikacija}.`
+  },
+  {
+   vignette:`A student is asked to identify a drug whose pharmacological action is: <b>${escapeHTML(d.farmakodinamika)}</b>. Which drug is most consistent with this mechanism?`,
+   answer:d.inn,
+   explanation:`The database describes the pharmacodynamics as: ${d.farmakodinamika}`
+  },
+  {
+   vignette:`During a medication review, the clinician wants to avoid a drug because of the following contraindication/risk: <b>${escapeHTML(d.kontraindikacije)}</b>. Which drug should be considered carefully?`,
+   answer:d.inn,
+   explanation:`Important contraindications/precautions listed for ${escapeHTML(d.inn)}: ${escapeHTML(d.kontraindikacije)}`
+  }
+ ];
+ const t=randomChoice(templates);
+ const distractors=[...new Set(filteredDatabase.map(x=>x.inn).filter(x=>x!==d.inn))].sort(()=>Math.random()-.5).slice(0,3);
+ const options=[d.inn,...distractors].sort(()=>Math.random()-.5);
+ return {...t,options};
+}
+function renderFlashcard(){
+ if(!current)return;
+ $("flashFront").textContent=current.inn;
+ $("flashBack").innerHTML=`
+ <div class="tag">${escapeHTML(current.terapevtski_razred)}</div>
+ <p><b>Mechanism:</b> ${escapeHTML(current.farmakodinamika)}</p>
+ <p><b>Indication:</b> ${escapeHTML(current.indikacija)}</p>
+ <p><b>ATC:</b> ${escapeHTML(current.atc_klasifikacija)}</p>
+ <p><b>Adverse effects:</b> ${escapeHTML(current.neželeni_učinki)}</p>
+ <div class="smiles-box"><b>SMILES</b><br>${escapeHTML(current.smiles)}</div>`;
+ $("flashcard").classList.remove("flipped");
+ $("flashProgress").textContent=`Card ${questionNo} · ${filteredDatabase.length} drugs available`;
+}
+function nextCase(){
+ if(!filteredDatabase.length)return;
+ current=randomChoice(filteredDatabase);questionNo++;
+ const c=makeCase(current);
+ $("caseVignette").innerHTML=c.vignette;
+ $("caseOptions").innerHTML=c.options.map((o,i)=>`<button class="case-option" data-answer="${escapeHTML(o)}">${escapeHTML(o)}</button>`).join("");
+ $("caseExplanation").innerHTML="";
+ $("caseNext").classList.add("hidden");
+ $("caseProgress").textContent=`Case ${questionNo} · ${filteredDatabase.length} drugs available`;
+ document.querySelectorAll(".case-option").forEach(btn=>btn.onclick=()=>{
+  const correct=normalize(btn.dataset.answer)===normalize(c.answer);
+  document.querySelectorAll(".case-option").forEach(x=>x.disabled=true);
+  btn.classList.add(correct?"correct":"wrong");
+  if(!correct)document.querySelectorAll(".case-option").forEach(x=>{if(normalize(x.dataset.answer)===normalize(c.answer))x.classList.add("correct")});
+  recordResult("cases",correct);
+  $("caseExplanation").innerHTML=`<div class="case-explanation"><b>${correct?"Correct.":"Not quite."}</b> ${escapeHTML(c.explanation)}</div>`;
+  $("caseNext").classList.remove("hidden");
+ });
+}
+
+function nextQuestion(){
+ applyFilters();
+ if(!filteredDatabase.length){return}
+ current=randomChoice(filteredDatabase);questionNo++;
+ ["identifyResult","hardResult","mechanismResult","indicationResult","atcResult"].forEach(id=>$(id).innerHTML="");
+ if(mode==="study"){
+  $("studyName").textContent=current.inn;$("studySummary").textContent=`${current.terapevtski_razred||"Drug"} · ${current.atc_klasifikacija||"ATC not supplied"}`;
+  renderProfile(current);
+ $("studyProfile").insertAdjacentHTML("afterbegin",`<div class="profile-item"><div class="key">Structure / SMILES</div><div class="smiles-box">${escapeHTML(current.smiles||"—")}</div></div>`);
+ $("studyProgress").textContent=`Question ${questionNo} · ${filteredDatabase.length} drugs available`;
+ }
+ if(mode==="identify"){
+  $("identifyQuestion").textContent=`Use: ${current.uporaba}. Therapeutic class: ${current.terapevtski_razred}. Main indication: ${current.indikacija}. ATC: ${current.atc_klasifikacija}.`;
+  $("identifyAnswer").value="";$("identifyAnswer").readOnly=false;setAnsweringState("identify",true);$("identifyProgress").textContent=`Question ${questionNo}`;setTimeout(()=>$("identifyAnswer").focus(),50);
+ }
+ if(mode==="hard"){
+  $("hardName").textContent=current.inn;$("hardAnswer").value="";$("hardAnswer").readOnly=false;setAnsweringState("hard",true);$("hardProgress").textContent=`Question ${questionNo}`;setTimeout(()=>$("hardAnswer").focus(),50);
+ }
+ if(mode==="mechanism"){
+  $("mechanismName").textContent=current.inn;$("mechanismAnswer").value="";$("mechanismAnswer").readOnly=false;setAnsweringState("mechanism",true);$("mechanismProgress").textContent=`Question ${questionNo}`;setTimeout(()=>$("mechanismAnswer").focus(),50);
+ }
+ if(mode==="indication"){
+  $("indicationName").textContent=current.inn;$("indicationAnswer").value="";$("indicationAnswer").readOnly=false;setAnsweringState("indication",true);$("indicationProgress").textContent=`Question ${questionNo}`;setTimeout(()=>$("indicationAnswer").focus(),50);
+ }
+ if(mode==="atc"){
+  $("atcName").textContent=current.inn;$("atcAnswer").value="";$("atcAnswer").readOnly=false;setAnsweringState("atc",true);$("atcProgress").textContent=`Question ${questionNo}`;setTimeout(()=>$("atcAnswer").focus(),50);
+ }
+ if(mode==="flashcards"){renderFlashcard();}
+ if(mode==="cases"){nextCase();}
+}
+$("studyNext").onclick=nextQuestion;
+["identify","hard","mechanism","indication","atc"].forEach(p=>{$(p+"Skip").onclick=nextQuestion;$(p+"Next").onclick=nextQuestion});
+
+function normalize(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9čšž]+/gi," ").replace(/\s+/g," ").trim()}
+function tokens(s){return new Set(normalize(s).split(" ").filter(w=>w.length>=3))}
+function similarity(a,b){
+ const A=tokens(a),B=tokens(b);if(!A.size)return 0;let hits=0;
+ for(const x of A){if(B.has(x)){hits++;continue}for(const y of B){if(x.length>=5&&y.length>=5&&(x.includes(y)||y.includes(x))){hits+=.8;break}}}
+ return Math.min(1,hits/A.size);
+}
+function answerResult(prefix,score,reference,extra=""){
+ const cls=score>=.72?"correct":score>=.48?"partial":"incorrect";
+ const verdict=score>=.72?"Correct":score>=.48?"Close":"Incorrect";
+ recordResult(mode,score>=.72);
+ $(prefix+"Result").innerHTML=`<div class="result ${cls}"><span class="verdict">${verdict}</span>${score>=.72?"Good recall of the key information.":score>=.48?"You remembered part of it, but some key information is missing.":"The answer does not match the key information sufficiently."}<div class="details"><b>Similarity:</b> ${Math.round(score*100)}%</div>${extra}<div class="details"><b>Reference:</b> ${escapeHTML(reference)}</div></div>`;
+ $(prefix+"Answer").readOnly=true;setAnsweringState(prefix,false);setTimeout(()=>$(prefix+"Next").focus(),50);
+}
+$("checkIdentify").onclick=()=>{
+ if(!current)return;const a=normalize($("identifyAnswer").value);if(!a)return;
+ const s=similarity(current.inn,a);answerResult("identify",a===normalize(current.inn)?1:s,current.inn,`<div class="details"><b>Brand:</b> ${escapeHTML(current.brand)}</div>`);
+};
+$("checkHard").onclick=()=>{
+ if(!current)return;const a=$("hardAnswer").value.trim();if(!a)return;
+ const ref=[current.farmakodinamika,current.indikacija,current.terapevtski_razred,current.neželeni_učinki].join(" ");
+ answerResult("hard",similarity(ref,a),ref,`<div class="details"><b>ATC:</b> ${escapeHTML(current.atc_klasifikacija)}</div>`);
+};
+$("checkMechanism").onclick=()=>{
+ if(!current)return;const a=$("mechanismAnswer").value.trim();if(!a)return;
+ answerResult("mechanism",similarity(current.farmakodinamika,a),current.farmakodinamika);
+};
+$("checkIndication").onclick=()=>{
+ if(!current)return;const a=$("indicationAnswer").value.trim();if(!a)return;
+ answerResult("indication",similarity(current.indikacija,a),current.indikacija);
+};
+$("checkAtc").onclick=()=>{
+ if(!current)return;const a=normalize($("atcAnswer").value);if(!a)return;
+ const exact=normalize(current.atc_klasifikacija),score=a===exact?1:similarity(exact,a);
+ answerResult("atc",score,current.atc_klasifikacija);
+};
+$("identifyAnswer").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();$("identifyAnswer").readOnly?$("identifyNext").click():$("checkIdentify").click()}});
+$("atcAnswer").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();$("atcAnswer").readOnly?$("atcNext").click():$("checkAtc").click()}});
+["hard","mechanism","indication"].forEach(p=>$(p+"Answer").addEventListener("keydown",e=>{if(e.ctrlKey&&e.key==="Enter"){e.preventDefault();$(p+"Answer").readOnly?$(p+"Next").click():$("check"+p[0].toUpperCase()+p.slice(1)).click()}}));
+
+function recordResult(which,correct){
+ const m=stats.byMode[which]||(stats.byMode[which]={correct:0,wrong:0});
+ m[correct?"correct":"wrong"]++;
+ stats[correct?"correct":"wrong"]++;
+ saveStats();
+}
+function saveStats(){localStorage.setItem(STATS_KEY,JSON.stringify(stats));updateStats()}
+function updateStats(){
+ $("correctCount").textContent=stats.correct;$("wrongCount").textContent=stats.wrong;
+ const t=stats.correct+stats.wrong;
+ $("scorePercent").textContent=(t?Math.round(stats.correct/t*100):0)+"%";
+ $("modeStats").innerHTML=MODES.map(m=>{
+  const s=stats.byMode[m]||{correct:0,wrong:0},n=s.correct+s.wrong,p=n?Math.round(s.correct/n*100):0;
+  return `<div class="stat-box"><small>${escapeHTML(m)}</small><b>${p}%</b><span>${s.correct} / ${n}</span></div>`;
+ }).join("");
+}
+$("resetStats").onclick=()=>{stats={correct:0,wrong:0,byMode:{}};MODES.forEach(m=>stats.byMode[m]={correct:0,wrong:0});saveStats()};
+
+$("classFilter").addEventListener("change",e=>{filters.class=e.target.value;questionNo=0;nextQuestion()});
+$("atcFilter").addEventListener("change",e=>{filters.atc=e.target.value;questionNo=0;nextQuestion()});
+$("searchFilter").addEventListener("input",e=>{filters.search=e.target.value;questionNo=0;nextQuestion()});
+$("clearFilters").onclick=()=>{$("searchFilter").value="";filters={class:"",atc:"",search:""};populateFilters();questionNo=0;nextQuestion()};
+$("flipCard").onclick=()=>$("flashcard").classList.toggle("flipped");
+$("flashNext").onclick=()=>{if(mode==="flashcards")nextQuestion()};
+$("caseNext").onclick=()=>{if(mode==="cases")nextCase()};
+
+loadDatabaseOptions();updateStats();$("databaseSelect").value="builtin:0";loadSelectedDatabase();
+</script>
+</body>
+</html>
