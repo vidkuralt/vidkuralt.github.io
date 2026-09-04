@@ -5,17 +5,152 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>History Trainer</title>
 <style>
-:root{--bg:#f5f6f8;--card:#fff;--text:#202124;--muted:#6b7280;--border:#d8dce2;--accent:#202124;--good:#176b35;--goodbg:#e5f6ea;--warn:#8a5a00;--warnbg:#fff4d6;--bad:#9b2226;--badbg:#fde7e7}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}.container{max-width:1050px;margin:32px auto;padding:16px}h1{text-align:center;margin:0 0 6px;font-size:34px}.subtitle{text-align:center;color:var(--muted);margin-bottom:26px}.card{background:var(--card);border:1px solid #e4e7eb;border-radius:16px;padding:24px;margin-bottom:18px;box-shadow:0 4px 18px #0000000b}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.mode,.btn{border:0;border-radius:10px;padding:14px 18px;cursor:pointer;font-size:15px}.mode{background:#eef0f3;text-align:left}.mode.active{background:#222;color:#fff}.mode b{display:block;font-size:17px;margin-bottom:5px}.mode small{opacity:.75}.btn{background:#222;color:#fff}.btn.secondary{background:#eef0f3;color:#222}.btn.danger{background:#a62626}.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}select,input,textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:9px;font:inherit;background:#fff}label{display:block;font-weight:600;margin-bottom:7px}.upload{border:2px dashed #b8bec7;padding:20px;border-radius:12px;text-align:center;cursor:pointer}.upload:hover{background:#fafafa}#csvFile{display:none}.status{text-align:center;color:var(--muted);margin-top:10px}.question{text-align:center}.year{font-size:52px;font-weight:800;margin:10px 0 20px}.description{font-size:20px;line-height:1.65}.answer{max-width:720px;margin:0 auto}.answer textarea{text-align:left;min-height:150px;resize:vertical}.answer input{text-align:center;font-size:20px}.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}.result{margin:18px auto 0;padding:16px;border-radius:10px;max-width:800px;line-height:1.55}.correct{background:var(--goodbg);color:var(--good)}.partial{background:var(--warnbg);color:var(--warn)}.incorrect{background:var(--badbg);color:var(--bad)}.details{margin-top:9px;color:#333}.progress{text-align:center;color:var(--muted);margin-top:13px}.stats{display:flex;justify-content:center;gap:28px;color:var(--muted)}.hidden{display:none!important}.hint{font-size:13px;color:var(--muted);margin-top:7px}.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.chip{background:#eee;padding:4px 8px;border-radius:20px;font-size:12px}@media(max-width:720px){.grid,.modes{grid-template-columns:1fr}.year{font-size:40px}.container{margin:12px auto}.card{padding:18px}}
+@import url('https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500;600;700&display=swap');
+
+:root{
+  --paper:#EAE6DA;
+  --card:#FBF9F3;
+  --card-line:#F1EDDF;
+  --ink:#211E19;
+  --ink-soft:#5C5646;
+  --ink-faint:#9C9481;
+  --line:#D8D2BF;
+  --line-strong:#B7AE94;
+  --navy:#2C3B52;
+  --navy-soft:#44577A;
+  --on-navy:#F3F1E7;
+  --stamp:#3B5A45;
+  --stampbg:#E3EBDF;
+  --caution:#8B6420;
+  --cautionbg:#F1E5C6;
+  --danger:#8B2E2E;
+  --dangerbg:#F4E1DD;
+  --radius-sm:4px;
+  --radius-md:7px;
+  --font-serif:'Libre Caslon Text', Georgia, 'Times New Roman', serif;
+  --font-mono:'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-serif);font-size:17px;line-height:1.55}
+
+.container{max-width:900px;margin:44px auto;padding:20px}
+
+/* ---------- Masthead ---------- */
+.masthead{text-align:center;padding-bottom:24px;margin-bottom:28px;border-bottom:1px solid var(--line)}
+h1{margin:0 0 8px;font-family:var(--font-serif);font-style:italic;font-weight:700;font-size:clamp(30px,6vw,42px);letter-spacing:.2px;color:var(--ink)}
+.subtitle{margin:0;font-family:var(--font-mono);font-size:12.5px;letter-spacing:.03em;color:var(--ink-soft)}
+
+/* ---------- Cards & section headers ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-md);padding:26px 26px 24px;margin-bottom:20px;box-shadow:0 1px 2px rgba(33,30,25,.05)}
+h2{display:flex;align-items:center;gap:10px;margin:0 0 20px;padding-bottom:12px;border-bottom:1px solid var(--line);font-family:var(--font-mono);font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--ink-soft)}
+h2 .step{display:inline-flex;align-items:center;justify-content:center;width:21px;height:21px;flex:0 0 auto;border:1px solid var(--line-strong);border-radius:3px;font-family:var(--font-mono);font-size:11px;color:var(--ink-soft);background:var(--card-line)}
+h2 .mode-title{color:var(--ink);font-family:var(--font-serif);font-style:italic;font-size:17px;font-weight:700;letter-spacing:0}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+
+/* ---------- Practice mode tabs ---------- */
+.modes{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:-2px -2px 0}
+.mode{flex:1;background:transparent;border:0;border-bottom:3px solid transparent;border-radius:0;padding:13px 12px 11px;cursor:pointer;text-align:left;transition:background .15s ease,border-color .15s ease}
+.mode:hover{background:var(--card-line)}
+.mode b{display:block;font-family:var(--font-serif);font-style:italic;font-weight:700;font-size:15px;color:var(--ink);margin-bottom:3px}
+.mode small{display:block;font-family:var(--font-mono);font-size:10.5px;color:var(--ink-soft);letter-spacing:.01em}
+.mode.active{background:var(--card-line);border-bottom-color:var(--navy)}
+.mode.active b{color:var(--navy)}
+
+/* ---------- Buttons ---------- */
+.btn{font-family:var(--font-mono);font-size:13.5px;font-weight:600;letter-spacing:.02em;border:1px solid var(--navy);background:var(--navy);color:var(--on-navy);border-radius:var(--radius-sm);padding:13px 22px;min-height:46px;cursor:pointer;transition:background .15s ease,transform .08s ease}
+.btn:hover{background:var(--navy-soft)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.secondary,.btn.ghost{background:transparent;color:var(--ink-soft);border-color:var(--line-strong);font-weight:500}
+.btn.secondary:hover,.btn.ghost:hover{background:var(--card-line);color:var(--ink)}
+.btn.primary{background:var(--stamp);border-color:var(--stamp)}
+.btn.primary:hover{background:#2E4636}
+.btn.danger{background:var(--danger);border-color:var(--danger)}
+.btn.danger:hover{background:#732424}
+
+/* ---------- Form controls ---------- */
+select,input,textarea{width:100%;padding:12px 13px;border:1px solid var(--line-strong);border-radius:var(--radius-sm);font:inherit;font-size:16px;background:var(--card);color:var(--ink)}
+select:focus,input:focus,textarea:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(44,59,82,.12)}
+label{display:block;font-family:var(--font-mono);font-size:12.5px;font-weight:600;letter-spacing:.02em;color:var(--ink-soft);margin-bottom:8px}
+.upload{display:block;border:1.5px dashed var(--line-strong);background:var(--card-line);padding:18px;border-radius:var(--radius-sm);text-align:center;cursor:pointer;font-family:var(--font-serif);color:var(--ink-soft);transition:background .15s ease,border-color .15s ease}
+.upload:hover{background:#EAE4D2;border-color:var(--navy)}
+.upload small{font-family:var(--font-mono);font-size:11px}
+#csvFile{display:none}
+.status{text-align:center;color:var(--ink-soft);font-family:var(--font-mono);font-size:12px;margin-top:10px}
+.hint{font-family:var(--font-serif);font-style:italic;font-size:13.5px;color:var(--ink-faint);margin-top:8px}
+
+/* ---------- Practice cards ---------- */
+.practice-card{border-top:3px solid var(--navy)}
+.question{text-align:center}
+.prompt-label{font-family:var(--font-serif);font-style:italic;color:var(--ink-soft);font-size:15px;margin-bottom:2px}
+.year{font-family:var(--font-mono);font-weight:700;font-size:clamp(34px,8vw,54px);letter-spacing:-1px;font-variant-numeric:tabular-nums;color:var(--navy);margin:6px 0 18px}
+.description{font-size:19px;line-height:1.65;max-width:56ch;margin:0 auto}
+
+.answer{max-width:640px;margin:0 auto}
+.answer textarea{text-align:left;min-height:150px;resize:vertical}
+.answer input{text-align:center;font-size:19px}
+.answer textarea[readonly],.answer input[readonly]{background:var(--card-line);color:var(--ink-soft)}
+
+.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px}
+.continue-hint{text-align:center;font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);margin-top:8px}
+
+/* ---------- Results ---------- */
+.result{margin:20px auto 0;padding:16px 18px;border-radius:var(--radius-sm);max-width:640px;line-height:1.6;border-left:3px solid transparent;font-family:var(--font-serif);font-size:16px}
+.result.correct{background:var(--stampbg);color:var(--stamp);border-left-color:var(--stamp)}
+.result.partial{background:var(--cautionbg);color:var(--caution);border-left-color:var(--caution)}
+.result.incorrect{background:var(--dangerbg);color:var(--danger);border-left-color:var(--danger)}
+.verdict{display:inline-block;font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border:1.5px solid currentColor;border-radius:3px;margin-right:10px;transform:rotate(-2deg)}
+.verdict-correct{color:var(--stamp)}
+.verdict-partial{color:var(--caution)}
+.verdict-incorrect{color:var(--danger)}
+.details{margin-top:9px;color:var(--ink);font-size:15px}
+.details b{color:inherit}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.chip{background:var(--card-line);border:1px solid var(--line-strong);color:var(--ink-soft);padding:3px 9px;border-radius:3px;font-family:var(--font-mono);font-size:11px}
+
+.progress{text-align:center;font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);margin-top:16px}
+
+/* ---------- Statistics ---------- */
+.stats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;font-family:var(--font-mono);font-size:13px;color:var(--ink-soft)}
+.stats b{display:block;font-size:22px;color:var(--ink);margin-top:4px;font-weight:600}
+.card .actions{margin-top:22px}
+
+.hidden{display:none!important}
+
+/* ---------- Accessibility ---------- */
+:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---------- Responsive ---------- */
+@media (max-width:760px){
+  .container{margin:16px auto;padding:14px}
+  .card{padding:20px 18px}
+  .grid{grid-template-columns:1fr}
+  .description{font-size:18px}
+}
+@media (max-width:520px){
+  .modes{flex-direction:column;border-bottom:none;gap:6px}
+  .mode{border-bottom:1px solid var(--line);border-left:3px solid transparent;padding:12px}
+  .mode.active{border-bottom:1px solid var(--line);border-left-color:var(--navy)}
+  .stats{gap:20px 26px}
+  .btn{width:100%}
+  .actions{flex-direction:column}
+}
 </style>
 </head>
 <body>
 <div class="container">
-<h1>📚 History Trainer</h1>
-<div class="subtitle">Study your own historical timeline — from easy review to hard recall.</div>
+
+<header class="masthead">
+<h1>History Trainer</h1>
+<p class="subtitle">Study your own historical timeline — from easy review to hard recall.</p>
+</header>
 
 <div class="card">
-<h2>Database</h2>
+<h2><span class="step">1</span>Database</h2>
 <div class="grid">
 <div>
 <label for="databaseSelect">Choose database</label>
@@ -23,8 +158,8 @@
 <div class="hint">Built-in CSV files live next to index.html in your GitHub repository. Uploaded CSVs are saved in this browser.</div>
 </div>
 <div>
-<label>Upload your own CSV</label>
-<label class="upload" for="csvFile">📁 Click to upload CSV<br><small>Columns: YEARS, DESCRIPTION</small></label>
+<label for="csvFile">Upload your own CSV</label>
+<label class="upload" for="csvFile">Click to upload CSV<br><small>Columns: YEARS, DESCRIPTION</small></label>
 <input id="csvFile" type="file" accept=".csv">
 <div class="status" id="status">No database loaded.</div>
 </div>
@@ -32,41 +167,82 @@
 </div>
 
 <div class="card">
-<h2>Practice mode</h2>
+<h2><span class="step">2</span>Practice mode</h2>
 <div class="modes">
-<button class="mode active" data-mode="study"><b>📖 Study</b><small>See year + event.</small></button>
-<button class="mode" data-mode="year"><b>📅 Guess the Year</b><small>See event, recall the date.</small></button>
-<button class="mode" data-mode="event"><b>🧠 Hard Mode</b><small>See date, reconstruct the event.</small></button>
+<button class="mode active" data-mode="study"><b>Study</b><small>See year + event.</small></button>
+<button class="mode" data-mode="year"><b>Guess the year</b><small>See event, recall the date.</small></button>
+<button class="mode" data-mode="event"><b>Hard mode</b><small>See date, reconstruct the event.</small></button>
 </div>
 </div>
 
-<div class="card" id="studyMode">
-<div class="question"><h2>Study</h2><div class="year" id="studyYear">—</div><div class="description" id="studyDescription">Load a database to begin.</div></div>
-<div class="actions"><button class="btn" id="studyNext">Next →</button></div>
+<div class="card practice-card" id="studyMode">
+<h2><span class="step">3</span><span class="mode-title">Study</span></h2>
+<div class="question">
+<div class="year" id="studyYear">—</div>
+<div class="description" id="studyDescription">Load a database to begin.</div>
+</div>
+<div class="actions"><button class="btn primary" id="studyNext">Next question →</button></div>
 <div class="progress" id="studyProgress"></div>
 </div>
 
-<div class="card hidden" id="yearMode">
-<div class="question"><h2>Guess the Year</h2><div class="description" id="yearQuestion">—</div></div>
+<div class="card practice-card hidden" id="yearMode">
+<h2><span class="step">3</span><span class="mode-title">Guess the year</span></h2>
+<div class="question"><div class="description" id="yearQuestion">—</div></div>
 <div class="answer"><input id="yearAnswer" placeholder="e.g. 1789, 1914–1918, September 1939"></div>
 <div class="hint" style="text-align:center">Dates can be exact years, ranges, approximate dates, or month + year.</div>
-<div class="actions"><button class="btn" id="checkYear">Check answer</button><button class="btn secondary" id="yearNext">Skip</button></div>
-<div id="yearResult"></div><div class="progress" id="yearProgress"></div>
+
+<div class="actions" id="yearAnswerActions">
+<button class="btn" id="checkYear">Check answer</button>
+<button class="btn ghost" id="yearSkip">Skip</button>
 </div>
 
-<div class="card hidden" id="eventMode">
-<div class="question"><h2>Hard Mode</h2><div>What happened in:</div><div class="year" id="eventYear">—</div></div>
+<div id="yearResult"></div>
+
+<div class="actions hidden" id="yearNextActions">
+<button class="btn primary" id="yearNext">Next question →</button>
+</div>
+<div class="continue-hint hidden" id="yearContinueHint">Press Enter to continue</div>
+
+<div class="progress" id="yearProgress"></div>
+</div>
+
+<div class="card practice-card hidden" id="eventMode">
+<h2><span class="step">3</span><span class="mode-title">Hard mode</span></h2>
+<div class="question">
+<div class="prompt-label">What happened in:</div>
+<div class="year" id="eventYear">—</div>
+</div>
 <div class="answer"><textarea id="eventAnswer" placeholder="Describe what happened in your own words..."></textarea></div>
-<div class="hint" style="text-align:center">Don't try to reproduce the database sentence. State the essential facts.</div>
-<div class="actions"><button class="btn" id="checkEvent">Check answer</button><button class="btn secondary" id="eventNext">Skip</button></div>
-<div id="eventResult"></div><div class="progress" id="eventProgress"></div>
+<div class="hint" style="text-align:center">Don't try to reproduce the database sentence. State the essential facts. (Ctrl+Enter to check)</div>
+
+<div class="actions" id="eventAnswerActions">
+<button class="btn" id="checkEvent">Check answer</button>
+<button class="btn ghost" id="eventSkip">Skip</button>
+</div>
+
+<div id="eventResult"></div>
+
+<div class="actions hidden" id="eventNextActions">
+<button class="btn primary" id="eventNext">Next question →</button>
+</div>
+<div class="continue-hint hidden" id="eventContinueHint">Press Enter to continue</div>
+
+<div class="progress" id="eventProgress"></div>
 </div>
 
 <div class="card">
-<h2>Statistics</h2>
-<div class="stats"><span>Correct: <b id="correctCount">0</b></span><span>Wrong: <b id="wrongCount">0</b></span><span>Score: <b id="scorePercent">0%</b></span></div>
-<div class="actions"><button class="btn secondary" id="resetStats">Reset statistics</button><button class="btn danger" id="deleteUploads">Delete saved uploaded databases</button></div>
+<h2><span class="step">4</span>Statistics</h2>
+<div class="stats">
+<span>Correct<b id="correctCount">0</b></span>
+<span>Wrong<b id="wrongCount">0</b></span>
+<span>Score<b id="scorePercent">0%</b></span>
 </div>
+<div class="actions">
+<button class="btn ghost" id="resetStats">Reset statistics</button>
+<button class="btn danger" id="deleteUploads">Delete saved uploaded databases</button>
+</div>
+</div>
+
 </div>
 
 <script>
@@ -209,6 +385,19 @@ document.querySelectorAll(".mode").forEach(btn=>{
  };
 });
 
+/* ---------------- Answer/next-question state ----------------
+   Each of the "year" and "event" modes has two button groups:
+   - "<prefix>AnswerActions": Check answer + Skip (shown while unanswered)
+   - "<prefix>NextActions":   Next question (shown once answered)
+   This keeps a next-question control always reachable, and stops
+   the Check button from being clicked twice for the same question.
+------------------------------------------------------------- */
+function setAnsweringState(prefix,isAnswering){
+ $(prefix+"AnswerActions").classList.toggle("hidden",!isAnswering);
+ $(prefix+"NextActions").classList.toggle("hidden",isAnswering);
+ $(prefix+"ContinueHint").classList.toggle("hidden",isAnswering);
+}
+
 function nextQuestion(){
  if(!database.length){return}
  current=database[Math.floor(Math.random()*database.length)];
@@ -217,21 +406,31 @@ function nextQuestion(){
  if(mode==="study"){
   $("studyYear").textContent=current.year;
   $("studyDescription").textContent=current.description;
-  $("studyProgress").textContent=`Question ${questionNo} • ${database.length} events`;
+  $("studyProgress").textContent=`Question ${questionNo} · ${database.length} events in this database`;
  }
  if(mode==="year"){
-  $("yearQuestion").textContent=current.description;$("yearAnswer").value="";
+  $("yearQuestion").textContent=current.description;
+  $("yearAnswer").value="";
+  $("yearAnswer").readOnly=false;
+  setAnsweringState("year",true);
   $("yearProgress").textContent=`Question ${questionNo}`;
   setTimeout(()=>$("yearAnswer").focus(),50);
  }
  if(mode==="event"){
-  $("eventYear").textContent=current.year;$("eventAnswer").value="";
+  $("eventYear").textContent=current.year;
+  $("eventAnswer").value="";
+  $("eventAnswer").readOnly=false;
+  setAnsweringState("event",true);
   $("eventProgress").textContent=`Question ${questionNo}`;
   setTimeout(()=>$("eventAnswer").focus(),50);
  }
 }
 
-$("studyNext").onclick=nextQuestion;$("yearNext").onclick=nextQuestion;$("eventNext").onclick=nextQuestion;
+$("studyNext").onclick=nextQuestion;
+$("yearSkip").onclick=nextQuestion;
+$("yearNext").onclick=nextQuestion;
+$("eventSkip").onclick=nextQuestion;
+$("eventNext").onclick=nextQuestion;
 
 /* ---------------- Flexible date evaluation ---------------- */
 function normalizeDate(s){
@@ -259,11 +458,18 @@ $("checkYear").onclick=()=>{
  const answer=$("yearAnswer").value.trim();if(!answer)return;
  const score=dateEquivalent(current.year,answer);
  stats[score>=.9?"correct":"wrong"]++;saveStats();
- let cls=score>=.9?"correct":score>=.7?"partial":"incorrect";
- let msg=score>=.9?"✅ Correct!":score>=.7?"🟡 Close — you got the main year right, but the date format/details differ.":"❌ Not quite.";
- $("yearResult").innerHTML=`<div class="result ${cls}">${msg}<div class="details">Correct date: <b>${escapeHTML(current.year)}</b></div></div>`;
+ const cls=score>=.9?"correct":score>=.7?"partial":"incorrect";
+ const verdict=score>=.9?"Correct":score>=.7?"Close":"Incorrect";
+ const msg=score>=.9?"You got the exact date.":score>=.7?"You got the main year right, but the date format or details differ.":"That's not the date on record.";
+ $("yearResult").innerHTML=`<div class="result ${cls}"><span class="verdict verdict-${cls}">${verdict}</span>${msg}<div class="details">Correct date: <b>${escapeHTML(current.year)}</b></div></div>`;
+ $("yearAnswer").readOnly=true;
+ setAnsweringState("year",false);
+ setTimeout(()=>$("yearNext").focus(),50);
 };
-$("yearAnswer").addEventListener("keydown",e=>{if(e.key==="Enter")$("checkYear").click()});
+$("yearAnswer").addEventListener("keydown",e=>{
+ if(e.key!=="Enter")return;
+ if($("yearAnswer").readOnly){$("yearNext").click()} else {$("checkYear").click()}
+});
 
 /* ---------------- Smarter offline Hard Mode ----------------
    We extract meaningful phrases/entities and compare:
@@ -348,14 +554,21 @@ $("checkEvent").onclick=()=>{
  if(!current)return;
  const answer=$("eventAnswer").value.trim();if(!answer)return;
  const r=hardScore(current.description,answer);
- let cls,msg;
- if(r.score>=.72){cls="correct";msg="✅ Excellent — you captured the essential information."}
- else if(r.score>=.48){cls="partial";msg="🟡 Partially correct — you remembered some important information, but you're missing key details."}
- else {cls="incorrect";msg="❌ Not enough of the key information was included."}
+ let cls,verdict,msg;
+ if(r.score>=.72){cls="correct";verdict="Correct";msg="You captured the essential information."}
+ else if(r.score>=.48){cls="partial";verdict="Close";msg="You remembered some important information, but you're missing key details."}
+ else {cls="incorrect";verdict="Incorrect";msg="Not enough of the key information was included."}
  stats[r.score>=.72?"correct":"wrong"]++;saveStats();
  const missing=r.missing.length?`<div class="chips">${r.missing.map(x=>`<span class="chip">${escapeHTML(x)}</span>`).join("")}</div>`:"";
- $("eventResult").innerHTML=`<div class="result ${cls}">${msg}<div class="details"><b>Similarity score:</b> ${Math.round(r.score*100)}%</div>${r.missing.length?`<div class="details"><b>Some concepts you may have missed:</b>${missing}</div>`:""}<div class="details"><b>Reference:</b> ${escapeHTML(current.description)}</div></div>`;
+ $("eventResult").innerHTML=`<div class="result ${cls}"><span class="verdict verdict-${cls}">${verdict}</span>${msg}<div class="details"><b>Similarity score:</b> ${Math.round(r.score*100)}%</div>${r.missing.length?`<div class="details"><b>Some concepts you may have missed:</b>${missing}</div>`:""}<div class="details"><b>Reference:</b> ${escapeHTML(current.description)}</div></div>`;
+ $("eventAnswer").readOnly=true;
+ setAnsweringState("event",false);
+ setTimeout(()=>$("eventNext").focus(),50);
 };
+$("eventAnswer").addEventListener("keydown",e=>{
+ if(!(e.ctrlKey&&e.key==="Enter"))return;
+ if($("eventAnswer").readOnly){$("eventNext").click()} else {$("checkEvent").click()}
+});
 
 /* ---------------- Stats ---------------- */
 function saveStats(){localStorage.setItem(STATS_KEY,JSON.stringify(stats));updateStats()}
@@ -365,9 +578,6 @@ function updateStats(){
  $("scorePercent").textContent=(total?Math.round(stats.correct/total*100):0)+"%";
 }
 $("resetStats").onclick=()=>{stats={correct:0,wrong:0};saveStats()};
-
-/* ---------------- Keyboard shortcuts ---------------- */
-$("eventAnswer").addEventListener("keydown",e=>{if(e.ctrlKey&&e.key==="Enter")$("checkEvent").click()});
 
 /* ---------------- Startup ---------------- */
 loadDatabaseOptions();
