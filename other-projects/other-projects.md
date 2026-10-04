@@ -12,8 +12,9 @@ title: "Other Projects"
 
 | Title            | Year   | Language | Description                                                 |
 | --------         | ------ | ---------|------------------------------------------------------------ |
-| [Ślimak](https://jstrieb.github.io/link-lock/#eyJ2IjoiMC4wLjEiLCJlIjoiVVY3RHBhVUFZUW5IckJyK1QzNmUrTEdPWFFmRTUwUmFqaFdTVXV1VEtNenVnekJkL2tQU05mWk1pekU9IiwiaCI6Ik9OQSIsInMiOiJERk01U1NEQUsralBLL0VCeDRZK2FRPT0iLCJpIjoib053aUNzYzJwV3JvbUNzMiJ9)    | 2026   | ENG | Romantic Memoir Vol. 2
-| [Čekanka obecná](https://jstrieb.github.io/link-lock/#eyJ2IjoiMC4wLjEiLCJlIjoiWnZnOGg2RjhId1h5NzBMaDNWbjl1SWtxT0ZkN3ZCN2NXUkRSYUsxVjVCYmhoREhETHZLRkg2c3pSSUJXamU4PSIsImgiOiJPTkEiLCJzIjoicGhpbmdlcnVUa1lLTE01cjNlYzloUT09IiwiaSI6ImxkSzdUck1sNWdMM0s1MUwifQ==)    | 2025   | ENG | Romantic Memoir Vol. 1          |
+| [Poproszę dwa]()    | 2027   | ENG | SEP Chronicles Trilogy, Vol. 3, Romance
+| [Ślimak](https://jstrieb.github.io/link-lock/#eyJ2IjoiMC4wLjEiLCJlIjoiVVY3RHBhVUFZUW5IckJyK1QzNmUrTEdPWFFmRTUwUmFqaFdTVXV1VEtNenVnekJkL2tQU05mWk1pekU9IiwiaCI6Ik9OQSIsInMiOiJERk01U1NEQUsralBLL0VCeDRZK2FRPT0iLCJpIjoib053aUNzYzJwV3JvbUNzMiJ9)    | 2026   | ENG | SEP Chronicles Trilogy, Vol. 2, Romance
+| [Čekanka obecná](https://jstrieb.github.io/link-lock/#eyJ2IjoiMC4wLjEiLCJlIjoiWnZnOGg2RjhId1h5NzBMaDNWbjl1SWtxT0ZkN3ZCN2NXUkRSYUsxVjVCYmhoREhETHZLRkg2c3pSSUJXamU4PSIsImgiOiJPTkEiLCJzIjoicGhpbmdlcnVUa1lLTE01cjNlYzloUT09IiwiaSI6ImxkSzdUck1sNWdMM0s1MUwifQ==)    | 2025   | ENG | SEP Chronicles Trilogy, Vol. 1, Romance        |
 | [Temačne misli](/files/)    | NaN | SLO | Zbirka krajših kriminalk.  |
 | [Čarovniki na Škotskem](/files/)     | NaN   | SLO| Fantastično zgodovinski roman o čarovnikih v Združenem Kraljestvu v času širjenja rimskega imperija.  |
 
